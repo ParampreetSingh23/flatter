@@ -109,7 +109,7 @@ export function PhotosBlock({ listing, getVersion, apply, call, report }: Photos
 
   const failed = listing.photos.filter((p) => p.state === "FAILED" || p.state === "PENDING" || p.state === "PROCESSING");
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6 lg:gap-4">
       <div>
         <p className="text-sm text-muted">
           Add 3–10 photos: JPEG, PNG or WebP, up to 5 MB each, at least 640 × 480 pixels. Include a room photo and a shared-space photo.
@@ -119,7 +119,7 @@ export function PhotosBlock({ listing, getVersion, apply, call, report }: Photos
         {closed ? <p className="mt-4 font-bold">Reopen this listing to add photos.</p> : (
           <div className="mt-4 flex flex-wrap items-end gap-3">
             <label className="grid gap-1 text-sm font-bold">Next photos are
-              <select value={category} onChange={(e) => setCategory(e.target.value as PhotoCategory)} className="rounded-xl border-2 border-indigo/30 bg-white px-3 py-3 font-normal">
+              <select value={category} onChange={(e) => setCategory(e.target.value as PhotoCategory)} className="rounded-2xl border border-hairline bg-white px-3 py-3 font-normal">
                 {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </label>
@@ -134,16 +134,16 @@ export function PhotosBlock({ listing, getVersion, apply, call, report }: Photos
       {queue.length > 0 && (
         <ul className="grid gap-2" aria-label="Uploads">
           {queue.map((i) => (
-            <li key={i.key} className="rounded-xl border-2 border-indigo/30 bg-white p-3 text-sm">
+            <li key={i.key} className="rounded-2xl border border-hairline bg-white p-3 text-sm">
               <span className="font-bold">{i.file.name}</span>{" "}
               {i.status === "uploading" && <span role="status">Uploading… {i.pct}%</span>}
               {i.status === "processing" && <span role="status">Checking photo…</span>}
               {i.status === "error" && (
                 <>
-                  <span role="alert" className="text-red-700">{i.message}</span>
-                  <span className="ml-3 inline-flex gap-2">
-                    {ALLOWED.includes(i.file.type) && i.file.size <= MAX_BYTES && <button type="button" onClick={() => void run(i)} className="underline">Retry</button>}
-                    <button type="button" onClick={() => { if (i.photoId) void remove(i.photoId, false); setQueue((q) => q.filter((x) => x.key !== i.key)); }} className="underline">Dismiss</button>
+                  <span role="alert" className="text-error">{i.message}</span>
+                  <span className="ml-3 inline-flex flex-wrap gap-2">
+                    {ALLOWED.includes(i.file.type) && i.file.size <= MAX_BYTES && <button type="button" onClick={() => void run(i)} className={`${btnBack} px-3! py-2!`}>Retry<span className="sr-only"> {i.file.name}</span></button>}
+                    <button type="button" onClick={() => { if (i.photoId) void remove(i.photoId, false); setQueue((q) => q.filter((x) => x.key !== i.key)); }} className={`${btnBack} px-3! py-2!`}>Dismiss<span className="sr-only"> {i.file.name}</span></button>
                   </span>
                 </>
               )}
@@ -160,18 +160,18 @@ export function PhotosBlock({ listing, getVersion, apply, call, report }: Photos
               const cat = cats[p.id] ?? p.category;
               const label = CATEGORIES.find((c) => c.value === cat)?.label;
               return (
-                <li key={p.id} className="rounded-xl bg-white p-3">
+                <li key={p.id} className="rounded-2xl bg-white p-3">
                   {p.url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.url} alt={`Photo ${n + 1} of your flat: ${label}`} className="aspect-4/3 w-full rounded-lg object-cover" />
-                  ) : <div className="flex aspect-4/3 items-center justify-center rounded-lg bg-indigo/10 text-sm">Preview unavailable</div>}
+                    <img src={p.url} alt={`Photo ${n + 1} of your flat: ${label}`} className="aspect-4/3 w-full rounded-2xl object-cover" />
+                  ) : <div className="flex aspect-4/3 items-center justify-center rounded-2xl bg-surface-card text-sm">Preview unavailable</div>}
                   <div className="mt-3 grid gap-2 text-sm">
                     <label className="grid gap-1 font-bold">Type
-                      <select value={cat} onChange={(e) => setCats((c) => ({ ...c, [p.id]: e.target.value as PhotoCategory }))} className="rounded-xl border-2 border-indigo/30 bg-white px-3 py-2 font-normal">
+                      <select value={cat} onChange={(e) => setCats((c) => ({ ...c, [p.id]: e.target.value as PhotoCategory }))} className="rounded-2xl border border-hairline bg-white px-3 py-2 font-normal">
                         {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                       </select>
                     </label>
-                    <label className="flex items-center gap-2"><input type="radio" name="cover" checked={coverId === p.id} onChange={() => setCover(p.id)} className="size-4 accent-electric" /> Use as cover photo</label>
+                    <label className="flex items-center gap-2"><input type="radio" name="cover" checked={coverId === p.id} onChange={() => setCover(p.id)} className="size-4 accent-ink" /> Use as cover photo</label>
                     <div className="flex flex-wrap gap-2">
                       <button type="button" disabled={n === 0} onClick={() => move(n, -1)} className={`${btnBack} px-3! py-2!`}>Move earlier</button>
                       <button type="button" disabled={n === shown.length - 1} onClick={() => move(n, 1)} className={`${btnBack} px-3! py-2!`}>Move later</button>
@@ -196,9 +196,9 @@ export function PhotosBlock({ listing, getVersion, apply, call, report }: Photos
           <h3 className="font-bold">Not accepted</h3>
           <ul className="mt-2 grid gap-2 text-sm">
             {failed.map((p) => (
-              <li key={p.id} className="flex items-center justify-between rounded-xl border-2 border-indigo/30 bg-white p-3">
+              <li key={p.id} className="flex items-center justify-between rounded-2xl border border-hairline bg-white p-3">
                 <span>{p.originalName ?? "Photo"} — {p.state === "FAILED" ? "rejected" : "waiting to finish"}</span>
-                <button type="button" onClick={() => void remove(p.id, false)} className="underline">Remove</button>
+                <button type="button" onClick={() => void remove(p.id, false)} className={`${btnBack} px-3! py-2!`}>Remove<span className="sr-only"> {p.originalName ?? "photo"}</span></button>
               </li>
             ))}
           </ul>

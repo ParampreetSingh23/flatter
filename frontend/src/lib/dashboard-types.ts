@@ -25,6 +25,7 @@ export interface DashboardData {
   housing: HousingSummary | null;
   listing: ListingSummary | null;
   listingError: boolean;
+  matching: { enrolled: boolean; ready: boolean };
 }
 export interface MeData {
   version: number; publicId: string; intent: Intent; discoveryEnabled: boolean;

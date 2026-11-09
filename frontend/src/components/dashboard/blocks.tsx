@@ -4,16 +4,21 @@ import type { DashboardData, HousingSummary, ListingSummary } from "@/lib/dashbo
 import { inr } from "@/lib/format";
 import { STATUS_LABEL } from "@/lib/listing-types";
 import type { Intent } from "@/lib/onboarding-types";
+import { DetailRows } from "./detail-rows";
 
-export const cta = "inline-flex items-center justify-center rounded-xl bg-indigo px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-electric";
-export const ghost = "inline-flex items-center justify-center rounded-xl border-2 border-indigo px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-indigo hover:bg-indigo hover:text-white";
-export const Card = ({ title, children, id, action, icon }: { title?: string; children: React.ReactNode; id?: string; action?: React.ReactNode; icon?: IconName }) => (
-  <section aria-labelledby={id} className="rounded-2xl bg-white p-6 shadow-[0_1px_0_rgba(26,26,140,.08)] ring-1 ring-indigo/10 sm:p-8">
+export const cta = "inline-flex min-h-11 items-center justify-center rounded-2xl bg-primary px-3.5 py-1.5 text-sm font-bold leading-none text-white hover:bg-primary-pressed active:bg-primary-pressed disabled:bg-surface-card disabled:text-ash";
+export const ghost = "inline-flex min-h-11 items-center justify-center rounded-2xl bg-secondary px-3.5 py-1.5 text-sm font-bold leading-none text-ink hover:bg-secondary-pressed active:bg-secondary-pressed disabled:bg-surface-card disabled:text-ash";
+// Tertiary: transparent until hovered (DESIGN.md button-tertiary). For low-emphasis actions such as Report or block.
+export const quiet = "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl px-3.5 py-1.5 text-sm font-bold leading-none text-ink hover:bg-surface-card active:bg-secondary disabled:text-ash";
+// Compact secondary (still a 44px target): inline row actions such as Fix, Retry, Dismiss, Remove.
+export const small = "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-secondary px-3 py-2 text-sm font-bold leading-none text-ink hover:bg-secondary-pressed active:bg-secondary-pressed disabled:bg-surface-card disabled:text-ash";
+export const Card = ({ title, children, id, action, icon, className = "" }: { title?: string; children: React.ReactNode; id?: string; action?: React.ReactNode; icon?: IconName; className?: string }) => (
+  <section aria-labelledby={id} className={`rounded-2xl bg-white p-6 sm:p-8 lg:p-5 ${className}`}>
     {title && (
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          {icon && <span className="flex size-9 items-center justify-center rounded-xl bg-electric/10 text-electric"><Icon name={icon} /></span>}
-          <h2 id={id} className="font-mono text-xs font-bold uppercase tracking-wider text-muted">{title}</h2>
+          {icon && <span className="flex size-9 items-center justify-center rounded-2xl bg-surface-card text-ink"><Icon name={icon} /></span>}
+          <h2 id={id} className="text-lg font-semibold leading-[1.3] text-ink">{title}</h2>
         </div>
         {action}
       </div>
@@ -31,9 +36,9 @@ export const HOME: Record<Intent, { heading: string; blurb: string; soon: string
 
 // Reusable, truthful notice: not a link, not a button, no fake counters.
 export const ComingSoon = ({ label }: { label: string }) => (
-  <div aria-disabled="true" className="flex items-center justify-between rounded-xl border-2 border-dashed border-indigo/30 px-4 py-4">
-    <span className="font-bold text-indigo">{label}</span>
-    <span className="font-mono text-xs uppercase tracking-wider text-muted"><span className="sr-only">, </span>Coming soon</span>
+  <div aria-disabled="true" className="flex items-center justify-between rounded-2xl border border-dashed border-hairline px-4 py-4">
+    <span className="font-bold text-ink">{label}</span>
+    <span className="text-xs text-muted"><span className="sr-only">, </span>Coming soon</span>
   </div>
 );
 
@@ -48,10 +53,8 @@ export function HousingBlock({ housing, intent }: { housing: HousingSummary | nu
   return (
     <Card title="Your housing preferences" id="housing-h" icon="pin">
       {housing ? (
-        <dl className="mt-3 grid gap-2 text-sm">
-          {rows.map(([k, v]) => <div key={k} className="grid gap-1 sm:grid-cols-[10rem_1fr]"><dt className="text-muted">{k}</dt><dd>{v}</dd></div>)}
-        </dl>
-      ) : <p className="mt-3 text-sm text-muted">Not available.</p>}
+        <DetailRows rows={rows} />
+      ) : <p className="mt-4 text-sm text-muted">Not available.</p>}
     </Card>
   );
 }
@@ -71,7 +74,7 @@ export function ListingBlock({ data }: { data: Pick<DashboardData, "listing" | "
   const heading = !l ? "Create Your Flat Listing" : { DRAFT: "Complete Your Flat Listing", PUBLISHED: "Your Flat Listing Is Live", PAUSED: "Your Flat Listing Is Paused", CLOSED: "Your Flat Listing Is Closed" }[l.status];
   return (
     <Card title="Your flat listing" id="listing-h" icon="home">
-      <p className="mt-3 text-2xl font-black tracking-[-0.01em] text-electric">{heading}</p>
+      <p className="mt-3 text-[22px] font-semibold tracking-[-0.01em] text-ink">{heading}</p>
       {!l && (
         <>
           <p className="mt-2 text-muted">Add photos, rent and location so potential flatmates can see your place. Your profile is ready; the listing stays private until you publish it.</p>
@@ -80,13 +83,13 @@ export function ListingBlock({ data }: { data: Pick<DashboardData, "listing" | "
       )}
       {l && (
         <>
-          <p className="mt-3"><span className="rounded-full border border-electric px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-electric">{STATUS_LABEL[l.status]}</span></p>
+          <p className="mt-4 text-base font-semibold text-ink">{STATUS_LABEL[l.status]}</p>
           {l.status === "PUBLISHED" && (
             <div className="mt-4 flex flex-wrap gap-4">
               {l.coverUrl
                 // eslint-disable-next-line @next/next/no-img-element
-                ? <img src={l.coverUrl} alt="Cover photo of your flat" className="size-28 rounded-lg object-cover" />
-                : <div aria-hidden="true" className="flex size-28 items-center justify-center rounded-lg bg-indigo/10 text-xs text-muted">No photo</div>}
+                ? <img src={l.coverUrl} alt="Cover photo of your flat" className="size-28 rounded-2xl object-cover" />
+                : <div aria-hidden="true" className="flex size-28 items-center justify-center rounded-2xl bg-surface-card text-xs text-muted">No photo</div>}
               <div>
                 <p className="text-lg font-bold">{l.title}</p>
                 <p className="text-sm text-muted">{[l.locality, l.city].filter(Boolean).join(", ")}</p>
@@ -102,7 +105,7 @@ export function ListingBlock({ data }: { data: Pick<DashboardData, "listing" | "
           )}
           {l.status === "PAUSED" && <p className="mt-3 text-sm text-muted">Only you can see this. It&apos;s hidden from others until you review and publish it again.</p>}
           {l.status === "CLOSED" && <p className="mt-3 text-sm text-muted">Only you can see this. Reopen it from the listing page to edit and publish again.</p>}
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/dashboard/listing" className={cta}>{l.status === "DRAFT" ? "Continue your listing" : l.status === "PAUSED" ? "Review and republish" : l.status === "CLOSED" ? "View saved details" : "Manage listing"}</Link>
             {l.status === "PUBLISHED" && <Link href="/dashboard/profile#listing" className={ghost}>View on My Profile</Link>}
           </div>

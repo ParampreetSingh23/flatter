@@ -14,9 +14,9 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ href = "/route" }: { href?: string }) {
   return (
-    <Link href={href} aria-label="Flatter home" className="inline-flex items-center gap-2 text-white">
+    <Link href={href} aria-label="Flatter home" className="inline-flex items-center gap-2 text-primary">
       <LogoMark className="size-8" />
-      <span className="text-2xl font-black tracking-[-0.02em]">flatter</span>
+      <span className="text-[22px] font-semibold tracking-[-0.02em]">flatter</span>
     </Link>
   );
 }

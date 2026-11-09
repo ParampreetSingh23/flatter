@@ -1,13 +1,24 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-electric: #3b3bff;
-  --color-indigo: #1a1a8c;
-  --color-cream: #fffef0;
+  --color-primary: #e60023;
+  --color-primary-pressed: #cc001f;
+  --color-secondary: #e5e5e0;
+  --color-secondary-pressed: #c8c8c1;
+  --color-canvas: #ffffff;
+  --color-surface-soft: #fbfbf9;
+  --color-surface-card: #f6f6f3;
+  --color-surface-dark: #262622;
   --color-ink: #000000;
-  --color-muted: #6b6b8c;
+  --color-body: #33332e;
+  --color-muted: #62625b;
+  --color-ash: #91918c;
+  --color-hairline: #dadad3;
+  --color-focus: #435ee5;
+  --color-error: #9e0a0a;
+  --color-success: #103c25;
+  --color-success-pale: #c7f0da;
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-label), ui-monospace, monospace;
 }
 
 html {
@@ -22,32 +33,13 @@ html {
 }
 
 body {
-  background: var(--color-cream);
-  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  color: var(--color-body);
   font-family: var(--font-sans);
+  line-height: 1.4;
 }
 
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-focus);
   outline-offset: 3px;
-}
-
-@layer components {
-/* Fine grain on electric-blue fields (DESIGN.md: texture is core identity). */
-.grain {
-  position: relative;
-  background-color: var(--color-electric);
-}
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.18;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.grain > * {
-  position: relative;
-}
 }

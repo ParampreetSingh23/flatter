@@ -35,11 +35,11 @@ export function CityCombobox({ cities, value, onChange, errors }: { cities: City
         }}
       />
       {open && (
-        <ul id={`${uid}-list`} role="listbox" aria-label="Cities" className="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-xl border-2 border-indigo/30 bg-white shadow">
+        <ul id={`${uid}-list`} role="listbox" aria-label="Cities" className="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-2xl border border-hairline bg-white">
           {list.map((c, i) => (
             <li key={c.id} id={`${uid}-${c.id}`} role="option" aria-selected={c.id === value}
               onMouseDown={(e) => { e.preventDefault(); pick(c); }}
-              className={`cursor-pointer px-4 py-3 ${i === active ? "bg-electric/10" : ""}`}>
+              className={`cursor-pointer px-4 py-3 ${i === active ? "bg-surface-card" : ""}`}>
               <span className="font-bold">{c.label}</span>
               <span className="text-sm text-muted"> · {c.state}</span>
               {c.note && <span className="block text-xs text-muted">{c.note}</span>}
@@ -63,7 +63,7 @@ export function LocalityPicker({ city, single, value, onChange, errors, max = 5,
   const groups = [...new Set(shown.map((l) => l.group ?? ""))];
   const toggle = (id: string) =>
     onChange(single ? [id] : value.includes(id) ? value.filter((x) => x !== id) : value.length >= max ? value : [...value, id]);
-  const row = "flex cursor-pointer items-center gap-3 rounded-xl border-2 border-indigo/30 bg-white px-4 py-3 has-checked:border-electric has-checked:bg-electric/5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2";
+  const row = "flex cursor-pointer items-center gap-3 rounded-2xl border border-hairline bg-white px-4 py-3 has-checked:border-ink has-checked:bg-surface-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2";
 
   return (
     <fieldset id="preferredLocations" aria-describedby={errors.preferredLocations ? "preferredLocations-error" : undefined}>
@@ -75,10 +75,10 @@ export function LocalityPicker({ city, single, value, onChange, errors, max = 5,
       <div className="mt-3 grid gap-4">
         {groups.map((g) => (
           <div key={g} role="group" aria-label={g || undefined} className="grid gap-2 sm:grid-cols-2">
-            {g && <p className="font-mono text-xs font-bold uppercase tracking-wider text-muted sm:col-span-2">{g}</p>}
+            {g && <p className="text-sm font-bold text-muted sm:col-span-2">{g}</p>}
             {shown.filter((l) => (l.group ?? "") === g).map((l) => (
               <label key={l.id} className={row}>
-                <input type={single ? "radio" : "checkbox"} name={`${uid}-loc`} checked={value.includes(l.id)} onChange={() => toggle(l.id)} className="size-4 accent-electric" />
+                <input type={single ? "radio" : "checkbox"} name={`${uid}-loc`} checked={value.includes(l.id)} onChange={() => toggle(l.id)} className="size-4 accent-ink" />
                 {l.label}
               </label>
             ))}

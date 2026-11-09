@@ -6,6 +6,7 @@ import { ApiFail, api } from "@/lib/api";
 import {
   BLOCK_OF, FURNISHING, ROOM_TYPES, STATUS_LABEL, type ListingView, type Mine,
 } from "@/lib/listing-types";
+import { Icon } from "@/components/icons";
 import { cityLabel, localityLabel, useLocations } from "@/lib/locations";
 import { btnBack, btnNext, Field, FieldError, fromPaise, inputCls, inr, RadioCards, toPaise, type Errors } from "../onboarding/fields";
 import { PhotosBlock } from "./photos";
@@ -58,9 +59,9 @@ export function ListingEditor() {
   return (
     <>
       <div>
-        <Link href="/dashboard" className="font-mono text-xs font-bold uppercase tracking-wider text-electric underline">← Dashboard</Link>
+        <Link href="/dashboard" className={`${btnBack} gap-2`}><Icon name="arrow" className="size-4 rotate-180" />Back to Dashboard</Link>
         {err ? (
-          <div role="alert" className="mt-6 rounded-xl bg-white p-6">
+          <div role="alert" className="mt-6 rounded-2xl bg-white p-6 sm:p-8 lg:p-5">
             <p className="font-bold">{err}</p>
             <button onClick={() => { setErr(null); setAttempt((n) => n + 1); }} className={`${btnNext} mt-4`}>Retry</button>
           </div>
@@ -68,7 +69,7 @@ export function ListingEditor() {
         : mine.listing ? <Loaded key={mine.listing.id} initial={mine.listing} getToken={getToken} />
         : mine.canCreate ? (
           <div className="mt-6">
-            <h1 className="text-[2rem] font-black leading-none tracking-[-0.02em] text-electric sm:text-[2.5rem]">Complete your flat listing</h1>
+            <h1 className="text-[28px] font-bold leading-[1.2] tracking-[-1.2px] text-ink">Complete your flat listing</h1>
             <p className="mt-4">Your profile is ready. Your flat listing stays private until you publish it.</p>
             <button onClick={() => void create()} disabled={creating} className={`${btnNext} mt-6`}>{creating ? "Creating…" : "Start your listing"}</button>
           </div>
@@ -137,60 +138,62 @@ function Loaded({ initial, getToken }: { initial: ListingView; getToken: () => P
   const title = BLOCKS.find(([b]) => b === block)![1];
   return (
     <div className="mt-6">
-      <h1 className="text-[2rem] font-black leading-none tracking-[-0.02em] text-electric sm:text-[2.5rem]">Your flat listing</h1>
-      <p className="mt-3"><span className="rounded-full border border-electric px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-electric">{STATUS_LABEL[listing.status]}</span>
+      <h1 className="text-[28px] font-bold leading-[1.2] tracking-[-1.2px] text-ink">Your flat listing</h1>
+      <p className="mt-3"><span className="text-base font-semibold text-ink">{STATUS_LABEL[listing.status]}</span>
         <span className="ml-3 text-sm text-muted">Your profile is ready. Your flat listing stays private until you publish it.</span></p>
       <nav aria-label="Listing steps" className="mt-6 flex flex-wrap gap-2">
         {BLOCKS.map(([b, label], i) => (
           <button key={b} type="button" onClick={() => go(b)} aria-current={b === block ? "step" : undefined}
-            className={`rounded-xl px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider ${b === block ? "bg-indigo text-white" : "border-2 border-indigo text-indigo"}`}>{i + 1}. {label}</button>
+            className={`rounded-2xl px-4 py-2 text-sm font-bold ${b === block ? "bg-ink text-white" : "border border-hairline text-ink"}`}>{i + 1}. {label}</button>
         ))}
       </nav>
-      <h2 ref={heading} tabIndex={-1} className="mt-8 text-2xl font-bold">{title}</h2>
+      <section aria-labelledby="listing-step-h" className="mt-6 rounded-2xl bg-white p-6 sm:p-8 lg:p-5">
+        <h2 id="listing-step-h" ref={heading} tabIndex={-1} className="text-lg font-semibold leading-[1.3] text-ink">{title}</h2>
 
-      <div aria-live="polite" className="mt-4 min-h-6 text-sm">{busy ? "Saving…" : note?.kind === "ok" ? note.text : ""}</div>
-      {note && note.kind !== "ok" && (
-        <div role="alert" className="rounded-xl border-2 border-red-700 bg-white p-4">
-          <p className="font-bold text-red-700">{note.text}</p>
-          {Object.keys(errors).length > 0 && <ul className="mt-2 list-disc pl-5 text-sm">{Object.entries(errors).map(([k, v]) => <li key={k}>{v}</li>)}</ul>}
-          {note.kind === "conflict" && <button onClick={() => void reload()} className={`${btnNext} mt-3`}>Reload saved version</button>}
-        </div>
-      )}
-
-      <div className="mt-6">
-        {block === "flat" && <FlatBlock form={form} set={set} errors={errors} busy={busy} onSave={saveFlat} />}
-        {block === "rent" && <RentBlock form={form} set={set} errors={errors} busy={busy} onSave={saveRent} />}
-        {block === "photos" && (
-          <PhotosBlock listing={listing} getVersion={() => versionRef.current} apply={apply} call={call}
-            report={(text) => setNote({ kind: "error", text })} />
+        <div aria-live="polite" className={busy || note?.kind === "ok" ? "mt-4 text-sm" : "sr-only"}>{busy ? "Saving…" : note?.kind === "ok" ? note.text : ""}</div>
+        {note && note.kind !== "ok" && (
+          <div role="alert" className="mt-4 rounded-2xl border border-error bg-white p-4">
+            <p className="font-bold text-error">{note.text}</p>
+            {Object.keys(errors).length > 0 && <ul className="mt-2 list-disc pl-5 text-sm">{Object.entries(errors).map(([k, v]) => <li key={k}>{v}</li>)}</ul>}
+            {note.kind === "conflict" && <button onClick={() => void reload()} className={`${btnNext} mt-3`}>Reload saved version</button>}
+          </div>
         )}
-        {block === "review" && <ReviewBlock listing={listing} busy={busy} errors={errors} go={go}
-          onPermission={(v) => save({ permissionConfirmed: v })}
-          onPublish={() => void act("publish", "Published. Signed-in Flatter users can now see your listing.")}
-          onPause={() => void act("pause", "Paused. Your listing is hidden.")}
-          onClose={() => { if (window.confirm("Close this listing? It will be hidden. You can reopen it later.")) void act("close", "Closed. Your details and photos are saved."); }}
-          onReopen={() => void act("reopen", "Reopened as a private draft. Review and publish again.")} />}
-      </div>
-      {block !== "review" && (
-        <div className="mt-8 flex justify-between">
-          <button type="button" onClick={() => go(BLOCKS[Math.max(0, BLOCKS.findIndex(([b]) => b === block) - 1)]![0])} disabled={block === "flat"} className={btnBack}>Back</button>
-          <button type="button" onClick={() => go(BLOCKS[BLOCKS.findIndex(([b]) => b === block) + 1]![0])} className={btnBack}>Next</button>
+
+        <div className="mt-6">
+          {block === "flat" && <FlatBlock form={form} set={set} errors={errors} busy={busy} onSave={saveFlat} />}
+          {block === "rent" && <RentBlock form={form} set={set} errors={errors} busy={busy} onSave={saveRent} />}
+          {block === "photos" && (
+            <PhotosBlock listing={listing} getVersion={() => versionRef.current} apply={apply} call={call}
+              report={(text) => setNote({ kind: "error", text })} />
+          )}
+          {block === "review" && <ReviewBlock listing={listing} busy={busy} errors={errors} go={go}
+            onPermission={(v) => save({ permissionConfirmed: v })}
+            onPublish={() => void act("publish", "Published. Signed-in Flatter users can now see your listing.")}
+            onPause={() => void act("pause", "Paused. Your listing is hidden.")}
+            onClose={() => { if (window.confirm("Close this listing? It will be hidden. You can reopen it later.")) void act("close", "Closed. Your details and photos are saved."); }}
+            onReopen={() => void act("reopen", "Reopened as a private draft. Review and publish again.")} />}
         </div>
-      )}
+        {block !== "review" && (
+          <div className="mt-6 flex justify-between">
+            <button type="button" onClick={() => go(BLOCKS[Math.max(0, BLOCKS.findIndex(([b]) => b === block) - 1)]![0])} disabled={block === "flat"} className={btnBack}>Back</button>
+            <button type="button" onClick={() => go(BLOCKS[BLOCKS.findIndex(([b]) => b === block) + 1]![0])} className={btnBack}>Next</button>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
 
 interface BlockProps { form: Form; set: <K extends keyof Form>(k: K) => (v: Form[K]) => void; errors: Errors; busy: boolean; onSave: () => void }
 const SaveBar = ({ busy, onSave }: { busy: boolean; onSave: () => void }) => (
-  <div className="mt-8"><button type="button" onClick={onSave} disabled={busy} className={btnNext}>{busy ? "Saving…" : "Save draft"}</button></div>
+  <div><button type="button" onClick={onSave} disabled={busy} className={btnNext}>{busy ? "Saving…" : "Save draft"}</button></div>
 );
 
 function FlatBlock({ form, set, errors, busy, onSave }: BlockProps) {
   const { data: cat, failed } = useLocations();
   const city = cat?.cities.find((c) => c.id === form.cityId);
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 lg:gap-4">
       <Field name="title" label="Title" hint="10–100 characters, e.g. “Sunny room near Saket metro”." errors={errors}>
         <input id="title" value={form.title} maxLength={100} onChange={(e) => set("title")(e.target.value)} className={inputCls} aria-describedby={errors.title ? "title-error" : "title-hint"} aria-invalid={!!errors.title} />
       </Field>
@@ -213,7 +216,7 @@ function FlatBlock({ form, set, errors, busy, onSave }: BlockProps) {
           </Field>
         </>
       )}
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 lg:gap-4 sm:grid-cols-2">
         <Field name="bedrooms" label="Bedrooms in the flat (1–10)" errors={errors}>
           <input id="bedrooms" type="number" min={1} max={10} value={form.bedrooms} onChange={(e) => set("bedrooms")(e.target.value)} className={inputCls} />
         </Field>
@@ -230,7 +233,7 @@ function FlatBlock({ form, set, errors, busy, onSave }: BlockProps) {
 
 function RentBlock({ form, set, errors, busy, onSave }: BlockProps) {
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 lg:gap-4">
       <Field name="monthlyRentPaise" label="Monthly rent per person (₹)" hint="One actual amount, not a range." errors={errors}>
         <input id="monthlyRentPaise" inputMode="decimal" value={form.rent} onChange={(e) => set("rent")(e.target.value)} className={inputCls} aria-describedby={errors.monthlyRentPaise ? "monthlyRentPaise-error" : "monthlyRentPaise-hint"} />
       </Field>
@@ -245,7 +248,7 @@ function RentBlock({ form, set, errors, busy, onSave }: BlockProps) {
         <Field name="availableFrom" label="Date" errors={errors}>
           <input id="availableFrom" type="date" value={form.flexible ? "" : form.availableFrom} disabled={form.flexible} onChange={(e) => set("availableFrom")(e.target.value)} className={inputCls} />
         </Field>
-        <label className="flex items-center gap-3"><input type="checkbox" checked={form.flexible} onChange={(e) => set("flexible")(e.target.checked)} className="size-4 accent-electric" /> I&apos;m flexible</label>
+        <label className="flex items-center gap-3"><input type="checkbox" checked={form.flexible} onChange={(e) => set("flexible")(e.target.checked)} className="size-4 accent-ink" /> I&apos;m flexible</label>
       </fieldset>
       <SaveBar busy={busy} onSave={onSave} />
     </div>
@@ -262,15 +265,15 @@ function ReviewBlock({ listing, busy, errors, go, onPermission, onPublish, onPau
   const cover = ready.find((p) => p.isCover);
   const s = listing.status;
   return (
-    <div className="grid gap-6">
-      {s === "PAUSED" && <p className="rounded-xl bg-electric/10 p-4 text-sm">This listing is paused and hidden. Review the details, then publish again.</p>}
-      {s === "CLOSED" && <p className="rounded-xl bg-electric/10 p-4 text-sm">This listing is closed. Your details and photos are saved. Reopen it to edit and publish again.</p>}
+    <div className="grid gap-6 lg:gap-4">
+      {s === "PAUSED" && <p className="rounded-2xl bg-surface-card p-4 text-sm">This listing is paused and hidden. Review the details, then publish again.</p>}
+      {s === "CLOSED" && <p className="rounded-2xl bg-surface-card p-4 text-sm">This listing is closed. Your details and photos are saved. Reopen it to edit and publish again.</p>}
 
-      <section className="rounded-xl bg-white p-5">
+      <section className="rounded-2xl bg-white p-6 sm:p-8 lg:p-5">
         <h3 className="font-bold">Private preview</h3>
         {cover?.url && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={cover.url} alt="Cover photo of your flat" className="mt-3 aspect-4/3 w-full rounded-lg object-cover" />
+          <img src={cover.url} alt="Cover photo of your flat" className="mt-3 aspect-4/3 w-full rounded-2xl object-cover" />
         )}
         <p className="mt-3 text-xl font-bold">{d.title ?? "Untitled listing"}</p>
         <p className="text-sm text-muted">{[localityLabel(cat, d.localityId ?? "").split(",")[0], cityLabel(cat, d.cityId)].filter((x) => x && x !== "—").join(", ") || "Location not set"}</p>
@@ -288,14 +291,14 @@ function ReviewBlock({ listing, busy, errors, go, onPermission, onPublish, onPau
           {listing.checklist.missing.map((m) => (
             <li key={m.field} className="flex flex-wrap items-center gap-3">
               <span>• {m.message}</span>
-              {BLOCK_OF[m.field] && BLOCK_OF[m.field] !== "review" && <button type="button" onClick={() => go(BLOCK_OF[m.field]!)} className="underline">Fix<span className="sr-only"> {m.field}</span></button>}
+              {BLOCK_OF[m.field] && BLOCK_OF[m.field] !== "review" && <button type="button" onClick={() => go(BLOCK_OF[m.field]!)} className={`${btnBack} px-3! py-2!`}>Fix<span className="sr-only"> {m.field}</span></button>}
             </li>
           ))}
         </ul>
       </section>
 
-      <label className="flex items-start gap-3 rounded-xl border-2 border-indigo/30 bg-white p-4">
-        <input type="checkbox" checked={d.permissionConfirmed} disabled={busy || s === "CLOSED"} onChange={(e) => onPermission(e.target.checked)} className="mt-1 size-4 accent-electric" />
+      <label className="flex items-start gap-3 rounded-2xl border border-hairline bg-white p-4">
+        <input type="checkbox" checked={d.permissionConfirmed} disabled={busy || s === "CLOSED"} onChange={(e) => onPermission(e.target.checked)} className="mt-1 size-4 accent-ink" />
         <span>
           <span className="block font-bold">I have permission to advertise this space and use these photos.</span>
           <span className="block text-sm text-muted">Publishing shows this listing, plus your name and photo, to signed-in Flatter users. It doesn&apos;t change your personal profile visibility. This is your confirmation, not a verification badge.</span>

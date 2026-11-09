@@ -93,6 +93,7 @@ export function profileRouters(getUserId: (req: Request) => string | null, stora
     }
     res.json({
       intent, features: FEATURES, discoveryEnabled: u.discoveryEnabled,
+      matching: { enrolled: !!u.matchingEnabledAt, ready: missingFields(toPerson({ ...u, flatListing: null }), istToday()).length === 0 },
       profile: { displayName: profile.displayName, avatarUrl: profile.avatarUrl, publicId: profile.publicId },
       housing: housingSummary(u.housingPreference), listing, listingError,
     });

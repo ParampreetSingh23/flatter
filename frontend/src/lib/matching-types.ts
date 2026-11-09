@@ -13,6 +13,7 @@ export interface DiscoveryCard {
   versions: { profile: number; listing: number | null };
 }
 export interface DiscoveryRes { policy: string; poolSize: number; cards: DiscoveryCard[]; empty: "FILTERS" | "EXHAUSTED" | null }
+// Flat owners get the full Published flat; everyone else gets `seeking` (the card's allowlisted housing wishes).
 export interface DiscoveryDetail extends Omit<DiscoveryCard, "flat"> {
   lifestyle: {
     sleepSchedule: string; cleanliness: string; foodHabit: string; smokingHabit: string; guestFrequency: string; bringingPet: boolean; workStudySchedule: string;

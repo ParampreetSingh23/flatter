@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Your flat listing — Flatter" };
 
 export default function ListingPage() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl lg:max-w-none">
       <Suspense fallback={<PageSpinner label="Loading your listing" />}>
         <ListingEditor />
       </Suspense>

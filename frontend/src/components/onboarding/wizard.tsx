@@ -7,7 +7,7 @@ import { Logo } from "@/components/logo";
 import { PageSpinner } from "@/components/spinner";
 import { ApiFail, api } from "@/lib/api";
 import { STEPS, type OnboardingState, type Step } from "@/lib/onboarding-types";
-import { btnNext, type Errors } from "./fields";
+import { btnBack, btnNext, type Errors } from "./fields";
 import { AboutStep, FlatmateStep, HousingStep, IntentStep, LifestyleStep, ReviewStep, type StepProps } from "./steps";
 
 const TITLES: Record<Step, [string, string?]> = {
@@ -96,18 +96,18 @@ export function Wizard() {
 
   return (
     <>
-      <header className="grain">
-        <div className="mx-auto flex h-20 max-w-3xl items-center justify-between px-4 sm:px-6">
+      <header className="border-b border-hairline bg-white">
+        <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <SignOutButton redirectUrl="/route">
-            <button className="rounded-xl px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-indigo">Sign out</button>
+            <button className="min-h-11 rounded-2xl px-4 py-3 text-sm font-bold text-ink hover:bg-surface-card">Sign out</button>
           </SignOutButton>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6">
         {loadErr ? (
-          <div role="alert" className="rounded-xl bg-white p-6">
-            <h1 className="text-2xl font-black">We couldn&apos;t load your profile.</h1>
+          <div role="alert" className="rounded-2xl bg-white p-6 sm:p-8 lg:p-5">
+            <h1 className="text-[22px] font-semibold">We couldn&apos;t load your profile.</h1>
             <p className="mt-2">{loadErr} Your answers are safe.</p>
             <button onClick={load} className={`${btnNext} mt-6`}>Retry</button>
           </div>
@@ -115,18 +115,18 @@ export function Wizard() {
           <PageSpinner label="Loading your answers" />
         ) : (
           <>
-            <p className="font-mono text-xs font-bold uppercase tracking-wider text-muted">Step {idx + 1} of {STEPS.length}</p>
-            <div role="progressbar" aria-label="Onboarding progress" aria-valuemin={1} aria-valuemax={STEPS.length} aria-valuenow={idx + 1} className="mt-2 h-2 rounded-full bg-indigo/15">
-              <div className="h-2 rounded-full bg-electric" style={{ width: `${((idx + 1) / STEPS.length) * 100}%` }} />
+            <p className="text-sm font-bold text-muted">Step {idx + 1} of {STEPS.length}</p>
+            <div role="progressbar" aria-label="Onboarding progress" aria-valuemin={1} aria-valuemax={STEPS.length} aria-valuenow={idx + 1} className="mt-2 h-2 rounded-full bg-secondary">
+              <div className="h-2 rounded-full bg-ink" style={{ width: `${((idx + 1) / STEPS.length) * 100}%` }} />
             </div>
-            <h1 ref={heading} tabIndex={-1} className="mt-8 text-[2rem] font-black leading-none tracking-[-0.02em] text-electric sm:text-[2.5rem]">{title}</h1>
+            <h1 ref={heading} tabIndex={-1} className="mt-8 text-[28px] font-bold leading-[1.2] tracking-[-1.2px] text-ink">{title}</h1>
             {sub && <p className="mt-4 text-muted">{sub}</p>}
 
             {banner && (
-              <div ref={alertRef} role="alert" tabIndex={-1} className="mt-6 rounded-xl border-2 border-red-700 bg-white p-4">
-                <p className="font-bold text-red-700">{banner.text}</p>
+              <div ref={alertRef} role="alert" tabIndex={-1} className="mt-6 rounded-2xl border border-error bg-white p-4">
+                <p className="font-bold text-error">{banner.text}</p>
                 {Object.keys(errors).length > 0 && <ul className="mt-2 list-disc pl-5 text-sm">{Object.entries(errors).map(([k, v]) => <li key={k}>{v}</li>)}</ul>}
-                {banner.links && <ul className="mt-2 list-disc pl-5 text-sm">{banner.links.map((s) => <li key={s}><Link href={`/onboarding?step=${s}`} className="underline">Edit {s}</Link></li>)}</ul>}
+                {banner.links && <ul role="list" className="mt-3 flex flex-wrap gap-2">{banner.links.map((s) => <li key={s}><Link href={`/onboarding?step=${s}`} className={`${btnBack} px-3! py-2!`}>Edit {s}</Link></li>)}</ul>}
                 {banner.kind === "conflict" && <button onClick={load} className={`${btnNext} mt-4`}>Reload saved answers</button>}
                 {banner.kind === "auth" && <Link href="/auth/continue" className={`${btnNext} mt-4`}>Sign in again</Link>}
               </div>

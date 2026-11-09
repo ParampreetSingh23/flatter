@@ -33,23 +33,23 @@ export function SafetyDialog({ name, publicId, matchId, onClose, onDone }: {
     }
   }
   const opt = (v: Choice, title: string, desc: string) => (
-    <label className="flex cursor-pointer items-start gap-3 rounded-xl border-2 border-indigo/30 p-3 has-checked:border-electric has-checked:bg-electric/5">
-      <input type="radio" name="safety" checked={choice === v} onChange={() => setChoice(v)} className="mt-1 size-4 accent-electric" />
+    <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-hairline p-3 has-checked:border-ink has-checked:bg-surface-card">
+      <input type="radio" name="safety" checked={choice === v} onChange={() => setChoice(v)} className="mt-1 size-4 accent-ink" />
       <span><span className="block font-bold">{title}</span><span className="block text-sm text-muted">{desc}</span></span>
     </label>
   );
   return (
-    <dialog ref={ref} onClose={onClose} aria-labelledby="safety-h" className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-2xl bg-cream p-6 text-ink backdrop:bg-black/50">
-      <h2 id="safety-h" className="text-2xl font-black tracking-[-0.01em] text-electric">Report or block {name}</h2>
+    <dialog ref={ref} onClose={onClose} aria-labelledby="safety-h" className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-[32px] bg-white p-8 text-ink shadow-[0_8px_16px_rgba(0,0,0,.15)] backdrop:bg-black/50">
+      <h2 id="safety-h" className="text-[22px] font-semibold leading-[1.25] text-ink">Report or block {name}</h2>
       <p className="mt-2 text-sm text-muted">They won&apos;t be told. Blocking hides you from each other, ends any match and can&apos;t be seen by them.</p>
-      <fieldset className="mt-5 grid gap-3">
+      <fieldset className="mt-4 grid gap-3">
         <legend className="sr-only">What do you want to do?</legend>
         {opt("report_block", "Report and block", "Send a report to our team and hide each other.")}
         {opt("report", "Report only", "Send a report to our team. You stay visible to each other.")}
         {opt("block", "Block only", "Hide each other without sending a report.")}
       </fieldset>
       {choice !== "block" && (
-        <div className="mt-5 grid gap-4">
+        <div className="mt-4 grid gap-4">
           <div>
             <label htmlFor="rep-reason" className="block font-bold">Reason</label>
             <select id="rep-reason" value={reason} onChange={(e) => setReason(e.target.value)} className={`${inputCls} mt-2`}>
@@ -63,7 +63,7 @@ export function SafetyDialog({ name, publicId, matchId, onClose, onDone }: {
           </div>
         </div>
       )}
-      {err && <p role="alert" className="mt-4 text-sm font-bold text-red-700">{err}</p>}
+      {err && <p role="alert" className="mt-4 text-sm font-bold text-error">{err}</p>}
       <div className="mt-6 flex flex-wrap justify-end gap-3">
         <button type="button" onClick={() => ref.current?.close()} className={btnBack}>Cancel</button>
         <button type="button" disabled={busy} onClick={() => void submit()} className={btnNext}>{busy ? "Sending…" : choice === "block" ? "Block" : choice === "report" ? "Send report" : "Report and block"}</button>

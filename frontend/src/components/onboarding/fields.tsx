@@ -4,17 +4,17 @@ import { useState } from "react";
 import type { Opt } from "@/lib/onboarding-types";
 
 export const inputCls =
-  "w-full rounded-xl border-2 border-indigo/30 bg-white px-4 py-3 text-base text-ink focus:border-electric";
+  "min-h-11 w-full rounded-2xl border border-ash bg-white px-[15px] py-[11px] text-base text-ink placeholder:text-ash focus:border-ink focus:ring-1 focus:ring-ink focus-visible:outline-4 focus-visible:outline-offset-2";
 export const btnNext =
-  "inline-flex items-center justify-center rounded-xl bg-indigo px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-electric disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center rounded-2xl bg-primary px-3.5 py-1.5 text-sm font-bold leading-none text-white hover:bg-primary-pressed active:bg-primary-pressed disabled:bg-surface-card disabled:text-ash";
 export const btnBack =
-  "inline-flex items-center justify-center rounded-xl border-2 border-indigo px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-indigo hover:bg-indigo hover:text-white";
+  "inline-flex min-h-11 items-center justify-center rounded-2xl bg-secondary px-3.5 py-1.5 text-sm font-bold leading-none text-ink hover:bg-secondary-pressed active:bg-secondary-pressed disabled:bg-surface-card disabled:text-ash";
 
 export type Errors = Record<string, string>;
 
 const errId = (name: string) => `${name}-error`;
 export const FieldError = ({ name, errors }: { name: string; errors: Errors }) =>
-  errors[name] ? <p id={errId(name)} className="mt-2 text-sm font-bold text-red-700">{errors[name]}</p> : null;
+  errors[name] ? <p id={errId(name)} className="mt-2 text-sm font-bold text-error">{errors[name]}</p> : null;
 
 export function Field({ name, label, hint, errors, children }: { name: string; label: string; hint?: string; errors: Errors; children: React.ReactNode }) {
   return (
@@ -37,8 +37,8 @@ export function RadioCards({ name, legend, hint, options, value, onChange, error
       {hint && <p className="mt-1 text-sm text-muted">{hint}</p>}
       <div className="mt-3 grid gap-3">
         {options.map((o) => (
-          <label key={o.value} className="flex cursor-pointer items-start gap-3 rounded-xl border-2 border-indigo/30 bg-white p-4 has-checked:border-electric has-checked:bg-electric/5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2">
-            <input type="radio" name={name} value={o.value} checked={value === o.value} onChange={() => onChange(o.value)} className="mt-1 size-4 accent-electric" />
+          <label key={o.value} className="flex cursor-pointer items-start gap-3 rounded-2xl border border-hairline bg-white p-4 has-checked:border-ink has-checked:bg-surface-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2">
+            <input type="radio" name={name} value={o.value} checked={value === o.value} onChange={() => onChange(o.value)} className="mt-1 size-4 accent-ink" />
             <span><span className="block font-bold">{o.label}</span>{o.desc && <span className="block text-sm text-muted">{o.desc}</span>}</span>
           </label>
         ))}
@@ -55,19 +55,19 @@ export function CheckGroup({ name, legend, hint, options, value, onChange, error
   const all = value.length === options.length;
   const toggle = (v: string) =>
     onChange(value.includes(v) ? value.filter((x) => x !== v) : max && value.length >= max ? value : [...value, v]);
-  const box = "flex cursor-pointer items-center gap-3 rounded-xl border-2 border-indigo/30 bg-white px-4 py-3 has-checked:border-electric has-checked:bg-electric/5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2";
+  const box = "flex cursor-pointer items-center gap-3 rounded-2xl border border-hairline bg-white px-4 py-3 has-checked:border-ink has-checked:bg-surface-card has-focus-visible:outline-2 has-focus-visible:outline-offset-2";
   return (
     <fieldset aria-describedby={errors[name] ? errId(name) : undefined} id={name}>
       <legend className="font-bold">{legend}</legend>
       {hint && <p className="mt-1 text-sm text-muted">{hint}</p>}
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <label className={`${box} sm:col-span-2`}>
-          <input type="checkbox" checked={all} onChange={() => onChange(all ? [] : options.map((o) => o.value))} className="size-4 accent-electric" />
+          <input type="checkbox" checked={all} onChange={() => onChange(all ? [] : options.map((o) => o.value))} className="size-4 accent-ink" />
           <span className="font-bold">{anyLabel}</span>
         </label>
         {options.map((o) => (
           <label key={o.value} className={box}>
-            <input type="checkbox" checked={value.includes(o.value)} onChange={() => toggle(o.value)} className="size-4 accent-electric" />
+            <input type="checkbox" checked={value.includes(o.value)} onChange={() => toggle(o.value)} className="size-4 accent-ink" />
             <span>{o.label}{o.desc && <span className="block text-xs text-muted">{o.desc}</span>}</span>
           </label>
         ))}
@@ -78,7 +78,7 @@ export function CheckGroup({ name, legend, hint, options, value, onChange, error
 }
 
 export const Initials = ({ name, className = "size-16" }: { name: string; className?: string }) => (
-  <span aria-hidden="true" className={`${className} inline-flex shrink-0 items-center justify-center rounded-full bg-indigo font-black text-white`}>
+  <span aria-hidden="true" className={`${className} inline-flex shrink-0 items-center justify-center rounded-full bg-ink font-bold text-white`}>
     {(name.trim()[0] ?? "?").toUpperCase()}
   </span>
 );
@@ -132,7 +132,7 @@ export function AvatarPicker({ name, savedUrl, photo, setPhoto }: { name: string
         </div>
       </div>
       <p className="mt-2 text-sm text-muted">Uploading updates the photo on your Flatter sign-in account too. It is copied to your Flatter profile only when you save. Without one we show your initial.</p>
-      {upErr && <p role="alert" className="mt-2 text-sm font-bold text-red-700">{upErr}</p>}
+      {upErr && <p role="alert" className="mt-2 text-sm font-bold text-error">{upErr}</p>}
     </div>
   );
 }

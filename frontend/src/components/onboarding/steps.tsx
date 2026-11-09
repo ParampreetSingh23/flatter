@@ -11,6 +11,8 @@ import {
   AvatarPicker, Avatar, btnBack, btnNext, CheckGroup, Field, FieldError, fromPaise, Initials, inputCls, inr, RadioCards, toPaise, type Errors,
 } from "./fields";
 import { CityCombobox, LocalityPicker } from "./location-picker";
+import { Card, ghost } from "../dashboard/blocks";
+import { DetailRows } from "../dashboard/detail-rows";
 
 export interface StepProps {
   state: OnboardingState;
@@ -23,13 +25,13 @@ export interface StepProps {
 }
 
 const Nav = ({ busy, back, next = "Continue", backLabel = "Back" }: { busy: boolean; back?: () => void; next?: string; backLabel?: string }) => (
-  <div className="mt-10 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+  <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
     {back ? <button type="button" onClick={back} className={btnBack}>{backLabel}</button> : <span />}
     <button type="submit" disabled={busy} className={btnNext}>{busy ? "Saving…" : next}</button>
   </div>
 );
 const Form = ({ onSubmit, children, className = "" }: { onSubmit: () => void; children: React.ReactNode; className?: string }) => (
-  <form noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className={`grid gap-8 ${className}`}>{children}</form>
+  <form noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className={`grid gap-6 lg:gap-4 ${className}`}>{children}</form>
 );
 const today = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
 
@@ -112,7 +114,7 @@ export function HousingStep({ state, errors, busy, submit, back, submitLabel, ba
 
   if (failed) {
     return (
-      <div role="alert" className="rounded-xl bg-white p-6">
+      <div role="alert" className="rounded-2xl bg-white p-6 sm:p-8 lg:p-5">
         <p className="font-bold">We couldn&apos;t load the supported locations.</p>
         <p className="mt-1 text-sm text-muted">Your other answers are saved. Retry to continue.</p>
         <button type="button" onClick={retry} className={`${btnNext} mt-4`}>Retry</button>
@@ -124,7 +126,7 @@ export function HousingStep({ state, errors, busy, submit, back, submitLabel, ba
 
   return (
     <Form onSubmit={go}>
-      {!selected && h && <p className="rounded-xl bg-electric/10 p-4 text-sm">Your saved location isn&apos;t in our supported areas. Please choose again.</p>}
+      {!selected && h && <p className="rounded-2xl bg-surface-card p-4 text-sm">Your saved location isn&apos;t in our supported areas. Please choose again.</p>}
       <CityCombobox cities={cat.cities} value={selected ? city : ""} onChange={changeCity} errors={errors} />
       {replaced && <p role="status" className="-mt-4 text-sm text-muted">Your previous location choices were replaced.</p>}
 
@@ -135,7 +137,7 @@ export function HousingStep({ state, errors, busy, submit, back, submitLabel, ba
       {selected && !have && (
         <div className="grid gap-4">
           <label className="flex items-center gap-3 font-bold">
-            <input type="checkbox" checked={anywhere} onChange={(e) => setAnywhere(e.target.checked)} className="size-4 accent-electric" />
+            <input type="checkbox" checked={anywhere} onChange={(e) => setAnywhere(e.target.checked)} className="size-4 accent-ink" />
             Any supported area in {selected.label}
           </label>
           {anywhere ? <FieldError name="preferredLocations" errors={errors} /> : (
@@ -165,7 +167,7 @@ export function HousingStep({ state, errors, busy, submit, back, submitLabel, ba
         <Field name="moveInDate" label="Date" errors={errors}>
           <input id="moveInDate" type="date" min={today()} value={flex ? "" : date} disabled={flex} onChange={(e) => setDate(e.target.value)} className={inputCls} aria-invalid={!!errors.moveInDate} />
         </Field>
-        <label className="flex items-center gap-3"><input type="checkbox" checked={flex} onChange={(e) => setFlex(e.target.checked)} className="size-4 accent-electric" /> I&apos;m flexible</label>
+        <label className="flex items-center gap-3"><input type="checkbox" checked={flex} onChange={(e) => setFlex(e.target.checked)} className="size-4 accent-ink" /> I&apos;m flexible</label>
       </fieldset>
       <Nav busy={busy} back={back} {...(submitLabel && { next: submitLabel })} {...(backLabel && { backLabel })} />
     </Form>
@@ -217,17 +219,13 @@ export function FlatmateStep({ state, errors, busy, submit, back, submitLabel, b
 }
 
 function Section({ title, step, rows }: { title: string; step: string; rows: [string, string][] }) {
-return (
-  <section className="rounded-xl bg-white p-5">
-    <div className="flex items-center justify-between">
-      <h2 className="font-bold">{title}</h2>
-      <Link href={`/onboarding?step=${step}`} className="font-mono text-xs font-bold uppercase tracking-wider text-electric underline">Edit<span className="sr-only"> {title}</span></Link>
-    </div>
-    <dl className="mt-3 grid gap-2 text-sm">
-      {rows.map(([k, v]) => <div key={k} className="grid gap-1 sm:grid-cols-[12rem_1fr]"><dt className="text-muted">{k}</dt><dd>{v}</dd></div>)}
-    </dl>
-  </section>
-);
+  return (
+    <Card title={title} id={`review-${step}-h`} action={
+      <Link href={`/onboarding?step=${step}`} className={ghost}>Edit<span className="sr-only"> {title}</span></Link>
+    }>
+      <DetailRows rows={rows} />
+    </Card>
+  );
 }
 
 // ---- 6 ----
@@ -240,7 +238,7 @@ export function ReviewStep({ state, errors, busy, submit, back }: StepProps) {
   const photo = p?.avatarUrl ?? null;
   return (
     <Form onSubmit={() => submit("/complete", { discoveryEnabled: visible })}>
-      <p className="rounded-xl bg-electric/10 p-4 text-sm">This is your draft profile. Flatter doesn&apos;t verify identity, and nothing here publishes a room listing.</p>
+      <p className="rounded-2xl bg-surface-card p-4 text-sm">This is your draft profile. Flatter doesn&apos;t verify identity, and nothing here publishes a room listing.</p>
       <div className="flex items-center gap-4">
         {photo ? <Avatar src={photo} /> : <Initials name={p?.displayName ?? user?.firstName ?? ""} />}
         <div><p className="text-xl font-bold">{p?.displayName}</p><p className="text-sm text-muted">{state.age != null && `${state.age} years old`}</p></div>
@@ -261,8 +259,8 @@ export function ReviewStep({ state, errors, busy, submit, back }: StepProps) {
         ["Sleep schedules", list(SLEEP, f?.acceptedSleepSchedules)], ["Tidiness", list(CLEAN, f?.acceptedCleanlinessLevels)], ["Food", list(FOOD, f?.acceptedFoodHabits)],
         ["Smoking", list(SMOKE, f?.acceptedSmokingHabits)], ["Genders", list(FLATMATE_GENDERS, f?.acceptedGenders)], ["Pets", label(PETS, f?.flatmatePetPreference)], ["Guests", list(GUESTS, f?.acceptedGuestFrequencies)],
       ]} />
-      <label className="flex items-start gap-3 rounded-xl border-2 border-indigo/30 bg-white p-4">
-        <input type="checkbox" checked={visible} onChange={(e) => setVisible(e.target.checked)} className="mt-1 size-4 accent-electric" />
+      <label className="flex items-start gap-3 rounded-2xl border border-hairline bg-white p-4">
+        <input type="checkbox" checked={visible} onChange={(e) => setVisible(e.target.checked)} className="mt-1 size-4 accent-ink" />
         <span><span className="block font-bold">Make my completed profile visible to other signed-in Flatter users</span><span className="block text-sm text-muted">You can still finish without this. Discovery isn&apos;t live yet.</span></span>
       </label>
       <FieldError name="_" errors={errors} />

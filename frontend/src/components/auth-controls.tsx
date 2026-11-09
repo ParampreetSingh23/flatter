@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export const btnPrimary =
-  "inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-electric hover:bg-cream";
+  "inline-flex min-h-11 items-center justify-center rounded-2xl bg-primary px-3.5 py-1.5 text-sm font-bold leading-none text-white hover:bg-primary-pressed active:bg-primary-pressed disabled:bg-surface-card disabled:text-ash";
 export const btnSecondary =
-  "inline-flex items-center justify-center rounded-xl bg-indigo px-6 py-3 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-black";
+  "inline-flex min-h-11 items-center justify-center rounded-2xl bg-secondary px-3.5 py-1.5 text-sm font-bold leading-none text-ink hover:bg-secondary-pressed active:bg-secondary-pressed disabled:bg-surface-card disabled:text-ash";
 
 // Request-dependent: must sit in Suspense; fallback keeps layout size stable.
 export function NavAuth() {
@@ -14,7 +14,7 @@ export function NavAuth() {
       <Show when="signed-out">
         <div className="flex items-center gap-2">
           <SignInButton mode="modal" forceRedirectUrl="/auth/continue">
-            <button className="rounded-xl px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-indigo">
+            <button className={btnSecondary}>
               Log in
             </button>
           </SignInButton>
@@ -38,11 +38,11 @@ export function SignUpCta() {
     <Suspense fallback={<div className="h-12 w-40" />}>
       <Show when="signed-out">
         <SignUpButton mode="modal" forceRedirectUrl="/auth/continue">
-          <button className={btnPrimary}>Get started</button>
+          <button className={btnSecondary}>Get started</button>
         </SignUpButton>
       </Show>
       <Show when="signed-in">
-        <Link href="/dashboard" className={btnPrimary}>Go to dashboard</Link>
+        <Link href="/dashboard" className={btnSecondary}>Go to dashboard</Link>
       </Show>
     </Suspense>
   );

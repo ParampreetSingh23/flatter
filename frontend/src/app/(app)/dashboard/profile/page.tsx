@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "My Profile — Flatter" };
 
 export default function ProfilePage() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl lg:max-w-none">
       <Suspense fallback={<PageSpinner label="Loading your profile" />}>
         <Content />
       </Suspense>
@@ -27,7 +27,7 @@ async function Content() {
   } catch (e) {
     return (
       <Card>
-        <h1 className="text-[2rem] font-black leading-none text-electric">We couldn&apos;t load your profile.</h1>
+        <h1 className="text-[28px] font-bold leading-[1.2] tracking-[-1.2px] text-ink">We couldn&apos;t load your profile.</h1>
         <p className="mt-4">{e instanceof ApiFail ? e.message : "Something went wrong."} Your data is safe.</p>
         <Link href="/dashboard/profile" className={`${cta} mt-6`}>Retry</Link>
       </Card>
