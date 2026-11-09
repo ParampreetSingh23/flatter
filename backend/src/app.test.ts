@@ -19,5 +19,21 @@ assert.equal(me.status, 401);
 assert.deepEqual(await me.json(), { error: "Unauthorized" });
 
 assert.equal((await fetch(`${base}/nope`)).status, 404);
+
+// public catalogue: six cities, globally unique locality IDs, each prefixed by its city
+const loc = await fetch(`${base}/api/locations`);
+assert.equal(loc.status, 200);
+assert.ok(loc.headers.get("etag"));
+const cat = (await loc.json()) as { cities: { id: string; localities: { id: string }[] }[] };
+assert.deepEqual(cat.cities.map((c) => c.id), ["delhi", "gurugram", "noida", "greater-noida", "ghaziabad", "faridabad"]);
+const all = cat.cities.flatMap((c) => c.localities.map((l) => l.id));
+assert.equal(new Set(all).size, all.length);
+assert.ok(cat.cities.every((c) => c.localities.every((l) => l.id.startsWith(`${c.id}.`))));
+assert.equal(health.headers.get("x-content-type-options"), "nosniff"); // helmet
+
+let limited = 0;
+for (let i = 0; i < 130; i++) if ((await fetch(`${base}/api/me`)).status === 429) limited++;
+assert.ok(limited > 0, "rate limit kicks in");
+assert.equal((await fetch(`${base}/health`)).status, 200, "health is not rate limited");
 server.close();
 console.log("backend checks passed");

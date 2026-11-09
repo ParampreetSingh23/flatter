@@ -74,6 +74,27 @@ export const GuestFrequency = {
 export type GuestFrequency = (typeof GuestFrequency)[keyof typeof GuestFrequency]
 
 
+export const Gender = {
+  WOMAN: 'WOMAN',
+  MAN: 'MAN',
+  NON_BINARY: 'NON_BINARY',
+  PREFER_NOT_TO_SAY: 'PREFER_NOT_TO_SAY'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
+
+
+export const WorkStudySchedule = {
+  DAYTIME: 'DAYTIME',
+  EVENING: 'EVENING',
+  NIGHT: 'NIGHT',
+  ROTATING: 'ROTATING',
+  FLEXIBLE: 'FLEXIBLE'
+} as const
+
+export type WorkStudySchedule = (typeof WorkStudySchedule)[keyof typeof WorkStudySchedule]
+
+
 export const PetPreference = {
   OK_WITH_PETS: 'OK_WITH_PETS',
   NO_PETS: 'NO_PETS',
@@ -81,3 +102,79 @@ export const PetPreference = {
 } as const
 
 export type PetPreference = (typeof PetPreference)[keyof typeof PetPreference]
+
+
+export const ListingStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  PAUSED: 'PAUSED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type ListingStatus = (typeof ListingStatus)[keyof typeof ListingStatus]
+
+
+export const RoomType = {
+  PRIVATE: 'PRIVATE',
+  SHARED: 'SHARED'
+} as const
+
+export type RoomType = (typeof RoomType)[keyof typeof RoomType]
+
+
+export const Furnishing = {
+  UNFURNISHED: 'UNFURNISHED',
+  SEMI_FURNISHED: 'SEMI_FURNISHED',
+  FURNISHED: 'FURNISHED'
+} as const
+
+export type Furnishing = (typeof Furnishing)[keyof typeof Furnishing]
+
+
+export const PhotoState = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED',
+  DELETE_PENDING: 'DELETE_PENDING'
+} as const
+
+export type PhotoState = (typeof PhotoState)[keyof typeof PhotoState]
+
+
+export const PhotoCategory = {
+  ROOM: 'ROOM',
+  SHARED_SPACE: 'SHARED_SPACE',
+  OTHER: 'OTHER'
+} as const
+
+export type PhotoCategory = (typeof PhotoCategory)[keyof typeof PhotoCategory]
+
+
+export const DecisionKind = {
+  LIKE: 'LIKE',
+  PASS: 'PASS'
+} as const
+
+export type DecisionKind = (typeof DecisionKind)[keyof typeof DecisionKind]
+
+
+export const ReportReason = {
+  HARASSMENT: 'HARASSMENT',
+  SCAM: 'SCAM',
+  FAKE_PROFILE: 'FAKE_PROFILE',
+  INAPPROPRIATE_CONTENT: 'INAPPROPRIATE_CONTENT',
+  OTHER: 'OTHER'
+} as const
+
+export type ReportReason = (typeof ReportReason)[keyof typeof ReportReason]
+
+
+export const ReportStatus = {
+  OPEN: 'OPEN',
+  IN_REVIEW: 'IN_REVIEW',
+  ACTIONED: 'ACTIONED',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type ReportStatus = (typeof ReportStatus)[keyof typeof ReportStatus]

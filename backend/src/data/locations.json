@@ -1,0 +1,540 @@
+{
+  "version": "2026-11-09",
+  "cities": [
+    {
+      "id": "delhi",
+      "label": "Delhi",
+      "state": "Delhi (NCT)",
+      "aliases": [
+        "New Delhi"
+      ],
+      "localities": [
+        {
+          "id": "delhi.kamla-nagar",
+          "label": "Kamla Nagar"
+        },
+        {
+          "id": "delhi.gtb-nagar",
+          "label": "GTB Nagar"
+        },
+        {
+          "id": "delhi.vijay-nagar",
+          "label": "Vijay Nagar"
+        },
+        {
+          "id": "delhi.mukherjee-nagar",
+          "label": "Mukherjee Nagar"
+        },
+        {
+          "id": "delhi.roop-nagar",
+          "label": "Roop Nagar"
+        },
+        {
+          "id": "delhi.old-rajinder-nagar",
+          "label": "Old Rajinder Nagar"
+        },
+        {
+          "id": "delhi.patel-nagar",
+          "label": "Patel Nagar"
+        },
+        {
+          "id": "delhi.karol-bagh",
+          "label": "Karol Bagh"
+        },
+        {
+          "id": "delhi.satya-niketan",
+          "label": "Satya Niketan"
+        },
+        {
+          "id": "delhi.moti-bagh",
+          "label": "Moti Bagh"
+        },
+        {
+          "id": "delhi.lajpat-nagar",
+          "label": "Lajpat Nagar"
+        },
+        {
+          "id": "delhi.kalkaji",
+          "label": "Kalkaji"
+        },
+        {
+          "id": "delhi.greater-kailash",
+          "label": "Greater Kailash"
+        },
+        {
+          "id": "delhi.east-of-kailash",
+          "label": "East of Kailash"
+        },
+        {
+          "id": "delhi.saket",
+          "label": "Saket"
+        },
+        {
+          "id": "delhi.malviya-nagar",
+          "label": "Malviya Nagar"
+        },
+        {
+          "id": "delhi.hauz-khas",
+          "label": "Hauz Khas"
+        },
+        {
+          "id": "delhi.munirka",
+          "label": "Munirka"
+        },
+        {
+          "id": "delhi.vasant-kunj",
+          "label": "Vasant Kunj"
+        },
+        {
+          "id": "delhi.chhatarpur",
+          "label": "Chhatarpur",
+          "aliases": [
+            "Chattarpur"
+          ]
+        },
+        {
+          "id": "delhi.laxmi-nagar",
+          "label": "Laxmi Nagar"
+        },
+        {
+          "id": "delhi.shakarpur",
+          "label": "Shakarpur"
+        },
+        {
+          "id": "delhi.mayur-vihar-phase-1",
+          "label": "Mayur Vihar Phase 1"
+        },
+        {
+          "id": "delhi.preet-vihar",
+          "label": "Preet Vihar"
+        },
+        {
+          "id": "delhi.janakpuri",
+          "label": "Janakpuri"
+        },
+        {
+          "id": "delhi.dwarka",
+          "label": "Dwarka"
+        }
+      ],
+      "note": "Covers the supported Delhi (NCT) localities listed here."
+    },
+    {
+      "id": "gurugram",
+      "label": "Gurugram",
+      "state": "Haryana",
+      "aliases": [
+        "Gurgaon"
+      ],
+      "localities": [
+        {
+          "id": "gurugram.dlf-phase-1",
+          "label": "DLF Phase 1"
+        },
+        {
+          "id": "gurugram.dlf-phase-2",
+          "label": "DLF Phase 2"
+        },
+        {
+          "id": "gurugram.dlf-phase-3",
+          "label": "DLF Phase 3"
+        },
+        {
+          "id": "gurugram.dlf-phase-4",
+          "label": "DLF Phase 4"
+        },
+        {
+          "id": "gurugram.dlf-phase-5",
+          "label": "DLF Phase 5"
+        },
+        {
+          "id": "gurugram.sushant-lok-1",
+          "label": "Sushant Lok 1",
+          "aliases": [
+            "Sushant Lok I"
+          ]
+        },
+        {
+          "id": "gurugram.sector-14",
+          "label": "Sector 14"
+        },
+        {
+          "id": "gurugram.sector-15",
+          "label": "Sector 15"
+        },
+        {
+          "id": "gurugram.sector-21",
+          "label": "Sector 21"
+        },
+        {
+          "id": "gurugram.sector-22",
+          "label": "Sector 22"
+        },
+        {
+          "id": "gurugram.sector-23",
+          "label": "Sector 23"
+        },
+        {
+          "id": "gurugram.sector-31",
+          "label": "Sector 31"
+        },
+        {
+          "id": "gurugram.sector-40",
+          "label": "Sector 40"
+        },
+        {
+          "id": "gurugram.sector-45",
+          "label": "Sector 45"
+        },
+        {
+          "id": "gurugram.sector-46",
+          "label": "Sector 46"
+        },
+        {
+          "id": "gurugram.sector-47",
+          "label": "Sector 47"
+        },
+        {
+          "id": "gurugram.sector-48",
+          "label": "Sector 48"
+        },
+        {
+          "id": "gurugram.sector-49",
+          "label": "Sector 49"
+        },
+        {
+          "id": "gurugram.sector-50",
+          "label": "Sector 50"
+        },
+        {
+          "id": "gurugram.sector-51",
+          "label": "Sector 51"
+        },
+        {
+          "id": "gurugram.sector-52",
+          "label": "Sector 52"
+        },
+        {
+          "id": "gurugram.sector-55",
+          "label": "Sector 55"
+        },
+        {
+          "id": "gurugram.sector-56",
+          "label": "Sector 56"
+        },
+        {
+          "id": "gurugram.sector-57",
+          "label": "Sector 57"
+        }
+      ]
+    },
+    {
+      "id": "noida",
+      "label": "Noida",
+      "state": "Uttar Pradesh",
+      "aliases": [],
+      "localities": [
+        {
+          "id": "noida.sector-15",
+          "label": "Sector 15"
+        },
+        {
+          "id": "noida.sector-19",
+          "label": "Sector 19"
+        },
+        {
+          "id": "noida.sector-22",
+          "label": "Sector 22"
+        },
+        {
+          "id": "noida.sector-27",
+          "label": "Sector 27"
+        },
+        {
+          "id": "noida.sector-34",
+          "label": "Sector 34"
+        },
+        {
+          "id": "noida.sector-37",
+          "label": "Sector 37"
+        },
+        {
+          "id": "noida.sector-41",
+          "label": "Sector 41"
+        },
+        {
+          "id": "noida.sector-44",
+          "label": "Sector 44"
+        },
+        {
+          "id": "noida.sector-45",
+          "label": "Sector 45"
+        },
+        {
+          "id": "noida.sector-50",
+          "label": "Sector 50"
+        },
+        {
+          "id": "noida.sector-51",
+          "label": "Sector 51"
+        },
+        {
+          "id": "noida.sector-52",
+          "label": "Sector 52"
+        },
+        {
+          "id": "noida.sector-61",
+          "label": "Sector 61"
+        },
+        {
+          "id": "noida.sector-62",
+          "label": "Sector 62"
+        },
+        {
+          "id": "noida.sector-70",
+          "label": "Sector 70"
+        },
+        {
+          "id": "noida.sector-73",
+          "label": "Sector 73"
+        },
+        {
+          "id": "noida.sector-74",
+          "label": "Sector 74"
+        },
+        {
+          "id": "noida.sector-75",
+          "label": "Sector 75"
+        },
+        {
+          "id": "noida.sector-76",
+          "label": "Sector 76"
+        },
+        {
+          "id": "noida.sector-77",
+          "label": "Sector 77"
+        },
+        {
+          "id": "noida.sector-78",
+          "label": "Sector 78"
+        },
+        {
+          "id": "noida.sector-104",
+          "label": "Sector 104"
+        },
+        {
+          "id": "noida.sector-107",
+          "label": "Sector 107"
+        },
+        {
+          "id": "noida.sector-110",
+          "label": "Sector 110"
+        },
+        {
+          "id": "noida.sector-128",
+          "label": "Sector 128"
+        },
+        {
+          "id": "noida.sector-134",
+          "label": "Sector 134"
+        },
+        {
+          "id": "noida.sector-135",
+          "label": "Sector 135"
+        },
+        {
+          "id": "noida.sector-137",
+          "label": "Sector 137"
+        },
+        {
+          "id": "noida.sector-143",
+          "label": "Sector 143"
+        },
+        {
+          "id": "noida.sector-150",
+          "label": "Sector 150"
+        }
+      ]
+    },
+    {
+      "id": "greater-noida",
+      "label": "Greater Noida",
+      "state": "Uttar Pradesh",
+      "aliases": [
+        "Noida Extension",
+        "Greater Noida West"
+      ],
+      "localities": [
+        {
+          "id": "greater-noida.alpha-1",
+          "label": "Alpha 1",
+          "aliases": [
+            "Alpha I"
+          ]
+        },
+        {
+          "id": "greater-noida.alpha-2",
+          "label": "Alpha 2"
+        },
+        {
+          "id": "greater-noida.beta-1",
+          "label": "Beta 1"
+        },
+        {
+          "id": "greater-noida.beta-2",
+          "label": "Beta 2"
+        },
+        {
+          "id": "greater-noida.gamma-1",
+          "label": "Gamma 1"
+        },
+        {
+          "id": "greater-noida.gamma-2",
+          "label": "Gamma 2"
+        },
+        {
+          "id": "greater-noida.delta-1",
+          "label": "Delta 1"
+        },
+        {
+          "id": "greater-noida.delta-2",
+          "label": "Delta 2"
+        },
+        {
+          "id": "greater-noida.knowledge-park-2",
+          "label": "Knowledge Park 2"
+        },
+        {
+          "id": "greater-noida.knowledge-park-3",
+          "label": "Knowledge Park 3",
+          "aliases": [
+            "Knowledge Park III"
+          ]
+        },
+        {
+          "id": "greater-noida.west-sector-1",
+          "label": "Greater Noida West — Sector 1",
+          "group": "Greater Noida West"
+        },
+        {
+          "id": "greater-noida.west-sector-4",
+          "label": "Greater Noida West — Sector 4",
+          "group": "Greater Noida West"
+        },
+        {
+          "id": "greater-noida.west-sector-16b",
+          "label": "Greater Noida West — Sector 16B",
+          "group": "Greater Noida West"
+        },
+        {
+          "id": "greater-noida.west-sector-16c",
+          "label": "Greater Noida West — Sector 16C",
+          "group": "Greater Noida West",
+          "aliases": [
+            "Sec 16 C",
+            "Sector 16C"
+          ]
+        },
+        {
+          "id": "greater-noida.west-techzone-4",
+          "label": "Greater Noida West — Techzone 4",
+          "group": "Greater Noida West"
+        }
+      ]
+    },
+    {
+      "id": "ghaziabad",
+      "label": "Ghaziabad",
+      "state": "Uttar Pradesh",
+      "aliases": [],
+      "localities": [
+        {
+          "id": "ghaziabad.indirapuram",
+          "label": "Indirapuram"
+        },
+        {
+          "id": "ghaziabad.vaishali",
+          "label": "Vaishali"
+        },
+        {
+          "id": "ghaziabad.vasundhara",
+          "label": "Vasundhara"
+        },
+        {
+          "id": "ghaziabad.kaushambi",
+          "label": "Kaushambi"
+        },
+        {
+          "id": "ghaziabad.crossings-republik",
+          "label": "Crossings Republik",
+          "aliases": [
+            "Crossing Republik"
+          ]
+        },
+        {
+          "id": "ghaziabad.raj-nagar-extension",
+          "label": "Raj Nagar Extension"
+        },
+        {
+          "id": "ghaziabad.siddharth-vihar",
+          "label": "Siddharth Vihar",
+          "aliases": [
+            "Siddhartha Vihar"
+          ]
+        },
+        {
+          "id": "ghaziabad.raj-nagar",
+          "label": "Raj Nagar"
+        }
+      ]
+    },
+    {
+      "id": "faridabad",
+      "label": "Faridabad",
+      "state": "Haryana",
+      "aliases": [],
+      "localities": [
+        {
+          "id": "faridabad.sector-14",
+          "label": "Sector 14"
+        },
+        {
+          "id": "faridabad.sector-15",
+          "label": "Sector 15"
+        },
+        {
+          "id": "faridabad.sector-16",
+          "label": "Sector 16"
+        },
+        {
+          "id": "faridabad.sector-21a",
+          "label": "Sector 21A"
+        },
+        {
+          "id": "faridabad.sector-21b",
+          "label": "Sector 21B"
+        },
+        {
+          "id": "faridabad.sector-21c",
+          "label": "Sector 21C"
+        },
+        {
+          "id": "faridabad.sector-21d",
+          "label": "Sector 21D"
+        },
+        {
+          "id": "faridabad.sector-28",
+          "label": "Sector 28"
+        },
+        {
+          "id": "faridabad.sector-81",
+          "label": "Sector 81"
+        },
+        {
+          "id": "faridabad.sector-86",
+          "label": "Sector 86"
+        }
+      ]
+    }
+  ]
+}

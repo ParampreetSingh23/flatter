@@ -33,6 +33,7 @@ export type LifestylePreferenceMinAggregateOutputType = {
   bringingPet: boolean | null
   guestFrequency: $Enums.GuestFrequency | null
   flatmatePetPreference: $Enums.PetPreference | null
+  workStudySchedule: $Enums.WorkStudySchedule | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type LifestylePreferenceMaxAggregateOutputType = {
   bringingPet: boolean | null
   guestFrequency: $Enums.GuestFrequency | null
   flatmatePetPreference: $Enums.PetPreference | null
+  workStudySchedule: $Enums.WorkStudySchedule | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,6 +66,9 @@ export type LifestylePreferenceCountAggregateOutputType = {
   acceptedSmokingHabits: number
   flatmatePetPreference: number
   acceptedGuestFrequencies: number
+  acceptedGenders: number
+  workStudySchedule: number
+  acceptedWorkStudySchedules: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -79,6 +84,7 @@ export type LifestylePreferenceMinAggregateInputType = {
   bringingPet?: true
   guestFrequency?: true
   flatmatePetPreference?: true
+  workStudySchedule?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +98,7 @@ export type LifestylePreferenceMaxAggregateInputType = {
   bringingPet?: true
   guestFrequency?: true
   flatmatePetPreference?: true
+  workStudySchedule?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -110,6 +117,9 @@ export type LifestylePreferenceCountAggregateInputType = {
   acceptedSmokingHabits?: true
   flatmatePetPreference?: true
   acceptedGuestFrequencies?: true
+  acceptedGenders?: true
+  workStudySchedule?: true
+  acceptedWorkStudySchedules?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -201,6 +211,9 @@ export type LifestylePreferenceGroupByOutputType = {
   acceptedSmokingHabits: $Enums.SmokingHabit[]
   flatmatePetPreference: $Enums.PetPreference | null
   acceptedGuestFrequencies: $Enums.GuestFrequency[]
+  acceptedGenders: $Enums.Gender[]
+  workStudySchedule: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules: $Enums.WorkStudySchedule[]
   createdAt: Date
   updatedAt: Date
   _count: LifestylePreferenceCountAggregateOutputType | null
@@ -240,6 +253,9 @@ export type LifestylePreferenceWhereInput = {
   acceptedSmokingHabits?: Prisma.EnumSmokingHabitNullableListFilter<"LifestylePreference">
   flatmatePetPreference?: Prisma.EnumPetPreferenceNullableFilter<"LifestylePreference"> | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.EnumGuestFrequencyNullableListFilter<"LifestylePreference">
+  acceptedGenders?: Prisma.EnumGenderNullableListFilter<"LifestylePreference">
+  workStudySchedule?: Prisma.EnumWorkStudyScheduleNullableFilter<"LifestylePreference"> | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.EnumWorkStudyScheduleNullableListFilter<"LifestylePreference">
   createdAt?: Prisma.DateTimeFilter<"LifestylePreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LifestylePreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -259,6 +275,9 @@ export type LifestylePreferenceOrderByWithRelationInput = {
   acceptedSmokingHabits?: Prisma.SortOrder
   flatmatePetPreference?: Prisma.SortOrderInput | Prisma.SortOrder
   acceptedGuestFrequencies?: Prisma.SortOrder
+  acceptedGenders?: Prisma.SortOrder
+  workStudySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptedWorkStudySchedules?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -281,6 +300,9 @@ export type LifestylePreferenceWhereUniqueInput = Prisma.AtLeast<{
   acceptedSmokingHabits?: Prisma.EnumSmokingHabitNullableListFilter<"LifestylePreference">
   flatmatePetPreference?: Prisma.EnumPetPreferenceNullableFilter<"LifestylePreference"> | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.EnumGuestFrequencyNullableListFilter<"LifestylePreference">
+  acceptedGenders?: Prisma.EnumGenderNullableListFilter<"LifestylePreference">
+  workStudySchedule?: Prisma.EnumWorkStudyScheduleNullableFilter<"LifestylePreference"> | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.EnumWorkStudyScheduleNullableListFilter<"LifestylePreference">
   createdAt?: Prisma.DateTimeFilter<"LifestylePreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LifestylePreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -300,6 +322,9 @@ export type LifestylePreferenceOrderByWithAggregationInput = {
   acceptedSmokingHabits?: Prisma.SortOrder
   flatmatePetPreference?: Prisma.SortOrderInput | Prisma.SortOrder
   acceptedGuestFrequencies?: Prisma.SortOrder
+  acceptedGenders?: Prisma.SortOrder
+  workStudySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptedWorkStudySchedules?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.LifestylePreferenceCountOrderByAggregateInput
@@ -324,6 +349,9 @@ export type LifestylePreferenceScalarWhereWithAggregatesInput = {
   acceptedSmokingHabits?: Prisma.EnumSmokingHabitNullableListFilter<"LifestylePreference">
   flatmatePetPreference?: Prisma.EnumPetPreferenceNullableWithAggregatesFilter<"LifestylePreference"> | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.EnumGuestFrequencyNullableListFilter<"LifestylePreference">
+  acceptedGenders?: Prisma.EnumGenderNullableListFilter<"LifestylePreference">
+  workStudySchedule?: Prisma.EnumWorkStudyScheduleNullableWithAggregatesFilter<"LifestylePreference"> | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.EnumWorkStudyScheduleNullableListFilter<"LifestylePreference">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LifestylePreference"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LifestylePreference"> | Date | string
 }
@@ -341,6 +369,9 @@ export type LifestylePreferenceCreateInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceCreateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceCreateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceCreateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceCreateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutLifestylePreferenceInput
@@ -360,6 +391,9 @@ export type LifestylePreferenceUncheckedCreateInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceCreateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceCreateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceCreateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceCreateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -377,6 +411,9 @@ export type LifestylePreferenceUpdateInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutLifestylePreferenceNestedInput
@@ -396,6 +433,9 @@ export type LifestylePreferenceUncheckedUpdateInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -414,6 +454,9 @@ export type LifestylePreferenceCreateManyInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceCreateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceCreateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceCreateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceCreateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -431,6 +474,9 @@ export type LifestylePreferenceUpdateManyMutationInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -449,6 +495,9 @@ export type LifestylePreferenceUncheckedUpdateManyInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -498,6 +547,22 @@ export type EnumGuestFrequencyNullableListFilter<$PrismaModel = never> = {
   isEmpty?: boolean
 }
 
+export type EnumGenderNullableListFilter<$PrismaModel = never> = {
+  equals?: $Enums.Gender[] | Prisma.ListEnumGenderFieldRefInput<$PrismaModel> | null
+  has?: $Enums.Gender | Prisma.EnumGenderFieldRefInput<$PrismaModel> | null
+  hasEvery?: $Enums.Gender[] | Prisma.ListEnumGenderFieldRefInput<$PrismaModel>
+  hasSome?: $Enums.Gender[] | Prisma.ListEnumGenderFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
+export type EnumWorkStudyScheduleNullableListFilter<$PrismaModel = never> = {
+  equals?: $Enums.WorkStudySchedule[] | Prisma.ListEnumWorkStudyScheduleFieldRefInput<$PrismaModel> | null
+  has?: $Enums.WorkStudySchedule | Prisma.EnumWorkStudyScheduleFieldRefInput<$PrismaModel> | null
+  hasEvery?: $Enums.WorkStudySchedule[] | Prisma.ListEnumWorkStudyScheduleFieldRefInput<$PrismaModel>
+  hasSome?: $Enums.WorkStudySchedule[] | Prisma.ListEnumWorkStudyScheduleFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type LifestylePreferenceCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   sleepSchedule?: Prisma.SortOrder
@@ -512,6 +577,9 @@ export type LifestylePreferenceCountOrderByAggregateInput = {
   acceptedSmokingHabits?: Prisma.SortOrder
   flatmatePetPreference?: Prisma.SortOrder
   acceptedGuestFrequencies?: Prisma.SortOrder
+  acceptedGenders?: Prisma.SortOrder
+  workStudySchedule?: Prisma.SortOrder
+  acceptedWorkStudySchedules?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -525,6 +593,7 @@ export type LifestylePreferenceMaxOrderByAggregateInput = {
   bringingPet?: Prisma.SortOrder
   guestFrequency?: Prisma.SortOrder
   flatmatePetPreference?: Prisma.SortOrder
+  workStudySchedule?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -538,6 +607,7 @@ export type LifestylePreferenceMinOrderByAggregateInput = {
   bringingPet?: Prisma.SortOrder
   guestFrequency?: Prisma.SortOrder
   flatmatePetPreference?: Prisma.SortOrder
+  workStudySchedule?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -594,6 +664,14 @@ export type LifestylePreferenceCreateacceptedGuestFrequenciesInput = {
   set: $Enums.GuestFrequency[]
 }
 
+export type LifestylePreferenceCreateacceptedGendersInput = {
+  set: $Enums.Gender[]
+}
+
+export type LifestylePreferenceCreateacceptedWorkStudySchedulesInput = {
+  set: $Enums.WorkStudySchedule[]
+}
+
 export type NullableEnumSleepScheduleFieldUpdateOperationsInput = {
   set?: $Enums.SleepSchedule | null
 }
@@ -643,6 +721,20 @@ export type LifestylePreferenceUpdateacceptedGuestFrequenciesInput = {
   push?: $Enums.GuestFrequency | $Enums.GuestFrequency[]
 }
 
+export type LifestylePreferenceUpdateacceptedGendersInput = {
+  set?: $Enums.Gender[]
+  push?: $Enums.Gender | $Enums.Gender[]
+}
+
+export type NullableEnumWorkStudyScheduleFieldUpdateOperationsInput = {
+  set?: $Enums.WorkStudySchedule | null
+}
+
+export type LifestylePreferenceUpdateacceptedWorkStudySchedulesInput = {
+  set?: $Enums.WorkStudySchedule[]
+  push?: $Enums.WorkStudySchedule | $Enums.WorkStudySchedule[]
+}
+
 export type LifestylePreferenceCreateWithoutUserInput = {
   sleepSchedule?: $Enums.SleepSchedule | null
   cleanliness?: $Enums.Cleanliness | null
@@ -656,6 +748,9 @@ export type LifestylePreferenceCreateWithoutUserInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceCreateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceCreateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceCreateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceCreateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -673,6 +768,9 @@ export type LifestylePreferenceUncheckedCreateWithoutUserInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceCreateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceCreateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceCreateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceCreateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -706,6 +804,9 @@ export type LifestylePreferenceUpdateWithoutUserInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -723,6 +824,9 @@ export type LifestylePreferenceUncheckedUpdateWithoutUserInput = {
   acceptedSmokingHabits?: Prisma.LifestylePreferenceUpdateacceptedSmokingHabitsInput | $Enums.SmokingHabit[]
   flatmatePetPreference?: Prisma.NullableEnumPetPreferenceFieldUpdateOperationsInput | $Enums.PetPreference | null
   acceptedGuestFrequencies?: Prisma.LifestylePreferenceUpdateacceptedGuestFrequenciesInput | $Enums.GuestFrequency[]
+  acceptedGenders?: Prisma.LifestylePreferenceUpdateacceptedGendersInput | $Enums.Gender[]
+  workStudySchedule?: Prisma.NullableEnumWorkStudyScheduleFieldUpdateOperationsInput | $Enums.WorkStudySchedule | null
+  acceptedWorkStudySchedules?: Prisma.LifestylePreferenceUpdateacceptedWorkStudySchedulesInput | $Enums.WorkStudySchedule[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -743,6 +847,9 @@ export type LifestylePreferenceSelect<ExtArgs extends runtime.Types.Extensions.I
   acceptedSmokingHabits?: boolean
   flatmatePetPreference?: boolean
   acceptedGuestFrequencies?: boolean
+  acceptedGenders?: boolean
+  workStudySchedule?: boolean
+  acceptedWorkStudySchedules?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -762,6 +869,9 @@ export type LifestylePreferenceSelectCreateManyAndReturn<ExtArgs extends runtime
   acceptedSmokingHabits?: boolean
   flatmatePetPreference?: boolean
   acceptedGuestFrequencies?: boolean
+  acceptedGenders?: boolean
+  workStudySchedule?: boolean
+  acceptedWorkStudySchedules?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -781,6 +891,9 @@ export type LifestylePreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime
   acceptedSmokingHabits?: boolean
   flatmatePetPreference?: boolean
   acceptedGuestFrequencies?: boolean
+  acceptedGenders?: boolean
+  workStudySchedule?: boolean
+  acceptedWorkStudySchedules?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -800,11 +913,14 @@ export type LifestylePreferenceSelectScalar = {
   acceptedSmokingHabits?: boolean
   flatmatePetPreference?: boolean
   acceptedGuestFrequencies?: boolean
+  acceptedGenders?: boolean
+  workStudySchedule?: boolean
+  acceptedWorkStudySchedules?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LifestylePreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "sleepSchedule" | "cleanliness" | "foodHabit" | "smokingHabit" | "bringingPet" | "guestFrequency" | "acceptedSleepSchedules" | "acceptedCleanlinessLevels" | "acceptedFoodHabits" | "acceptedSmokingHabits" | "flatmatePetPreference" | "acceptedGuestFrequencies" | "createdAt" | "updatedAt", ExtArgs["result"]["lifestylePreference"]>
+export type LifestylePreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "sleepSchedule" | "cleanliness" | "foodHabit" | "smokingHabit" | "bringingPet" | "guestFrequency" | "acceptedSleepSchedules" | "acceptedCleanlinessLevels" | "acceptedFoodHabits" | "acceptedSmokingHabits" | "flatmatePetPreference" | "acceptedGuestFrequencies" | "acceptedGenders" | "workStudySchedule" | "acceptedWorkStudySchedules" | "createdAt" | "updatedAt", ExtArgs["result"]["lifestylePreference"]>
 export type LifestylePreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -834,6 +950,9 @@ export type $LifestylePreferencePayload<ExtArgs extends runtime.Types.Extensions
     acceptedSmokingHabits: $Enums.SmokingHabit[]
     flatmatePetPreference: $Enums.PetPreference | null
     acceptedGuestFrequencies: $Enums.GuestFrequency[]
+    acceptedGenders: $Enums.Gender[]
+    workStudySchedule: $Enums.WorkStudySchedule | null
+    acceptedWorkStudySchedules: $Enums.WorkStudySchedule[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["lifestylePreference"]>
@@ -1273,6 +1392,9 @@ export interface LifestylePreferenceFieldRefs {
   readonly acceptedSmokingHabits: Prisma.FieldRef<"LifestylePreference", 'SmokingHabit[]'>
   readonly flatmatePetPreference: Prisma.FieldRef<"LifestylePreference", 'PetPreference'>
   readonly acceptedGuestFrequencies: Prisma.FieldRef<"LifestylePreference", 'GuestFrequency[]'>
+  readonly acceptedGenders: Prisma.FieldRef<"LifestylePreference", 'Gender[]'>
+  readonly workStudySchedule: Prisma.FieldRef<"LifestylePreference", 'WorkStudySchedule'>
+  readonly acceptedWorkStudySchedules: Prisma.FieldRef<"LifestylePreference", 'WorkStudySchedule[]'>
   readonly createdAt: Prisma.FieldRef<"LifestylePreference", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LifestylePreference", 'DateTime'>
 }

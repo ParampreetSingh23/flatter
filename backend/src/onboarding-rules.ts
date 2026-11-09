@@ -1,13 +1,13 @@
 import { z } from "zod";
-import { CITIES, CITY_NAMES } from "./cities.js";
+import { CITY_IDS, LOCALITY_CITY } from "./cities.js";
 import {
-  Cleanliness, FoodHabit, GuestFrequency, HousingIntent, Occupation, PetPreference, SleepSchedule, SmokingHabit,
+  Cleanliness, FoodHabit, Gender, GuestFrequency, HousingIntent, Occupation, PetPreference, SleepSchedule, SmokingHabit,
 } from "./generated/prisma/client.js";
 
 // ---- dates (all calendar dates, Asia/Kolkata) ----
 export const istToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
 
-const dateStr = z
+export const dateStr = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/)
   .refine((s) => new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s, "Invalid date");
@@ -32,6 +32,7 @@ export const intentShape = { housingIntent: z.enum(HousingIntent) };
 export const profileShape = {
   displayName: z.string().trim().min(1).max(80),
   birthDate: dateStr,
+  gender: z.enum(Gender),
   occupation: z.enum(Occupation),
   bio: z.string().trim().max(500).nullish().transform((v) => v || null),
 };
@@ -42,7 +43,7 @@ export function checkProfile(v: { birthDate: string }, ctx: z.RefinementCtx, tod
 }
 
 export const housingShape = {
-  city: z.enum(CITY_NAMES),
+  city: z.enum(CITY_IDS),
   preferredLocations: z.array(z.string()).transform(dedupe),
   locationsFlexible: z.boolean(),
   monthlyRentMinPaise: paise,
@@ -59,7 +60,7 @@ export function checkHousing(
   const bad = (path: string, message: string) => ctx.addIssue({ code: "custom", path: [path], message });
   const n = v.preferredLocations.length;
   if (!intent) bad("housingIntent", "Choose what you're looking for first");
-  if (v.preferredLocations.some((l) => !CITIES[v.city]?.includes(l))) bad("preferredLocations", "Choose localities in the selected city");
+  if (v.preferredLocations.some((l) => LOCALITY_CITY.get(l) !== v.city)) bad("preferredLocations", "Choose supported localities in the selected city");
   if (intent === "HAVE_ROOM") {
     if (v.locationsFlexible || n !== 1) bad("preferredLocations", "Choose your flat's locality");
     if (v.monthlyRentMinPaise !== v.monthlyRentMaxPaise) bad("monthlyRentMaxPaise", "Enter one monthly rent");
@@ -88,6 +89,7 @@ export const flatmateShape = {
   acceptedSmokingHabits: accepted(z.enum(SmokingHabit)),
   flatmatePetPreference: z.enum(PetPreference),
   acceptedGuestFrequencies: accepted(z.enum(GuestFrequency)),
+  acceptedGenders: accepted(z.enum(Gender)),
 };
 
 export const withRevision = <S extends z.core.$ZodShape>(shape: S) =>

@@ -1,4 +1,6 @@
 "use client";
+import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
 import type { Opt } from "@/lib/onboarding-types";
 
 export const inputCls =
@@ -81,11 +83,56 @@ export const Initials = ({ name, className = "size-16" }: { name: string; classN
   </span>
 );
 
-// "1500" or "1500.50" rupees <-> integer paise, without floating point.
-export function toPaise(s: string): number | null {
-  const m = /^(\d{1,9})(?:\.(\d{1,2}))?$/.exec(s.trim());
-  return m ? Number(m[1]) * 100 + Number((m[2] ?? "").padEnd(2, "0")) : null;
+export { fromPaise, inr, toPaise } from "@/lib/format";
+
+// Clerk/Google-hosted URLs vary, so a plain img beats configuring next/image remote patterns.
+export const Avatar = ({ src }: { src: string }) => (
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src={src} alt="Your profile photo" className="size-16 rounded-full object-cover" />
+);
+
+const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+export type PhotoAction = "keep" | "use_clerk" | "clear";
+
+// Personal avatar: keep / use the Clerk account image / clear, plus Clerk's own image upload. Never an arbitrary URL.
+export function AvatarPicker({ name, savedUrl, photo, setPhoto }: { name: string; savedUrl: string | null; photo: PhotoAction; setPhoto: (p: PhotoAction) => void }) {
+  const { user } = useUser();
+  const [upErr, setUpErr] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const shown = photo === "clear" ? null : photo === "use_clerk" ? (user?.hasImage ? user.imageUrl : null) : savedUrl;
+
+  async function upload(f: File | undefined) {
+    if (!f || !user) return;
+    setUpErr("");
+    if (!PHOTO_TYPES.includes(f.type)) return setUpErr("Use a JPG, PNG, WebP or GIF image.");
+    if (f.size > 10 * 1024 * 1024) return setUpErr("Image must be 10 MB or smaller.");
+    setUploading(true);
+    try {
+      await user.setProfileImage({ file: f });
+      setPhoto("use_clerk");
+    } catch {
+      setUpErr("Upload failed. Your photo was not changed.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div>
+      <p className="font-bold">Profile photo (optional)</p>
+      <div className="mt-3 flex flex-wrap items-center gap-4">
+        {shown ? <Avatar src={shown} /> : <Initials name={name} />}
+        <div className="flex flex-wrap gap-2">
+          <label className={`${btnBack} cursor-pointer has-focus-visible:outline-2 has-focus-visible:outline-offset-2`}>
+            {uploading ? "Uploading…" : "Upload photo"}
+            <input type="file" accept={PHOTO_TYPES.join(",")} className="sr-only" disabled={uploading} onChange={(e) => upload(e.target.files?.[0])} />
+          </label>
+          {user?.hasImage && photo !== "use_clerk" && <button type="button" onClick={() => setPhoto("use_clerk")} className={btnBack}>Use my account photo</button>}
+          {shown && <button type="button" onClick={() => setPhoto("clear")} className={btnBack}>Remove</button>}
+        </div>
+      </div>
+      <p className="mt-2 text-sm text-muted">Uploading updates the photo on your Flatter sign-in account too. It is copied to your Flatter profile only when you save. Without one we show your initial.</p>
+      {upErr && <p role="alert" className="mt-2 text-sm font-bold text-red-700">{upErr}</p>}
+    </div>
+  );
 }
-export const fromPaise = (p: number | null | undefined) =>
-  p == null ? "" : `${Math.floor(p / 100)}${p % 100 ? `.${String(p % 100).padStart(2, "0")}` : ""}`;
-export const inr = (p: number | null | undefined) => (p == null ? "—" : `₹${Number(fromPaise(p)).toLocaleString("en-IN")}`);

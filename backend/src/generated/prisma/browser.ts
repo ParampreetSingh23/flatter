@@ -37,3 +37,33 @@ export type HousingPreference = Prisma.HousingPreferenceModel
  * 
  */
 export type LifestylePreference = Prisma.LifestylePreferenceModel
+/**
+ * Model FlatListing
+ * 
+ */
+export type FlatListing = Prisma.FlatListingModel
+/**
+ * Model FlatPhoto
+ * 
+ */
+export type FlatPhoto = Prisma.FlatPhotoModel
+/**
+ * Model DiscoveryAction
+ * 
+ */
+export type DiscoveryAction = Prisma.DiscoveryActionModel
+/**
+ * Model Match
+ * 
+ */
+export type Match = Prisma.MatchModel
+/**
+ * Model UserBlock
+ * 
+ */
+export type UserBlock = Prisma.UserBlockModel
+/**
+ * Model UserReport
+ * 
+ */
+export type UserReport = Prisma.UserReportModel

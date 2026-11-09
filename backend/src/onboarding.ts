@@ -1,8 +1,8 @@
 import { clerkClient } from "@clerk/express";
-import express, { type ErrorRequestHandler, type Request, type RequestHandler, Router } from "express";
+import express, { type Request, type RequestHandler, Router } from "express";
 import { z } from "zod";
-import { CITIES } from "./cities.js";
 import { db } from "./db.js";
+import { ApiError, apiErrorHandler } from "./http.js";
 import { Prisma } from "./generated/prisma/client.js";
 import type { HousingIntent } from "./generated/prisma/client.js";
 import {
@@ -12,11 +12,6 @@ import {
 
 type Tx = Prisma.TransactionClient;
 
-class ApiError extends Error {
-  constructor(public status: number, public code: string, message: string, public fields?: Record<string, string>) {
-    super(message);
-  }
-}
 const conflict = () => new ApiError(409, "REVISION_CONFLICT", "Your answers changed elsewhere. Reload to continue.");
 
 const iso = (d: Date | null) => (d ? d.toISOString().slice(0, 10) : null);
@@ -30,7 +25,7 @@ async function loadState(clerkUserId: string) {
   const today = istToday();
   const { profile: p, housingPreference: h, lifestylePreference: l } = u ?? {};
 
-  const profile = p ? { displayName: p.displayName, birthDate: iso(p.birthDate), occupation: p.occupation, bio: p.bio, avatarUrl: p.avatarUrl } : null;
+  const profile = p ? { displayName: p.displayName, birthDate: iso(p.birthDate), gender: p.gender, occupation: p.occupation, bio: p.bio, avatarUrl: p.avatarUrl } : null;
   const housing = h
     ? { city: h.city, preferredLocations: h.preferredLocations, locationsFlexible: h.locationsFlexible, monthlyRentMinPaise: h.monthlyRentMinPaise, monthlyRentMaxPaise: h.monthlyRentMaxPaise, moveInDate: iso(h.moveInDate), moveInFlexible: h.moveInFlexible }
     : null;
@@ -38,7 +33,7 @@ async function loadState(clerkUserId: string) {
     ? { sleepSchedule: l.sleepSchedule, cleanliness: l.cleanliness, foodHabit: l.foodHabit, smokingHabit: l.smokingHabit, bringingPet: l.bringingPet, guestFrequency: l.guestFrequency }
     : null;
   const flatmate = l
-    ? { acceptedSleepSchedules: l.acceptedSleepSchedules, acceptedCleanlinessLevels: l.acceptedCleanlinessLevels, acceptedFoodHabits: l.acceptedFoodHabits, acceptedSmokingHabits: l.acceptedSmokingHabits, flatmatePetPreference: l.flatmatePetPreference, acceptedGuestFrequencies: l.acceptedGuestFrequencies }
+    ? { acceptedSleepSchedules: l.acceptedSleepSchedules, acceptedCleanlinessLevels: l.acceptedCleanlinessLevels, acceptedFoodHabits: l.acceptedFoodHabits, acceptedSmokingHabits: l.acceptedSmokingHabits, flatmatePetPreference: l.flatmatePetPreference, acceptedGuestFrequencies: l.acceptedGuestFrequencies, acceptedGenders: l.acceptedGenders }
     : null;
 
   const intent = u?.housingIntent ?? null;
@@ -62,7 +57,6 @@ async function loadState(clerkUserId: string) {
     profile, housing, lifestyle, flatmate,
     stepValidity,
     nextStep: firstInvalid ?? "review",
-    cities: Object.entries(CITIES).map(([name, localities]) => ({ name, localities })),
   };
 }
 const allValid = (s: Awaited<ReturnType<typeof loadState>>) => Object.values(s.stepValidity).every(Boolean);
@@ -124,10 +118,8 @@ export function onboardingRouter(getUserId: (req: Request) => string | null) {
         return;
       }
       const u = await lock(tx, uid(req), b.revision);
-      if (u.housingIntent !== b.housingIntent) {
-        await tx.user.update({ where: { id: u.id }, data: { housingIntent: b.housingIntent } });
-        await tx.housingPreference.deleteMany({ where: { userId: u.id } }); // intent-specific: user re-confirms housing
-      }
+      // Housing is kept: derived validity re-checks it under the new intent (HAVE_ROOM rules differ).
+      if (u.housingIntent !== b.housingIntent) await tx.user.update({ where: { id: u.id }, data: { housingIntent: b.housingIntent } });
     });
   }));
 
@@ -182,21 +174,6 @@ export function onboardingRouter(getUserId: (req: Request) => string | null) {
     });
   }));
 
-  const onError: ErrorRequestHandler = (err, _req, res, _next) => {
-    const send = (status: number, code: string, message: string, fields?: Record<string, string>) =>
-      res.status(status).json({ error: { code, message, ...(fields && { fields }) } });
-    if (err instanceof ApiError) return send(err.status, err.code, err.message, err.fields);
-    if (err instanceof z.ZodError) {
-      return send(422, "VALIDATION_ERROR", "Please check your answers.",
-        Object.fromEntries(err.issues.map((i) => [i.path.join(".") || "_", i.message])));
-    }
-    if (typeof err?.status === "number" && err.status >= 400 && err.status < 500) return send(err.status, "BAD_REQUEST", "Invalid request body.");
-    console.error(err);
-    const dbDown = err instanceof Prisma.PrismaClientInitializationError ||
-      (err instanceof Prisma.PrismaClientKnownRequestError && /^P(1|2024)/.test(err.code)) ||
-      /ECONNREFUSED|ENOTFOUND|ETIMEDOUT|ECONNRESET|Connection terminated/.test(String(err?.message ?? err?.cause?.message));
-    return dbDown ? send(503, "TEMPORARILY_UNAVAILABLE", "Service temporarily unavailable. Please retry.") : send(500, "INTERNAL", "Something went wrong.");
-  };
-  r.use(onError);
+  r.use(apiErrorHandler);
   return r;
 }

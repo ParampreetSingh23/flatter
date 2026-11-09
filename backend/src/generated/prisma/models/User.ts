@@ -41,6 +41,8 @@ export type UserMinAggregateOutputType = {
   onboardingRevision: number | null
   onboardingCompletedAt: Date | null
   discoveryEnabled: boolean | null
+  matchingEnabledAt: Date | null
+  suspendedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -52,6 +54,8 @@ export type UserMaxAggregateOutputType = {
   onboardingRevision: number | null
   onboardingCompletedAt: Date | null
   discoveryEnabled: boolean | null
+  matchingEnabledAt: Date | null
+  suspendedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -63,6 +67,8 @@ export type UserCountAggregateOutputType = {
   onboardingRevision: number
   onboardingCompletedAt: number
   discoveryEnabled: number
+  matchingEnabledAt: number
+  suspendedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -84,6 +90,8 @@ export type UserMinAggregateInputType = {
   onboardingRevision?: true
   onboardingCompletedAt?: true
   discoveryEnabled?: true
+  matchingEnabledAt?: true
+  suspendedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,6 +103,8 @@ export type UserMaxAggregateInputType = {
   onboardingRevision?: true
   onboardingCompletedAt?: true
   discoveryEnabled?: true
+  matchingEnabledAt?: true
+  suspendedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +116,8 @@ export type UserCountAggregateInputType = {
   onboardingRevision?: true
   onboardingCompletedAt?: true
   discoveryEnabled?: true
+  matchingEnabledAt?: true
+  suspendedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -204,6 +216,8 @@ export type UserGroupByOutputType = {
   onboardingRevision: number
   onboardingCompletedAt: Date | null
   discoveryEnabled: boolean
+  matchingEnabledAt: Date | null
+  suspendedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -238,11 +252,22 @@ export type UserWhereInput = {
   onboardingRevision?: Prisma.IntFilter<"User"> | number
   onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   discoveryEnabled?: Prisma.BoolFilter<"User"> | boolean
+  matchingEnabledAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  suspendedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   housingPreference?: Prisma.XOR<Prisma.HousingPreferenceNullableScalarRelationFilter, Prisma.HousingPreferenceWhereInput> | null
   lifestylePreference?: Prisma.XOR<Prisma.LifestylePreferenceNullableScalarRelationFilter, Prisma.LifestylePreferenceWhereInput> | null
+  flatListing?: Prisma.XOR<Prisma.FlatListingNullableScalarRelationFilter, Prisma.FlatListingWhereInput> | null
+  actionsMade?: Prisma.DiscoveryActionListRelationFilter
+  actionsReceived?: Prisma.DiscoveryActionListRelationFilter
+  matchesAsLow?: Prisma.MatchListRelationFilter
+  matchesAsHigh?: Prisma.MatchListRelationFilter
+  blocksMade?: Prisma.UserBlockListRelationFilter
+  blocksReceived?: Prisma.UserBlockListRelationFilter
+  reportsMade?: Prisma.UserReportListRelationFilter
+  reportsReceived?: Prisma.UserReportListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -252,11 +277,22 @@ export type UserOrderByWithRelationInput = {
   onboardingRevision?: Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   discoveryEnabled?: Prisma.SortOrder
+  matchingEnabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  suspendedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   profile?: Prisma.ProfileOrderByWithRelationInput
   housingPreference?: Prisma.HousingPreferenceOrderByWithRelationInput
   lifestylePreference?: Prisma.LifestylePreferenceOrderByWithRelationInput
+  flatListing?: Prisma.FlatListingOrderByWithRelationInput
+  actionsMade?: Prisma.DiscoveryActionOrderByRelationAggregateInput
+  actionsReceived?: Prisma.DiscoveryActionOrderByRelationAggregateInput
+  matchesAsLow?: Prisma.MatchOrderByRelationAggregateInput
+  matchesAsHigh?: Prisma.MatchOrderByRelationAggregateInput
+  blocksMade?: Prisma.UserBlockOrderByRelationAggregateInput
+  blocksReceived?: Prisma.UserBlockOrderByRelationAggregateInput
+  reportsMade?: Prisma.UserReportOrderByRelationAggregateInput
+  reportsReceived?: Prisma.UserReportOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -269,11 +305,22 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   onboardingRevision?: Prisma.IntFilter<"User"> | number
   onboardingCompletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   discoveryEnabled?: Prisma.BoolFilter<"User"> | boolean
+  matchingEnabledAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  suspendedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   housingPreference?: Prisma.XOR<Prisma.HousingPreferenceNullableScalarRelationFilter, Prisma.HousingPreferenceWhereInput> | null
   lifestylePreference?: Prisma.XOR<Prisma.LifestylePreferenceNullableScalarRelationFilter, Prisma.LifestylePreferenceWhereInput> | null
+  flatListing?: Prisma.XOR<Prisma.FlatListingNullableScalarRelationFilter, Prisma.FlatListingWhereInput> | null
+  actionsMade?: Prisma.DiscoveryActionListRelationFilter
+  actionsReceived?: Prisma.DiscoveryActionListRelationFilter
+  matchesAsLow?: Prisma.MatchListRelationFilter
+  matchesAsHigh?: Prisma.MatchListRelationFilter
+  blocksMade?: Prisma.UserBlockListRelationFilter
+  blocksReceived?: Prisma.UserBlockListRelationFilter
+  reportsMade?: Prisma.UserReportListRelationFilter
+  reportsReceived?: Prisma.UserReportListRelationFilter
 }, "id" | "clerkUserId">
 
 export type UserOrderByWithAggregationInput = {
@@ -283,6 +330,8 @@ export type UserOrderByWithAggregationInput = {
   onboardingRevision?: Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   discoveryEnabled?: Prisma.SortOrder
+  matchingEnabledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  suspendedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -302,6 +351,8 @@ export type UserScalarWhereWithAggregatesInput = {
   onboardingRevision?: Prisma.IntWithAggregatesFilter<"User"> | number
   onboardingCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   discoveryEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  matchingEnabledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  suspendedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -313,11 +364,22 @@ export type UserCreateInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -327,11 +389,22 @@ export type UserUncheckedCreateInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
 }
 
 export type UserUpdateInput = {
@@ -341,11 +414,22 @@ export type UserUpdateInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -355,11 +439,22 @@ export type UserUncheckedUpdateInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -369,6 +464,8 @@ export type UserCreateManyInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -380,6 +477,8 @@ export type UserUpdateManyMutationInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +490,8 @@ export type UserUncheckedUpdateManyInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -402,6 +503,8 @@ export type UserCountOrderByAggregateInput = {
   onboardingRevision?: Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrder
   discoveryEnabled?: Prisma.SortOrder
+  matchingEnabledAt?: Prisma.SortOrder
+  suspendedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -417,6 +520,8 @@ export type UserMaxOrderByAggregateInput = {
   onboardingRevision?: Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrder
   discoveryEnabled?: Prisma.SortOrder
+  matchingEnabledAt?: Prisma.SortOrder
+  suspendedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -428,6 +533,8 @@ export type UserMinOrderByAggregateInput = {
   onboardingRevision?: Prisma.SortOrder
   onboardingCompletedAt?: Prisma.SortOrder
   discoveryEnabled?: Prisma.SortOrder
+  matchingEnabledAt?: Prisma.SortOrder
+  suspendedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -511,6 +618,132 @@ export type UserUpdateOneRequiredWithoutLifestylePreferenceNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLifestylePreferenceInput, Prisma.UserUpdateWithoutLifestylePreferenceInput>, Prisma.UserUncheckedUpdateWithoutLifestylePreferenceInput>
 }
 
+export type UserCreateNestedOneWithoutFlatListingInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlatListingInput, Prisma.UserUncheckedCreateWithoutFlatListingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlatListingInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFlatListingNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFlatListingInput, Prisma.UserUncheckedCreateWithoutFlatListingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFlatListingInput
+  upsert?: Prisma.UserUpsertWithoutFlatListingInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFlatListingInput, Prisma.UserUpdateWithoutFlatListingInput>, Prisma.UserUncheckedUpdateWithoutFlatListingInput>
+}
+
+export type UserCreateNestedOneWithoutActionsMadeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionsMadeInput, Prisma.UserUncheckedCreateWithoutActionsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutActionsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionsReceivedInput, Prisma.UserUncheckedCreateWithoutActionsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutActionsMadeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionsMadeInput, Prisma.UserUncheckedCreateWithoutActionsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionsMadeInput
+  upsert?: Prisma.UserUpsertWithoutActionsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActionsMadeInput, Prisma.UserUpdateWithoutActionsMadeInput>, Prisma.UserUncheckedUpdateWithoutActionsMadeInput>
+}
+
+export type UserUpdateOneRequiredWithoutActionsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActionsReceivedInput, Prisma.UserUncheckedCreateWithoutActionsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActionsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutActionsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActionsReceivedInput, Prisma.UserUpdateWithoutActionsReceivedInput>, Prisma.UserUncheckedUpdateWithoutActionsReceivedInput>
+}
+
+export type UserCreateNestedOneWithoutMatchesAsLowInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsLowInput, Prisma.UserUncheckedCreateWithoutMatchesAsLowInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMatchesAsLowInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutMatchesAsHighInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsHighInput, Prisma.UserUncheckedCreateWithoutMatchesAsHighInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMatchesAsHighInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMatchesAsLowNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsLowInput, Prisma.UserUncheckedCreateWithoutMatchesAsLowInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMatchesAsLowInput
+  upsert?: Prisma.UserUpsertWithoutMatchesAsLowInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMatchesAsLowInput, Prisma.UserUpdateWithoutMatchesAsLowInput>, Prisma.UserUncheckedUpdateWithoutMatchesAsLowInput>
+}
+
+export type UserUpdateOneRequiredWithoutMatchesAsHighNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsHighInput, Prisma.UserUncheckedCreateWithoutMatchesAsHighInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMatchesAsHighInput
+  upsert?: Prisma.UserUpsertWithoutMatchesAsHighInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMatchesAsHighInput, Prisma.UserUpdateWithoutMatchesAsHighInput>, Prisma.UserUncheckedUpdateWithoutMatchesAsHighInput>
+}
+
+export type UserCreateNestedOneWithoutBlocksMadeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlocksMadeInput, Prisma.UserUncheckedCreateWithoutBlocksMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlocksMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutBlocksReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlocksReceivedInput, Prisma.UserUncheckedCreateWithoutBlocksReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlocksReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBlocksMadeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlocksMadeInput, Prisma.UserUncheckedCreateWithoutBlocksMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlocksMadeInput
+  upsert?: Prisma.UserUpsertWithoutBlocksMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlocksMadeInput, Prisma.UserUpdateWithoutBlocksMadeInput>, Prisma.UserUncheckedUpdateWithoutBlocksMadeInput>
+}
+
+export type UserUpdateOneRequiredWithoutBlocksReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlocksReceivedInput, Prisma.UserUncheckedCreateWithoutBlocksReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlocksReceivedInput
+  upsert?: Prisma.UserUpsertWithoutBlocksReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlocksReceivedInput, Prisma.UserUpdateWithoutBlocksReceivedInput>, Prisma.UserUncheckedUpdateWithoutBlocksReceivedInput>
+}
+
+export type UserCreateNestedOneWithoutReportsMadeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsMadeInput, Prisma.UserUncheckedCreateWithoutReportsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReportsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsReceivedInput, Prisma.UserUncheckedCreateWithoutReportsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReportsMadeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsMadeInput, Prisma.UserUncheckedCreateWithoutReportsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsMadeInput
+  upsert?: Prisma.UserUpsertWithoutReportsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsMadeInput, Prisma.UserUpdateWithoutReportsMadeInput>, Prisma.UserUncheckedUpdateWithoutReportsMadeInput>
+}
+
+export type UserUpdateOneRequiredWithoutReportsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsReceivedInput, Prisma.UserUncheckedCreateWithoutReportsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutReportsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsReceivedInput, Prisma.UserUpdateWithoutReportsReceivedInput>, Prisma.UserUncheckedUpdateWithoutReportsReceivedInput>
+}
+
 export type UserCreateWithoutProfileInput = {
   id?: string
   clerkUserId: string
@@ -518,10 +751,21 @@ export type UserCreateWithoutProfileInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -531,10 +775,21 @@ export type UserUncheckedCreateWithoutProfileInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -560,10 +815,21 @@ export type UserUpdateWithoutProfileInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -573,10 +839,21 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
 }
 
 export type UserCreateWithoutHousingPreferenceInput = {
@@ -586,10 +863,21 @@ export type UserCreateWithoutHousingPreferenceInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
 }
 
 export type UserUncheckedCreateWithoutHousingPreferenceInput = {
@@ -599,10 +887,21 @@ export type UserUncheckedCreateWithoutHousingPreferenceInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
 }
 
 export type UserCreateOrConnectWithoutHousingPreferenceInput = {
@@ -628,10 +927,21 @@ export type UserUpdateWithoutHousingPreferenceInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHousingPreferenceInput = {
@@ -641,10 +951,21 @@ export type UserUncheckedUpdateWithoutHousingPreferenceInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
 }
 
 export type UserCreateWithoutLifestylePreferenceInput = {
@@ -654,10 +975,21 @@ export type UserCreateWithoutLifestylePreferenceInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
 }
 
 export type UserUncheckedCreateWithoutLifestylePreferenceInput = {
@@ -667,10 +999,21 @@ export type UserUncheckedCreateWithoutLifestylePreferenceInput = {
   onboardingRevision?: number
   onboardingCompletedAt?: Date | string | null
   discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
 }
 
 export type UserCreateOrConnectWithoutLifestylePreferenceInput = {
@@ -696,10 +1039,21 @@ export type UserUpdateWithoutLifestylePreferenceInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLifestylePreferenceInput = {
@@ -709,12 +1063,1123 @@ export type UserUncheckedUpdateWithoutLifestylePreferenceInput = {
   onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
   onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
 }
 
+export type UserCreateWithoutFlatListingInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutFlatListingInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutFlatListingInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFlatListingInput, Prisma.UserUncheckedCreateWithoutFlatListingInput>
+}
+
+export type UserUpsertWithoutFlatListingInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFlatListingInput, Prisma.UserUncheckedUpdateWithoutFlatListingInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFlatListingInput, Prisma.UserUncheckedCreateWithoutFlatListingInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFlatListingInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFlatListingInput, Prisma.UserUncheckedUpdateWithoutFlatListingInput>
+}
+
+export type UserUpdateWithoutFlatListingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFlatListingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserCreateWithoutActionsMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutActionsMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutActionsMadeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionsMadeInput, Prisma.UserUncheckedCreateWithoutActionsMadeInput>
+}
+
+export type UserCreateWithoutActionsReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutActionsReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutActionsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionsReceivedInput, Prisma.UserUncheckedCreateWithoutActionsReceivedInput>
+}
+
+export type UserUpsertWithoutActionsMadeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutActionsMadeInput, Prisma.UserUncheckedUpdateWithoutActionsMadeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionsMadeInput, Prisma.UserUncheckedCreateWithoutActionsMadeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutActionsMadeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutActionsMadeInput, Prisma.UserUncheckedUpdateWithoutActionsMadeInput>
+}
+
+export type UserUpdateWithoutActionsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutActionsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUpsertWithoutActionsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutActionsReceivedInput, Prisma.UserUncheckedUpdateWithoutActionsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutActionsReceivedInput, Prisma.UserUncheckedCreateWithoutActionsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutActionsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutActionsReceivedInput, Prisma.UserUncheckedUpdateWithoutActionsReceivedInput>
+}
+
+export type UserUpdateWithoutActionsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutActionsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserCreateWithoutMatchesAsLowInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutMatchesAsLowInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutMatchesAsLowInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsLowInput, Prisma.UserUncheckedCreateWithoutMatchesAsLowInput>
+}
+
+export type UserCreateWithoutMatchesAsHighInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutMatchesAsHighInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutMatchesAsHighInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsHighInput, Prisma.UserUncheckedCreateWithoutMatchesAsHighInput>
+}
+
+export type UserUpsertWithoutMatchesAsLowInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMatchesAsLowInput, Prisma.UserUncheckedUpdateWithoutMatchesAsLowInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsLowInput, Prisma.UserUncheckedCreateWithoutMatchesAsLowInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMatchesAsLowInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMatchesAsLowInput, Prisma.UserUncheckedUpdateWithoutMatchesAsLowInput>
+}
+
+export type UserUpdateWithoutMatchesAsLowInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMatchesAsLowInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUpsertWithoutMatchesAsHighInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMatchesAsHighInput, Prisma.UserUncheckedUpdateWithoutMatchesAsHighInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMatchesAsHighInput, Prisma.UserUncheckedCreateWithoutMatchesAsHighInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMatchesAsHighInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMatchesAsHighInput, Prisma.UserUncheckedUpdateWithoutMatchesAsHighInput>
+}
+
+export type UserUpdateWithoutMatchesAsHighInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMatchesAsHighInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserCreateWithoutBlocksMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutBlocksMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutBlocksMadeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlocksMadeInput, Prisma.UserUncheckedCreateWithoutBlocksMadeInput>
+}
+
+export type UserCreateWithoutBlocksReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutBlocksReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutBlocksReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlocksReceivedInput, Prisma.UserUncheckedCreateWithoutBlocksReceivedInput>
+}
+
+export type UserUpsertWithoutBlocksMadeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlocksMadeInput, Prisma.UserUncheckedUpdateWithoutBlocksMadeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlocksMadeInput, Prisma.UserUncheckedCreateWithoutBlocksMadeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBlocksMadeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlocksMadeInput, Prisma.UserUncheckedUpdateWithoutBlocksMadeInput>
+}
+
+export type UserUpdateWithoutBlocksMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlocksMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUpsertWithoutBlocksReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlocksReceivedInput, Prisma.UserUncheckedUpdateWithoutBlocksReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlocksReceivedInput, Prisma.UserUncheckedCreateWithoutBlocksReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBlocksReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlocksReceivedInput, Prisma.UserUncheckedUpdateWithoutBlocksReceivedInput>
+}
+
+export type UserUpdateWithoutBlocksReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserCreateWithoutReportsMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsReceived?: Prisma.UserReportCreateNestedManyWithoutTargetInput
+}
+
+export type UserUncheckedCreateWithoutReportsMadeInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsReceived?: Prisma.UserReportUncheckedCreateNestedManyWithoutTargetInput
+}
+
+export type UserCreateOrConnectWithoutReportsMadeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsMadeInput, Prisma.UserUncheckedCreateWithoutReportsMadeInput>
+}
+
+export type UserCreateWithoutReportsReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportCreateNestedManyWithoutReporterInput
+}
+
+export type UserUncheckedCreateWithoutReportsReceivedInput = {
+  id?: string
+  clerkUserId: string
+  housingIntent?: $Enums.HousingIntent | null
+  onboardingRevision?: number
+  onboardingCompletedAt?: Date | string | null
+  discoveryEnabled?: boolean
+  matchingEnabledAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedCreateNestedOneWithoutUserInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedCreateNestedOneWithoutUserInput
+  flatListing?: Prisma.FlatListingUncheckedCreateNestedOneWithoutOwnerInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutActorInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedCreateNestedManyWithoutTargetInput
+  matchesAsLow?: Prisma.MatchUncheckedCreateNestedManyWithoutUserLowInput
+  matchesAsHigh?: Prisma.MatchUncheckedCreateNestedManyWithoutUserHighInput
+  blocksMade?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.UserBlockUncheckedCreateNestedManyWithoutBlockedInput
+  reportsMade?: Prisma.UserReportUncheckedCreateNestedManyWithoutReporterInput
+}
+
+export type UserCreateOrConnectWithoutReportsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsReceivedInput, Prisma.UserUncheckedCreateWithoutReportsReceivedInput>
+}
+
+export type UserUpsertWithoutReportsMadeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsMadeInput, Prisma.UserUncheckedUpdateWithoutReportsMadeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsMadeInput, Prisma.UserUncheckedCreateWithoutReportsMadeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsMadeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsMadeInput, Prisma.UserUncheckedUpdateWithoutReportsMadeInput>
+}
+
+export type UserUpdateWithoutReportsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsReceived?: Prisma.UserReportUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsReceived?: Prisma.UserReportUncheckedUpdateManyWithoutTargetNestedInput
+}
+
+export type UserUpsertWithoutReportsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsReceivedInput, Prisma.UserUncheckedUpdateWithoutReportsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsReceivedInput, Prisma.UserUncheckedCreateWithoutReportsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsReceivedInput, Prisma.UserUncheckedUpdateWithoutReportsReceivedInput>
+}
+
+export type UserUpdateWithoutReportsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUpdateManyWithoutReporterNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  housingIntent?: Prisma.NullableEnumHousingIntentFieldUpdateOperationsInput | $Enums.HousingIntent | null
+  onboardingRevision?: Prisma.IntFieldUpdateOperationsInput | number
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discoveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  matchingEnabledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  housingPreference?: Prisma.HousingPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  lifestylePreference?: Prisma.LifestylePreferenceUncheckedUpdateOneWithoutUserNestedInput
+  flatListing?: Prisma.FlatListingUncheckedUpdateOneWithoutOwnerNestedInput
+  actionsMade?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutActorNestedInput
+  actionsReceived?: Prisma.DiscoveryActionUncheckedUpdateManyWithoutTargetNestedInput
+  matchesAsLow?: Prisma.MatchUncheckedUpdateManyWithoutUserLowNestedInput
+  matchesAsHigh?: Prisma.MatchUncheckedUpdateManyWithoutUserHighNestedInput
+  blocksMade?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.UserBlockUncheckedUpdateManyWithoutBlockedNestedInput
+  reportsMade?: Prisma.UserReportUncheckedUpdateManyWithoutReporterNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  actionsMade: number
+  actionsReceived: number
+  matchesAsLow: number
+  matchesAsHigh: number
+  blocksMade: number
+  blocksReceived: number
+  reportsMade: number
+  reportsReceived: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  actionsMade?: boolean | UserCountOutputTypeCountActionsMadeArgs
+  actionsReceived?: boolean | UserCountOutputTypeCountActionsReceivedArgs
+  matchesAsLow?: boolean | UserCountOutputTypeCountMatchesAsLowArgs
+  matchesAsHigh?: boolean | UserCountOutputTypeCountMatchesAsHighArgs
+  blocksMade?: boolean | UserCountOutputTypeCountBlocksMadeArgs
+  blocksReceived?: boolean | UserCountOutputTypeCountBlocksReceivedArgs
+  reportsMade?: boolean | UserCountOutputTypeCountReportsMadeArgs
+  reportsReceived?: boolean | UserCountOutputTypeCountReportsReceivedArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountActionsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DiscoveryActionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountActionsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DiscoveryActionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMatchesAsLowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MatchWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMatchesAsHighArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MatchWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBlocksMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserBlockWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBlocksReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserBlockWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserReportWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -724,11 +2189,23 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   onboardingRevision?: boolean
   onboardingCompletedAt?: boolean
   discoveryEnabled?: boolean
+  matchingEnabledAt?: boolean
+  suspendedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   housingPreference?: boolean | Prisma.User$housingPreferenceArgs<ExtArgs>
   lifestylePreference?: boolean | Prisma.User$lifestylePreferenceArgs<ExtArgs>
+  flatListing?: boolean | Prisma.User$flatListingArgs<ExtArgs>
+  actionsMade?: boolean | Prisma.User$actionsMadeArgs<ExtArgs>
+  actionsReceived?: boolean | Prisma.User$actionsReceivedArgs<ExtArgs>
+  matchesAsLow?: boolean | Prisma.User$matchesAsLowArgs<ExtArgs>
+  matchesAsHigh?: boolean | Prisma.User$matchesAsHighArgs<ExtArgs>
+  blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
+  blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
+  reportsMade?: boolean | Prisma.User$reportsMadeArgs<ExtArgs>
+  reportsReceived?: boolean | Prisma.User$reportsReceivedArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -738,6 +2215,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   onboardingRevision?: boolean
   onboardingCompletedAt?: boolean
   discoveryEnabled?: boolean
+  matchingEnabledAt?: boolean
+  suspendedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -749,6 +2228,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   onboardingRevision?: boolean
   onboardingCompletedAt?: boolean
   discoveryEnabled?: boolean
+  matchingEnabledAt?: boolean
+  suspendedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -760,15 +2241,27 @@ export type UserSelectScalar = {
   onboardingRevision?: boolean
   onboardingCompletedAt?: boolean
   discoveryEnabled?: boolean
+  matchingEnabledAt?: boolean
+  suspendedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkUserId" | "housingIntent" | "onboardingRevision" | "onboardingCompletedAt" | "discoveryEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkUserId" | "housingIntent" | "onboardingRevision" | "onboardingCompletedAt" | "discoveryEnabled" | "matchingEnabledAt" | "suspendedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   housingPreference?: boolean | Prisma.User$housingPreferenceArgs<ExtArgs>
   lifestylePreference?: boolean | Prisma.User$lifestylePreferenceArgs<ExtArgs>
+  flatListing?: boolean | Prisma.User$flatListingArgs<ExtArgs>
+  actionsMade?: boolean | Prisma.User$actionsMadeArgs<ExtArgs>
+  actionsReceived?: boolean | Prisma.User$actionsReceivedArgs<ExtArgs>
+  matchesAsLow?: boolean | Prisma.User$matchesAsLowArgs<ExtArgs>
+  matchesAsHigh?: boolean | Prisma.User$matchesAsHighArgs<ExtArgs>
+  blocksMade?: boolean | Prisma.User$blocksMadeArgs<ExtArgs>
+  blocksReceived?: boolean | Prisma.User$blocksReceivedArgs<ExtArgs>
+  reportsMade?: boolean | Prisma.User$reportsMadeArgs<ExtArgs>
+  reportsReceived?: boolean | Prisma.User$reportsReceivedArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -779,6 +2272,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profile: Prisma.$ProfilePayload<ExtArgs> | null
     housingPreference: Prisma.$HousingPreferencePayload<ExtArgs> | null
     lifestylePreference: Prisma.$LifestylePreferencePayload<ExtArgs> | null
+    flatListing: Prisma.$FlatListingPayload<ExtArgs> | null
+    actionsMade: Prisma.$DiscoveryActionPayload<ExtArgs>[]
+    actionsReceived: Prisma.$DiscoveryActionPayload<ExtArgs>[]
+    matchesAsLow: Prisma.$MatchPayload<ExtArgs>[]
+    matchesAsHigh: Prisma.$MatchPayload<ExtArgs>[]
+    blocksMade: Prisma.$UserBlockPayload<ExtArgs>[]
+    blocksReceived: Prisma.$UserBlockPayload<ExtArgs>[]
+    reportsMade: Prisma.$UserReportPayload<ExtArgs>[]
+    reportsReceived: Prisma.$UserReportPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -787,6 +2289,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     onboardingRevision: number
     onboardingCompletedAt: Date | null
     discoveryEnabled: boolean
+    matchingEnabledAt: Date | null
+    suspendedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1186,6 +2690,15 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   housingPreference<T extends Prisma.User$housingPreferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$housingPreferenceArgs<ExtArgs>>): Prisma.Prisma__HousingPreferenceClient<runtime.Types.Result.GetResult<Prisma.$HousingPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   lifestylePreference<T extends Prisma.User$lifestylePreferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lifestylePreferenceArgs<ExtArgs>>): Prisma.Prisma__LifestylePreferenceClient<runtime.Types.Result.GetResult<Prisma.$LifestylePreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  flatListing<T extends Prisma.User$flatListingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$flatListingArgs<ExtArgs>>): Prisma.Prisma__FlatListingClient<runtime.Types.Result.GetResult<Prisma.$FlatListingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  actionsMade<T extends Prisma.User$actionsMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$actionsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscoveryActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  actionsReceived<T extends Prisma.User$actionsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$actionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscoveryActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  matchesAsLow<T extends Prisma.User$matchesAsLowArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$matchesAsLowArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  matchesAsHigh<T extends Prisma.User$matchesAsHighArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$matchesAsHighArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  blocksMade<T extends Prisma.User$blocksMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  blocksReceived<T extends Prisma.User$blocksReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blocksReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsMade<T extends Prisma.User$reportsMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsReceived<T extends Prisma.User$reportsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1221,6 +2734,8 @@ export interface UserFieldRefs {
   readonly onboardingRevision: Prisma.FieldRef<"User", 'Int'>
   readonly onboardingCompletedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly discoveryEnabled: Prisma.FieldRef<"User", 'Boolean'>
+  readonly matchingEnabledAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly suspendedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1670,6 +3185,217 @@ export type User$lifestylePreferenceArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.LifestylePreferenceInclude<ExtArgs> | null
   where?: Prisma.LifestylePreferenceWhereInput
+}
+
+/**
+ * User.flatListing
+ */
+export type User$flatListingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FlatListing
+   */
+  select?: Prisma.FlatListingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FlatListing
+   */
+  omit?: Prisma.FlatListingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FlatListingInclude<ExtArgs> | null
+  where?: Prisma.FlatListingWhereInput
+}
+
+/**
+ * User.actionsMade
+ */
+export type User$actionsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DiscoveryAction
+   */
+  select?: Prisma.DiscoveryActionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DiscoveryAction
+   */
+  omit?: Prisma.DiscoveryActionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiscoveryActionInclude<ExtArgs> | null
+  where?: Prisma.DiscoveryActionWhereInput
+  orderBy?: Prisma.DiscoveryActionOrderByWithRelationInput | Prisma.DiscoveryActionOrderByWithRelationInput[]
+  cursor?: Prisma.DiscoveryActionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DiscoveryActionScalarFieldEnum | Prisma.DiscoveryActionScalarFieldEnum[]
+}
+
+/**
+ * User.actionsReceived
+ */
+export type User$actionsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DiscoveryAction
+   */
+  select?: Prisma.DiscoveryActionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DiscoveryAction
+   */
+  omit?: Prisma.DiscoveryActionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DiscoveryActionInclude<ExtArgs> | null
+  where?: Prisma.DiscoveryActionWhereInput
+  orderBy?: Prisma.DiscoveryActionOrderByWithRelationInput | Prisma.DiscoveryActionOrderByWithRelationInput[]
+  cursor?: Prisma.DiscoveryActionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DiscoveryActionScalarFieldEnum | Prisma.DiscoveryActionScalarFieldEnum[]
+}
+
+/**
+ * User.matchesAsLow
+ */
+export type User$matchesAsLowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Match
+   */
+  select?: Prisma.MatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Match
+   */
+  omit?: Prisma.MatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MatchInclude<ExtArgs> | null
+  where?: Prisma.MatchWhereInput
+  orderBy?: Prisma.MatchOrderByWithRelationInput | Prisma.MatchOrderByWithRelationInput[]
+  cursor?: Prisma.MatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MatchScalarFieldEnum | Prisma.MatchScalarFieldEnum[]
+}
+
+/**
+ * User.matchesAsHigh
+ */
+export type User$matchesAsHighArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Match
+   */
+  select?: Prisma.MatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Match
+   */
+  omit?: Prisma.MatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MatchInclude<ExtArgs> | null
+  where?: Prisma.MatchWhereInput
+  orderBy?: Prisma.MatchOrderByWithRelationInput | Prisma.MatchOrderByWithRelationInput[]
+  cursor?: Prisma.MatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MatchScalarFieldEnum | Prisma.MatchScalarFieldEnum[]
+}
+
+/**
+ * User.blocksMade
+ */
+export type User$blocksMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserBlock
+   */
+  select?: Prisma.UserBlockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserBlock
+   */
+  omit?: Prisma.UserBlockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserBlockInclude<ExtArgs> | null
+  where?: Prisma.UserBlockWhereInput
+  orderBy?: Prisma.UserBlockOrderByWithRelationInput | Prisma.UserBlockOrderByWithRelationInput[]
+  cursor?: Prisma.UserBlockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserBlockScalarFieldEnum | Prisma.UserBlockScalarFieldEnum[]
+}
+
+/**
+ * User.blocksReceived
+ */
+export type User$blocksReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserBlock
+   */
+  select?: Prisma.UserBlockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserBlock
+   */
+  omit?: Prisma.UserBlockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserBlockInclude<ExtArgs> | null
+  where?: Prisma.UserBlockWhereInput
+  orderBy?: Prisma.UserBlockOrderByWithRelationInput | Prisma.UserBlockOrderByWithRelationInput[]
+  cursor?: Prisma.UserBlockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserBlockScalarFieldEnum | Prisma.UserBlockScalarFieldEnum[]
+}
+
+/**
+ * User.reportsMade
+ */
+export type User$reportsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
+}
+
+/**
+ * User.reportsReceived
+ */
+export type User$reportsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserReport
+   */
+  select?: Prisma.UserReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserReport
+   */
+  omit?: Prisma.UserReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserReportInclude<ExtArgs> | null
+  where?: Prisma.UserReportWhereInput
+  orderBy?: Prisma.UserReportOrderByWithRelationInput | Prisma.UserReportOrderByWithRelationInput[]
+  cursor?: Prisma.UserReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
 }
 
 /**

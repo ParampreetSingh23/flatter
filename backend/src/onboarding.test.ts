@@ -47,16 +47,19 @@ try {
   assert.equal((await call(b, "PATCH", "/lifestyle", { revision: 0 })).status, 422);
 
   // under-18 rejected and not persisted
-  const kid = { revision: 1, displayName: "  Kid ", birthDate: "2100-01-01", occupation: "STUDENT", photoAction: "keep" };
+  const kid = { revision: 1, displayName: "  Kid ", birthDate: "2100-01-01", gender: "WOMAN", occupation: "STUDENT", photoAction: "keep" };
   assert.equal((await call(a, "PATCH", "/profile", kid)).status, 422); // future
   const today = new Date().getFullYear();
   assert.equal((await call(a, "PATCH", "/profile", { ...kid, birthDate: `${today - 10}-01-01` })).json.error.code, "AGE_RESTRICTED");
-  assert.equal(await db.profile.count(), 0);
+  assert.equal(await db.profile.count({ where: { user: { clerkUserId: a } } }), 0);
 
   s = (await call(a, "PATCH", "/profile", { ...kid, birthDate: "2000-05-17", bio: "   " })).json;
   assert.equal(s.revision, 2);
   assert.equal(s.profile.displayName, "Kid");
   assert.equal(s.profile.bio, null);
+  assert.equal(s.profile.gender, "WOMAN");
+  assert.equal((await call(a, "PATCH", "/profile", { ...kid, birthDate: "2000-05-17", revision: 2, gender: "ROBOT" })).status, 422);
+  assert.equal((await call(a, "PATCH", "/profile", { ...{ ...kid, gender: undefined }, birthDate: "2000-05-17", revision: 2 })).status, 422, "gender required");
   assert.equal(s.nextStep, "housing");
 
   // stale revision
@@ -64,12 +67,16 @@ try {
 
   // housing: NEED_ROOM
   const housing = {
-    revision: 2, city: "Pune", preferredLocations: ["Kothrud", "Kothrud", "Baner"], locationsFlexible: false,
+    revision: 2, city: "delhi", preferredLocations: ["delhi.saket", "delhi.saket", "delhi.dwarka"], locationsFlexible: false,
     monthlyRentMinPaise: 800000, monthlyRentMaxPaise: 1200000, moveInDate: null, moveInFlexible: true,
   };
   s = (await call(a, "PATCH", "/housing", housing)).json;
-  assert.deepEqual(s.housing.preferredLocations, ["Kothrud", "Baner"]);
-  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, preferredLocations: ["Gachibowli"] })).status, 422);
+  assert.deepEqual(s.housing.preferredLocations, ["delhi.saket", "delhi.dwarka"]);
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, preferredLocations: ["noida.sector-62"] })).status, 422); // other city's locality
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, city: "Delhi" })).status, 422); // label, not ID
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, city: "pune", preferredLocations: [] })).status, 422); // unsupported city
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, preferredLocations: ["delhi.saket", "delhi.dwarka", "delhi.hauz-khas", "delhi.munirka", "delhi.kalkaji", "delhi.patel-nagar"] })).status, 422); // >5
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, locationsFlexible: true })).status, 422); // flexible needs empty list
   assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, moveInFlexible: false })).status, 422); // no date
   assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, monthlyRentMinPaise: 2000000 })).status, 422);
   assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 3, rogue: 1 })).status, 422);
@@ -89,16 +96,18 @@ try {
   s = (await call(a, "PATCH", "/flatmate", {
     revision: 4, acceptedSleepSchedules: all, acceptedCleanlinessLevels: ["REGULAR", "VERY_TIDY"],
     acceptedFoodHabits: ["VEGETARIAN", "VEGAN"], acceptedSmokingHabits: ["NON_SMOKER"],
-    flatmatePetPreference: "NO_PREFERENCE", acceptedGuestFrequencies: ["RARELY", "OCCASIONALLY"],
+    flatmatePetPreference: "NO_PREFERENCE", acceptedGuestFrequencies: ["RARELY", "OCCASIONALLY"], acceptedGenders: ["WOMAN", "NON_BINARY"],
   })).json;
+  assert.deepEqual(s.flatmate.acceptedGenders, ["WOMAN", "NON_BINARY"]);
   assert.equal(s.nextStep, "review");
 
-  // intent change clears housing
+  // intent change revalidates (keeps) housing: two localities + a rent range is invalid for HAVE_ROOM
   s = (await call(a, "PATCH", "/intent", { revision: 5, housingIntent: "HAVE_ROOM" })).json;
   assert.equal(s.nextStep, "housing");
-  assert.equal(s.housing, null);
+  assert.deepEqual(s.housing.preferredLocations, ["delhi.saket", "delhi.dwarka"]);
+  assert.equal((await call(a, "PATCH", "/housing", { ...housing, revision: 6, locationsFlexible: true, preferredLocations: [] })).status, 422);
   s = (await call(a, "PATCH", "/housing", {
-    ...housing, revision: 6, preferredLocations: ["Baner"], monthlyRentMaxPaise: 800000,
+    ...housing, revision: 6, preferredLocations: ["delhi.saket"], monthlyRentMaxPaise: 800000,
   })).json;
   assert.equal(s.nextStep, "review");
 

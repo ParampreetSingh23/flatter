@@ -8,7 +8,7 @@ export interface OnboardingState {
   discoveryEnabled: boolean;
   housingIntent: Intent | null;
   age: number | null;
-  profile: { displayName: string | null; birthDate: string | null; occupation: string | null; bio: string | null; avatarUrl: string | null } | null;
+  profile: { displayName: string | null; birthDate: string | null; gender: string | null; occupation: string | null; bio: string | null; avatarUrl: string | null } | null;
   housing: {
     city: string | null; preferredLocations: string[]; locationsFlexible: boolean | null;
     monthlyRentMinPaise: number | null; monthlyRentMaxPaise: number | null; moveInDate: string | null; moveInFlexible: boolean | null;
@@ -19,11 +19,10 @@ export interface OnboardingState {
   } | null;
   flatmate: {
     acceptedSleepSchedules: string[]; acceptedCleanlinessLevels: string[]; acceptedFoodHabits: string[];
-    acceptedSmokingHabits: string[]; flatmatePetPreference: string | null; acceptedGuestFrequencies: string[];
+    acceptedSmokingHabits: string[]; flatmatePetPreference: string | null; acceptedGuestFrequencies: string[]; acceptedGenders: string[];
   } | null;
   stepValidity: Record<Exclude<Step, "review">, boolean>;
   nextStep: Step;
-  cities: { name: string; localities: string[] }[];
 }
 
 export type Opt = { value: string; label: string; desc?: string };
@@ -51,6 +50,14 @@ export const GUESTS: Opt[] = [
 export const PETS: Opt[] = [
   { value: "OK_WITH_PETS", label: "Okay with pets" }, { value: "NO_PETS", label: "No pets" }, { value: "NO_PREFERENCE", label: "No preference" },
 ];
+export const GENDERS: Opt[] = [
+  { value: "WOMAN", label: "Woman" }, { value: "MAN", label: "Man" },
+  { value: "NON_BINARY", label: "Non-binary" }, { value: "PREFER_NOT_TO_SAY", label: "Prefer not to say" },
+];
+export const FLATMATE_GENDERS: Opt[] = [
+  { value: "WOMAN", label: "Women" }, { value: "MAN", label: "Men" },
+  { value: "NON_BINARY", label: "Non-binary people" }, { value: "PREFER_NOT_TO_SAY", label: "People who prefer not to say" },
+];
 export const OCCUPATIONS: Opt[] = [
   { value: "STUDENT", label: "Student" }, { value: "WORKING_PROFESSIONAL", label: "Working professional" },
   { value: "SELF_EMPLOYED", label: "Self-employed" }, { value: "OTHER", label: "Other" },
@@ -61,3 +68,11 @@ export const INTENTS: (Opt & { value: Intent })[] = [
   { value: "NEED_ROOM", label: "I need a room", desc: "Discover available rooms in shared apartments." },
 ];
 export const label = (opts: Opt[], v: string | null | undefined) => opts.find((o) => o.value === v)?.label ?? "—";
+
+export const WORK: Opt[] = [
+  { value: "DAYTIME", label: "Daytime", desc: "Out or busy during the day, home in the evening." },
+  { value: "EVENING", label: "Evening", desc: "Classes or work that run into the evening." },
+  { value: "NIGHT", label: "Night", desc: "Work or study overnight." },
+  { value: "ROTATING", label: "Rotating shifts", desc: "Hours change from week to week." },
+  { value: "FLEXIBLE", label: "Flexible", desc: "No fixed routine." },
+];

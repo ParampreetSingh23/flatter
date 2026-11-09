@@ -4,6 +4,8 @@ Status: proposed implementation plan and Prisma schema, prepared 9 November 2026
 
 Schema source: [`backend/prisma/schema.prisma`](../backend/prisma/schema.prisma). All four models live in this one file under the backend because Express owns application data. Do not create a second schema in the frontend or repository root. The existing [database document](./databse.md) is updated to point here.
 
+Post-onboarding extension: the [flat-listing plan](./flat-listing.md) adds a future dashboard and independent Draft/Published/Paused/Closed listing flow. Flat photos and listing completeness never gate personal onboarding. Its dashboard destination supersedes this document's initial `/route` destination only when that separate feature is implemented; personal avatars remain optional Clerk images, while flat photos will use private Cloudflare R2 storage.
+
 ## 1. Decisions from the grill-me interview
 
 | Question | Confirmed decision |
@@ -58,7 +60,7 @@ Supporting text: **We'll personalize your experience based on what you need.**
 
 Use accessible radio cards, no default selection. Continue requires exactly one choice. This save creates/upserts the application `User` from the verified Clerk identity.
 
-Changing intent during a draft retains personal and lifestyle answers. Clear/revalidate intent-specific housing data, explain the changed labels, and make the user confirm the housing step again. No room listing is created.
+Changing intent during a draft retains personal and lifestyle answers. Keep the housing answer and revalidate it under the new intent (HAVE_ROOM needs exactly one locality and one rent), so an incompatible answer returns the user to the housing step. No room listing is created.
 
 ### Step 2 — About you
 
@@ -68,6 +70,7 @@ Heading: **Tell us about yourself.**
 | --- | --- | --- |
 | What should we call you? | Yes | `Profile.displayName`; trim, 1–80 characters. Suggest Clerk's name but allow editing. Do not demand a legal name. |
 | Date of birth | Yes | `Profile.birthDate`, a date-only value. Derive age; do not store an age that goes stale. 18+ eligibility is enforced server-side. |
+| What is your gender? | Yes | `Profile.gender`: Woman, Man, Non-binary, Prefer not to say (`Gender` enum). "Prefer not to say" counts as answered. Self-reported; used for matching and may be shown on profile cards when discovery ships. No free text. |
 | What do you do? | Yes | `Profile.occupation`: Student, Working professional, Self-employed, Other. |
 | A little about you | No | `Profile.bio`; max 500 characters, whitespace-only becomes null. Render as plain text. |
 | Profile photo | No | `Profile.avatarUrl`; prefill a real Google/Clerk photo, allow Clerk upload/remove, otherwise initials. |
@@ -82,8 +85,8 @@ Heading: **Where would you like to live?** For `HAVE_ROOM`: **Tell us where your
 
 | Field | Required? | Rules |
 | --- | --- | --- |
-| City | Yes | One supported city. Store a canonical city value from a small curated launch list, not arbitrary spelling variants. Launch cities must be selected before building this control. |
-| Preferred locations | Yes, or explicit flexibility | For `NEED_ROOM`/`TEAM_UP`, choose 1–5 localities within the city, or “Anywhere in this city.” Deduplicate and validate against that city's curated list. No maps API required. |
+| City | Yes | Delhi NCR launch only: Delhi, Gurugram, Noida, Greater Noida, Ghaziabad or Faridabad. Store its canonical ID from the [location catalogue plan](./locations.md); do not accept free text. |
+| Preferred locations | Yes, or explicit flexibility | For `NEED_ROOM`/`TEAM_UP`, choose 1–5 listed localities within the selected city, or “Any supported area in this city.” Deduplicate and validate against the same authoritative backend catalogue. No maps API required. |
 | Flat locality | Yes for `HAVE_ROOM` | Reuse `preferredLocations` with exactly one value and `locationsFlexible = false`; label it as current flat locality. No street address or precise coordinates collected. |
 | Monthly rent per person | Yes | INR minimum and maximum; exclude deposit, utilities and brokerage and say so. Persist integer paise, never floating-point money. |
 | Move-in date / Flexible | Yes | For `NEED_ROOM`/`TEAM_UP`, earliest desired move-in. For `HAVE_ROOM`, available-from date. Date-only, today or later when saved/completed; Flexible means no date. |
@@ -111,7 +114,7 @@ Each question is required with no preselected answer. Define helper text consist
 
 Heading: **What works for you in a flatmate?** Supporting text: **Your preferences can be different from your own habits.**
 
-Collect accepted sleep schedules, cleanliness levels, food habits, smoking habits, and guest frequencies as multi-selects. For each, allow an explicit “Any of these is fine,” which expands to all currently supported enum values. At least one accepted value per category is required. Empty means unanswered, not “anything.” Deduplicate choices. Do not prefill answers based on the user's own habits.
+Collect accepted sleep schedules, cleanliness levels, food habits, smoking habits, guest frequencies, and genders (`acceptedGenders`: Women, Men, Non-binary people, People who prefer not to say) as multi-selects. For each, allow an explicit “Any of these is fine,” which expands to all currently supported enum values. At least one accepted value per category is required. Empty means unanswered, not “anything.” Deduplicate choices. Do not prefill answers based on the user's own habits.
 
 For pets, ask **Are you comfortable living with someone who brings a pet?** Choose Okay with pets / No pets / No preference. This is separate from whether the user brings a pet. It concerns the flatmate bringing pets; “No pets” does not imply the user has no pet.
 
@@ -146,7 +149,7 @@ Remove the previous proposed `User.displayName`/`avatarUrl`; those now live excl
 
 ### Profile — personal information
 
-`userId` is both UUID primary key and FK to `User.id`. Columns: `displayName`, `birthDate`, `occupation`, `bio`, `avatarUrl`, `createdAt`, `updatedAt`.
+`userId` is both UUID primary key and FK to `User.id`. Columns: `displayName`, `birthDate`, `gender`, `occupation`, `bio`, `avatarUrl`, `createdAt`, `updatedAt`.
 
 ### HousingPreference — one current housing search context
 
@@ -154,7 +157,7 @@ Remove the previous proposed `User.displayName`/`avatarUrl`; those now live excl
 
 ### LifestylePreference — habits plus accepted flatmate habits
 
-`userId` is both PK and FK. Own habits: `sleepSchedule`, `cleanliness`, `foodHabit`, `smokingHabit`, `bringingPet`, `guestFrequency`. Accepted habits: `acceptedSleepSchedules`, `acceptedCleanlinessLevels`, `acceptedFoodHabits`, `acceptedSmokingHabits`, `flatmatePetPreference`, `acceptedGuestFrequencies`. Also `createdAt`, `updatedAt`.
+`userId` is both PK and FK. Own habits: `sleepSchedule`, `cleanliness`, `foodHabit`, `smokingHabit`, `bringingPet`, `guestFrequency`. Accepted habits: `acceptedSleepSchedules`, `acceptedCleanlinessLevels`, `acceptedFoodHabits`, `acceptedSmokingHabits`, `flatmatePetPreference`, `acceptedGuestFrequencies`, `acceptedGenders`. Also `createdAt`, `updatedAt`.
 
 Each dependent row is optional until its step is saved, and each user has at most one of each. Each FK uses `onDelete: Cascade` for these user-owned records. Primary/unique keys already index owner lookups; add no speculative matching/search indexes.
 
@@ -266,6 +269,7 @@ erDiagram
         uuid userId PK,FK
         text displayName
         date birthDate
+        enum gender
         enum occupation
         text bio
         text avatarUrl
@@ -294,6 +298,7 @@ erDiagram
         array acceptedSmokingHabits
         enum flatmatePetPreference
         array acceptedGuestFrequencies
+        array acceptedGenders
     }
 ```
 
@@ -373,7 +378,7 @@ flowchart LR
 - [Prisma 7.10.1 schema/configuration reference](https://github.com/prisma/orm/blob/7.10.1/README.md): generator output and connection configuration. Context7's general Prisma results mixed version generations, so the version-specific repository was checked before choosing schema syntax.
 - [Prisma one-to-one relations](https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/one-to-one-relations) and [transactions](https://www.prisma.io/docs/orm/prisma-client/queries/transactions): consult the pinned version when implementing actual queries.
 
-The interview and source review used the explicitly requested [grill-me skill](</Users/pampi/.agents/skills/grill-me/SKILL.md>). `prisma validate` with Prisma 7.10.1 passed for the proposed schema without a database connection; the CLI was run through a temporary npm execution, without changing project dependencies. No frontend/backend behavior, dependency manifests, environment values, remote resources or database data are changed by this plan. Launch cities, exact locality choices, and any future hard-filter/score policy remain implementation/product decisions; no map provider, scoring system, property tables, or application upload service has been added.
+The interview and source review used the explicitly requested [grill-me skill](</Users/pampi/.agents/skills/grill-me/SKILL.md>). `prisma validate` with Prisma 7.10.1 passed for the proposed schema without a database connection; the CLI was run through a temporary npm execution, without changing project dependencies. No frontend/backend behavior, dependency manifests, environment values, remote resources or database data are changed by this plan. The [Delhi NCR location plan](./locations.md) now defines the proposed city/locality allowlist; future hard-filter/score policy remains undecided. No map provider, scoring system, property tables, or application upload service has been added.
 
 ## 13. Final numbered sequence — the entire onboarding feature
 
@@ -447,7 +452,7 @@ sequenceDiagram
                         Person->>UI: One actual flat locality, expected rent, available date or Flexible
                         Note over UI,API: Store rent min=max; no room listing or exact street address
                     else TEAM_UP or NEED_ROOM
-                        Person->>UI: Up to five localities or Anywhere, rent range, move-in date or Flexible
+                        Person->>UI: Up to five listed localities or Any supported area in the city, rent range and timing
                     end
                     UI->>API: PATCH /housing with integer paise amounts and revision
                     API->>API: Validate city/localities, intent, range, date and flexibility

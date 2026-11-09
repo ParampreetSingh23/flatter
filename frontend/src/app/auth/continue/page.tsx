@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
+import { Spinner } from "@/components/spinner";
 import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,7 +10,7 @@ import type { OnboardingState } from "@/lib/onboarding-types";
 
 export default function Continue() {
   return (
-    <Suspense fallback={<Shell title="Getting things ready…" />}>
+    <Suspense fallback={<main className="grain flex min-h-screen items-center justify-center"><Spinner tone="light" label="Getting things ready" className="size-14" /></main>}>
       <Decide />
     </Suspense>
   );
@@ -32,7 +33,7 @@ async function Decide() {
       </Shell>
     );
   }
-  redirect(state.onboardingCompletedAt ? "/route" : `/onboarding?step=${state.nextStep}`);
+  redirect(state.onboardingCompletedAt ? "/dashboard" : `/onboarding?step=${state.nextStep}`);
 }
 
 function Shell({ title, children }: { title: string; children?: React.ReactNode }) {

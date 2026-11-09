@@ -1,4 +1,5 @@
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export const btnPrimary =
@@ -9,7 +10,7 @@ export const btnSecondary =
 // Request-dependent: must sit in Suspense; fallback keeps layout size stable.
 export function NavAuth() {
   return (
-    <Suspense fallback={<div className="h-10 w-44" />}>
+    <Suspense fallback={<div className="h-10 w-52" />}>
       <Show when="signed-out">
         <div className="flex items-center gap-2">
           <SignInButton mode="modal" forceRedirectUrl="/auth/continue">
@@ -23,7 +24,10 @@ export function NavAuth() {
         </div>
       </Show>
       <Show when="signed-in">
-        <UserButton />
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard" className={btnPrimary}>Dashboard</Link>
+          <UserButton />
+        </div>
       </Show>
     </Suspense>
   );
@@ -36,6 +40,9 @@ export function SignUpCta() {
         <SignUpButton mode="modal" forceRedirectUrl="/auth/continue">
           <button className={btnPrimary}>Get started</button>
         </SignUpButton>
+      </Show>
+      <Show when="signed-in">
+        <Link href="/dashboard" className={btnPrimary}>Go to dashboard</Link>
       </Show>
     </Suspense>
   );

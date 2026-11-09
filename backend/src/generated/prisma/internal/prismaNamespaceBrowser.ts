@@ -54,7 +54,13 @@ export const ModelName = {
   User: 'User',
   Profile: 'Profile',
   HousingPreference: 'HousingPreference',
-  LifestylePreference: 'LifestylePreference'
+  LifestylePreference: 'LifestylePreference',
+  FlatListing: 'FlatListing',
+  FlatPhoto: 'FlatPhoto',
+  DiscoveryAction: 'DiscoveryAction',
+  Match: 'Match',
+  UserBlock: 'UserBlock',
+  UserReport: 'UserReport'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,6 +86,8 @@ export const UserScalarFieldEnum = {
   onboardingRevision: 'onboardingRevision',
   onboardingCompletedAt: 'onboardingCompletedAt',
   discoveryEnabled: 'discoveryEnabled',
+  matchingEnabledAt: 'matchingEnabledAt',
+  suspendedAt: 'suspendedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -89,8 +97,11 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const ProfileScalarFieldEnum = {
   userId: 'userId',
+  publicId: 'publicId',
+  version: 'version',
   displayName: 'displayName',
   birthDate: 'birthDate',
+  gender: 'gender',
   occupation: 'occupation',
   bio: 'bio',
   avatarUrl: 'avatarUrl',
@@ -109,6 +120,7 @@ export const HousingPreferenceScalarFieldEnum = {
   monthlyRentMinPaise: 'monthlyRentMinPaise',
   monthlyRentMaxPaise: 'monthlyRentMaxPaise',
   moveInDate: 'moveInDate',
+  moveInLatestDate: 'moveInLatestDate',
   moveInFlexible: 'moveInFlexible',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -131,11 +143,120 @@ export const LifestylePreferenceScalarFieldEnum = {
   acceptedSmokingHabits: 'acceptedSmokingHabits',
   flatmatePetPreference: 'flatmatePetPreference',
   acceptedGuestFrequencies: 'acceptedGuestFrequencies',
+  acceptedGenders: 'acceptedGenders',
+  workStudySchedule: 'workStudySchedule',
+  acceptedWorkStudySchedules: 'acceptedWorkStudySchedules',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type LifestylePreferenceScalarFieldEnum = (typeof LifestylePreferenceScalarFieldEnum)[keyof typeof LifestylePreferenceScalarFieldEnum]
+
+
+export const FlatListingScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  status: 'status',
+  version: 'version',
+  title: 'title',
+  description: 'description',
+  cityId: 'cityId',
+  localityId: 'localityId',
+  bedrooms: 'bedrooms',
+  availablePlaces: 'availablePlaces',
+  roomType: 'roomType',
+  furnishing: 'furnishing',
+  monthlyRentPaise: 'monthlyRentPaise',
+  depositPaise: 'depositPaise',
+  chargesNote: 'chargesNote',
+  availableFrom: 'availableFrom',
+  availableFlexible: 'availableFlexible',
+  permissionConfirmedAt: 'permissionConfirmedAt',
+  publishedAt: 'publishedAt',
+  coverPhotoId: 'coverPhotoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FlatListingScalarFieldEnum = (typeof FlatListingScalarFieldEnum)[keyof typeof FlatListingScalarFieldEnum]
+
+
+export const FlatPhotoScalarFieldEnum = {
+  id: 'id',
+  listingId: 'listingId',
+  stagingKey: 'stagingKey',
+  finalKey: 'finalKey',
+  state: 'state',
+  category: 'category',
+  sortOrder: 'sortOrder',
+  mimeType: 'mimeType',
+  bytes: 'bytes',
+  width: 'width',
+  height: 'height',
+  contentHash: 'contentHash',
+  originalName: 'originalName',
+  uploadExpiresAt: 'uploadExpiresAt',
+  processingLeaseUntil: 'processingLeaseUntil',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FlatPhotoScalarFieldEnum = (typeof FlatPhotoScalarFieldEnum)[keyof typeof FlatPhotoScalarFieldEnum]
+
+
+export const DiscoveryActionScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  targetId: 'targetId',
+  kind: 'kind',
+  invalidatedAt: 'invalidatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DiscoveryActionScalarFieldEnum = (typeof DiscoveryActionScalarFieldEnum)[keyof typeof DiscoveryActionScalarFieldEnum]
+
+
+export const MatchScalarFieldEnum = {
+  id: 'id',
+  userLowId: 'userLowId',
+  userHighId: 'userHighId',
+  scoreAtMatch: 'scoreAtMatch',
+  scorePolicy: 'scorePolicy',
+  endedAt: 'endedAt',
+  endedById: 'endedById',
+  endReason: 'endReason',
+  createdAt: 'createdAt'
+} as const
+
+export type MatchScalarFieldEnum = (typeof MatchScalarFieldEnum)[keyof typeof MatchScalarFieldEnum]
+
+
+export const UserBlockScalarFieldEnum = {
+  id: 'id',
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserBlockScalarFieldEnum = (typeof UserBlockScalarFieldEnum)[keyof typeof UserBlockScalarFieldEnum]
+
+
+export const UserReportScalarFieldEnum = {
+  id: 'id',
+  reporterId: 'reporterId',
+  targetId: 'targetId',
+  reason: 'reason',
+  details: 'details',
+  matchId: 'matchId',
+  listingId: 'listingId',
+  snapshot: 'snapshot',
+  status: 'status',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserReportScalarFieldEnum = (typeof UserReportScalarFieldEnum)[keyof typeof UserReportScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -144,6 +265,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -160,4 +289,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

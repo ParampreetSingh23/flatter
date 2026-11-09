@@ -43,6 +43,7 @@ export type HousingPreferenceMinAggregateOutputType = {
   monthlyRentMinPaise: number | null
   monthlyRentMaxPaise: number | null
   moveInDate: Date | null
+  moveInLatestDate: Date | null
   moveInFlexible: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +56,7 @@ export type HousingPreferenceMaxAggregateOutputType = {
   monthlyRentMinPaise: number | null
   monthlyRentMaxPaise: number | null
   moveInDate: Date | null
+  moveInLatestDate: Date | null
   moveInFlexible: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -68,6 +70,7 @@ export type HousingPreferenceCountAggregateOutputType = {
   monthlyRentMinPaise: number
   monthlyRentMaxPaise: number
   moveInDate: number
+  moveInLatestDate: number
   moveInFlexible: number
   createdAt: number
   updatedAt: number
@@ -92,6 +95,7 @@ export type HousingPreferenceMinAggregateInputType = {
   monthlyRentMinPaise?: true
   monthlyRentMaxPaise?: true
   moveInDate?: true
+  moveInLatestDate?: true
   moveInFlexible?: true
   createdAt?: true
   updatedAt?: true
@@ -104,6 +108,7 @@ export type HousingPreferenceMaxAggregateInputType = {
   monthlyRentMinPaise?: true
   monthlyRentMaxPaise?: true
   moveInDate?: true
+  moveInLatestDate?: true
   moveInFlexible?: true
   createdAt?: true
   updatedAt?: true
@@ -117,6 +122,7 @@ export type HousingPreferenceCountAggregateInputType = {
   monthlyRentMinPaise?: true
   monthlyRentMaxPaise?: true
   moveInDate?: true
+  moveInLatestDate?: true
   moveInFlexible?: true
   createdAt?: true
   updatedAt?: true
@@ -217,6 +223,7 @@ export type HousingPreferenceGroupByOutputType = {
   monthlyRentMinPaise: number | null
   monthlyRentMaxPaise: number | null
   moveInDate: Date | null
+  moveInLatestDate: Date | null
   moveInFlexible: boolean | null
   createdAt: Date
   updatedAt: Date
@@ -253,6 +260,7 @@ export type HousingPreferenceWhereInput = {
   monthlyRentMinPaise?: Prisma.IntNullableFilter<"HousingPreference"> | number | null
   monthlyRentMaxPaise?: Prisma.IntNullableFilter<"HousingPreference"> | number | null
   moveInDate?: Prisma.DateTimeNullableFilter<"HousingPreference"> | Date | string | null
+  moveInLatestDate?: Prisma.DateTimeNullableFilter<"HousingPreference"> | Date | string | null
   moveInFlexible?: Prisma.BoolNullableFilter<"HousingPreference"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"HousingPreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HousingPreference"> | Date | string
@@ -267,6 +275,7 @@ export type HousingPreferenceOrderByWithRelationInput = {
   monthlyRentMinPaise?: Prisma.SortOrderInput | Prisma.SortOrder
   monthlyRentMaxPaise?: Prisma.SortOrderInput | Prisma.SortOrder
   moveInDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  moveInLatestDate?: Prisma.SortOrderInput | Prisma.SortOrder
   moveInFlexible?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -284,6 +293,7 @@ export type HousingPreferenceWhereUniqueInput = Prisma.AtLeast<{
   monthlyRentMinPaise?: Prisma.IntNullableFilter<"HousingPreference"> | number | null
   monthlyRentMaxPaise?: Prisma.IntNullableFilter<"HousingPreference"> | number | null
   moveInDate?: Prisma.DateTimeNullableFilter<"HousingPreference"> | Date | string | null
+  moveInLatestDate?: Prisma.DateTimeNullableFilter<"HousingPreference"> | Date | string | null
   moveInFlexible?: Prisma.BoolNullableFilter<"HousingPreference"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"HousingPreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HousingPreference"> | Date | string
@@ -298,6 +308,7 @@ export type HousingPreferenceOrderByWithAggregationInput = {
   monthlyRentMinPaise?: Prisma.SortOrderInput | Prisma.SortOrder
   monthlyRentMaxPaise?: Prisma.SortOrderInput | Prisma.SortOrder
   moveInDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  moveInLatestDate?: Prisma.SortOrderInput | Prisma.SortOrder
   moveInFlexible?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -319,6 +330,7 @@ export type HousingPreferenceScalarWhereWithAggregatesInput = {
   monthlyRentMinPaise?: Prisma.IntNullableWithAggregatesFilter<"HousingPreference"> | number | null
   monthlyRentMaxPaise?: Prisma.IntNullableWithAggregatesFilter<"HousingPreference"> | number | null
   moveInDate?: Prisma.DateTimeNullableWithAggregatesFilter<"HousingPreference"> | Date | string | null
+  moveInLatestDate?: Prisma.DateTimeNullableWithAggregatesFilter<"HousingPreference"> | Date | string | null
   moveInFlexible?: Prisma.BoolNullableWithAggregatesFilter<"HousingPreference"> | boolean | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"HousingPreference"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"HousingPreference"> | Date | string
@@ -331,6 +343,7 @@ export type HousingPreferenceCreateInput = {
   monthlyRentMinPaise?: number | null
   monthlyRentMaxPaise?: number | null
   moveInDate?: Date | string | null
+  moveInLatestDate?: Date | string | null
   moveInFlexible?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -345,6 +358,7 @@ export type HousingPreferenceUncheckedCreateInput = {
   monthlyRentMinPaise?: number | null
   monthlyRentMaxPaise?: number | null
   moveInDate?: Date | string | null
+  moveInLatestDate?: Date | string | null
   moveInFlexible?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -357,6 +371,7 @@ export type HousingPreferenceUpdateInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,6 +386,7 @@ export type HousingPreferenceUncheckedUpdateInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -384,6 +400,7 @@ export type HousingPreferenceCreateManyInput = {
   monthlyRentMinPaise?: number | null
   monthlyRentMaxPaise?: number | null
   moveInDate?: Date | string | null
+  moveInLatestDate?: Date | string | null
   moveInFlexible?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -396,6 +413,7 @@ export type HousingPreferenceUpdateManyMutationInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -409,6 +427,7 @@ export type HousingPreferenceUncheckedUpdateManyInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -435,6 +454,7 @@ export type HousingPreferenceCountOrderByAggregateInput = {
   monthlyRentMinPaise?: Prisma.SortOrder
   monthlyRentMaxPaise?: Prisma.SortOrder
   moveInDate?: Prisma.SortOrder
+  moveInLatestDate?: Prisma.SortOrder
   moveInFlexible?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -452,6 +472,7 @@ export type HousingPreferenceMaxOrderByAggregateInput = {
   monthlyRentMinPaise?: Prisma.SortOrder
   monthlyRentMaxPaise?: Prisma.SortOrder
   moveInDate?: Prisma.SortOrder
+  moveInLatestDate?: Prisma.SortOrder
   moveInFlexible?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -464,6 +485,7 @@ export type HousingPreferenceMinOrderByAggregateInput = {
   monthlyRentMinPaise?: Prisma.SortOrder
   monthlyRentMaxPaise?: Prisma.SortOrder
   moveInDate?: Prisma.SortOrder
+  moveInLatestDate?: Prisma.SortOrder
   moveInFlexible?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -534,6 +556,7 @@ export type HousingPreferenceCreateWithoutUserInput = {
   monthlyRentMinPaise?: number | null
   monthlyRentMaxPaise?: number | null
   moveInDate?: Date | string | null
+  moveInLatestDate?: Date | string | null
   moveInFlexible?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -546,6 +569,7 @@ export type HousingPreferenceUncheckedCreateWithoutUserInput = {
   monthlyRentMinPaise?: number | null
   monthlyRentMaxPaise?: number | null
   moveInDate?: Date | string | null
+  moveInLatestDate?: Date | string | null
   moveInFlexible?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -574,6 +598,7 @@ export type HousingPreferenceUpdateWithoutUserInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -586,6 +611,7 @@ export type HousingPreferenceUncheckedUpdateWithoutUserInput = {
   monthlyRentMinPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   monthlyRentMaxPaise?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   moveInDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  moveInLatestDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   moveInFlexible?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -601,6 +627,7 @@ export type HousingPreferenceSelect<ExtArgs extends runtime.Types.Extensions.Int
   monthlyRentMinPaise?: boolean
   monthlyRentMaxPaise?: boolean
   moveInDate?: boolean
+  moveInLatestDate?: boolean
   moveInFlexible?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -615,6 +642,7 @@ export type HousingPreferenceSelectCreateManyAndReturn<ExtArgs extends runtime.T
   monthlyRentMinPaise?: boolean
   monthlyRentMaxPaise?: boolean
   moveInDate?: boolean
+  moveInLatestDate?: boolean
   moveInFlexible?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -629,6 +657,7 @@ export type HousingPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   monthlyRentMinPaise?: boolean
   monthlyRentMaxPaise?: boolean
   moveInDate?: boolean
+  moveInLatestDate?: boolean
   moveInFlexible?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -643,12 +672,13 @@ export type HousingPreferenceSelectScalar = {
   monthlyRentMinPaise?: boolean
   monthlyRentMaxPaise?: boolean
   moveInDate?: boolean
+  moveInLatestDate?: boolean
   moveInFlexible?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type HousingPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "city" | "preferredLocations" | "locationsFlexible" | "monthlyRentMinPaise" | "monthlyRentMaxPaise" | "moveInDate" | "moveInFlexible" | "createdAt" | "updatedAt", ExtArgs["result"]["housingPreference"]>
+export type HousingPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "city" | "preferredLocations" | "locationsFlexible" | "monthlyRentMinPaise" | "monthlyRentMaxPaise" | "moveInDate" | "moveInLatestDate" | "moveInFlexible" | "createdAt" | "updatedAt", ExtArgs["result"]["housingPreference"]>
 export type HousingPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -672,6 +702,7 @@ export type $HousingPreferencePayload<ExtArgs extends runtime.Types.Extensions.I
     monthlyRentMinPaise: number | null
     monthlyRentMaxPaise: number | null
     moveInDate: Date | null
+    moveInLatestDate: Date | null
     moveInFlexible: boolean | null
     createdAt: Date
     updatedAt: Date
@@ -1106,6 +1137,7 @@ export interface HousingPreferenceFieldRefs {
   readonly monthlyRentMinPaise: Prisma.FieldRef<"HousingPreference", 'Int'>
   readonly monthlyRentMaxPaise: Prisma.FieldRef<"HousingPreference", 'Int'>
   readonly moveInDate: Prisma.FieldRef<"HousingPreference", 'DateTime'>
+  readonly moveInLatestDate: Prisma.FieldRef<"HousingPreference", 'DateTime'>
   readonly moveInFlexible: Prisma.FieldRef<"HousingPreference", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"HousingPreference", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"HousingPreference", 'DateTime'>

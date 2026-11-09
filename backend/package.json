@@ -2,23 +2,39 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx src/app.test.ts && tsx src/onboarding.test.ts && tsx src/listings.test.ts && tsx src/profiles.test.ts && tsx src/matching-score.test.ts && tsx src/matching.test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1164.0",
+    "@aws-sdk/s3-request-presigner": "^3.1164.0",
+    "@clerk/express": "^2.1.88",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
     "cors": "^2.8.6",
     "dotenv": "^18.0.10",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "helmet": "^8.3.0",
+    "pg": "^8.23.1",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

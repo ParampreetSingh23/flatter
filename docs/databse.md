@@ -4,6 +4,8 @@ Status: proposal only. A proposed Prisma schema now exists at [`backend/prisma/s
 
 This file indexes the database design as the product grows. The current proposal covers `User`, `Profile`, `HousingPreference`, and `LifestylePreference`. See the [complete onboarding plan](./onbaordig.md) for field rules, tables, API contracts, interview decisions and diagrams. The database remains Neon PostgreSQL, accessed by the Express backend through Prisma.
 
+Separate next-feature proposal: [flat listings and Cloudflare R2 photos](./flat-listing.md). It describes future `FlatListing` and `FlatPhoto` models without modifying the current Prisma schema. Listing/photo completion is independent of personal onboarding; R2 holds photo bytes and Neon holds their metadata/object keys.
+
 ## Phase 1: application user
 
 ### Do we need this table?
@@ -42,6 +44,8 @@ The dependent tables use `userId` as both primary key and foreign key to `User.i
 | `LifestylePreference` | Sleep, cleanliness, food, smoking, bringing a pet and guests; separate accepted flatmate habits and pet preference; timestamps. |
 
 Adults 18+ only. Draft fields may be null; finishing requires all specified answers across the three tables. Optional photo and bio do not block completion. Prisma enums/types and relations alone do not enforce completeness; see the onboarding plan for backend transaction rules and additional migration constraints.
+
+Launch housing locations are restricted to the canonical city/locality IDs in the [Delhi NCR location plan](./locations.md). `city` stores the city ID and `preferredLocations` stores its locality IDs. Existing text fields support this proposal without a schema change; backend allowlist validation is required on save and finish.
 
 ### Housing intent
 
