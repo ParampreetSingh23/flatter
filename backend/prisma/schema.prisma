@@ -1,0 +1,127 @@
+// Proposed onboarding model; no migration has been applied.
+// Prisma 7.10.1 target: connection configuration belongs in prisma.config.ts.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum HousingIntent {
+  HAVE_ROOM
+  TEAM_UP
+  NEED_ROOM
+}
+
+enum Occupation {
+  STUDENT
+  WORKING_PROFESSIONAL
+  SELF_EMPLOYED
+  OTHER
+}
+
+enum SleepSchedule {
+  EARLY_BIRD
+  NIGHT_OWL
+  FLEXIBLE
+}
+
+enum Cleanliness {
+  RELAXED
+  REGULAR
+  VERY_TIDY
+}
+
+enum FoodHabit {
+  VEGAN
+  VEGETARIAN
+  EGGETARIAN
+  NON_VEGETARIAN
+}
+
+enum SmokingHabit {
+  NON_SMOKER
+  OUTDOORS_ONLY
+  INDOORS
+}
+
+enum GuestFrequency {
+  RARELY
+  OCCASIONALLY
+  FREQUENTLY
+}
+
+enum PetPreference {
+  OK_WITH_PETS
+  NO_PETS
+  NO_PREFERENCE
+}
+
+model User {
+  id                    String               @id @default(uuid()) @db.Uuid
+  clerkUserId           String               @unique
+  housingIntent         HousingIntent?
+  onboardingRevision    Int                  @default(0)
+  onboardingCompletedAt DateTime?            @db.Timestamptz(3)
+  discoveryEnabled      Boolean              @default(false)
+  createdAt             DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime             @updatedAt @db.Timestamptz(3)
+  profile               Profile?
+  housingPreference     HousingPreference?
+  lifestylePreference   LifestylePreference?
+
+  @@map("users")
+}
+
+model Profile {
+  userId      String      @id @db.Uuid
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName String?     @db.VarChar(80)
+  birthDate   DateTime?   @db.Date
+  occupation  Occupation?
+  bio         String?     @db.VarChar(500)
+  avatarUrl   String?
+  createdAt   DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime    @updatedAt @db.Timestamptz(3)
+
+  @@map("profiles")
+}
+
+model HousingPreference {
+  userId              String    @id @db.Uuid
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  city                String?   @db.VarChar(100)
+  preferredLocations  String[]  @default([])
+  locationsFlexible   Boolean?
+  monthlyRentMinPaise Int?
+  monthlyRentMaxPaise Int?
+  moveInDate          DateTime? @db.Date
+  moveInFlexible      Boolean?
+  createdAt           DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@map("housing_preferences")
+}
+
+model LifestylePreference {
+  userId                    String           @id @db.Uuid
+  user                      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sleepSchedule             SleepSchedule?
+  cleanliness               Cleanliness?
+  foodHabit                 FoodHabit?
+  smokingHabit              SmokingHabit?
+  bringingPet               Boolean?
+  guestFrequency            GuestFrequency?
+  acceptedSleepSchedules    SleepSchedule[]  @default([])
+  acceptedCleanlinessLevels Cleanliness[]    @default([])
+  acceptedFoodHabits        FoodHabit[]      @default([])
+  acceptedSmokingHabits     SmokingHabit[]   @default([])
+  flatmatePetPreference     PetPreference?
+  acceptedGuestFrequencies  GuestFrequency[] @default([])
+  createdAt                 DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt                 DateTime         @updatedAt @db.Timestamptz(3)
+
+  @@map("lifestyle_preferences")
+}
