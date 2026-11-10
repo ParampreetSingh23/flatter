@@ -2,6 +2,7 @@ import { UserButton } from "@clerk/nextjs";
 import { PageSpinner } from "@/components/spinner";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { ChatProvider } from "@/components/chat/chat-provider";
 import { Icon } from "@/components/icons";
 import { Logo } from "@/components/logo";
 import { ApiFail } from "@/lib/api";
@@ -31,11 +32,11 @@ async function Inner({ children }: { children: React.ReactNode }) {
     { label: "Discover", href: "/dashboard/discover", icon: "search", soon: f?.discovery !== "available" },
     { label: "Matches", href: "/dashboard/matches", icon: "heart", soon: f?.matches !== "available" },
     { label: "My Profile", href: "/dashboard/profile", icon: "user" },
-    { label: "Messages", icon: "message", soon: f?.messages !== "available" },
+    { label: "Messages", href: "/dashboard/messages", icon: "message", soon: f?.messages !== "available", badge: "messages" },
     { label: "Groups", icon: "users", soon: f?.groups !== "available" },
   ];
   return (
-    <>
+    <ChatProvider initialUnread={info?.unreadMessages ?? 0}>
       <header className="sticky top-0 z-40 border-b border-hairline bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
           <Logo href="/dashboard" />
@@ -55,6 +56,6 @@ async function Inner({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <main id="main" className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 lg:max-w-7xl lg:py-5">{children}</main>
-    </>
+    </ChatProvider>
   );
 }

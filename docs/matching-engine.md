@@ -178,11 +178,14 @@ Either person can Unmatch. Mark the match ended and deny further messages; do no
 
 ### Chat authorization is P0; messaging implementation is separate
 
-`canMessage(A,B)` requires a currently active mutual Match, membership of both users, active eligible adult accounts and **no block in either direction**. Recheck on every message send/history read and on realtime subscription/connection events when messaging is built. A public profile ID, a single Like, a client-side enabled button or knowing a Match UUID is insufficient.
+Chat permission is two separate rules (see [messaging.md](./messaging.md), which owns the chat design and supersedes the earlier blanket denial for Block and Unmatch):
 
-Turning off discovery stops new discovery/likes but does not itself end an existing Match. Pausing/closing a flat likewise stops new room-pair discovery; existing matched people can still discuss their situation. Block, Unmatch, account removal/suspension explicitly revoke chat permission. This avoids confusing profile visibility with consent to continue an already accepted connection.
+- **`canSendMessage(A,B)`** (also typing and shared receipts) requires membership, a Match that has not ended, both accounts adult, onboarded and not suspended, and **no active block in either direction**. It is rechecked for every send, typing and receipt event, inside the pair lock.
+- **`canReadHistory(A,B)`** requires only that the caller is a member and an eligible (not suspended) account. After **Block or Unmatch the previous messages stay readable and read-only for both people** until either account is deleted. This does not make blocked profiles or listings visible again, and the other person's identity is shown neutrally (name only, no avatar or profile link) once a chat is not interactive. A suspended peer leaves the chat read-only for the other person; a suspended caller loses access entirely.
 
-Until the actual messaging feature ships, show the mutual-match result and Matches list, with **Messaging coming soon**. Enable Start chat only when a real message route exists and enforces this gate. No WebSocket infrastructure or fake chat screen is part of the matching implementation plan.
+A public profile ID, a single Like, a client-side enabled button or knowing a Match UUID is insufficient for either rule. Turning off discovery stops new discovery/likes but does not end an existing Match and does not re-run compatibility as a chat gate; pausing/closing a flat likewise only stops new room-pair discovery. Block, Unmatch and suspension close sending; account deletion removes the shared conversation. Unblock never restores sending.
+
+Start chat links to the real Messages routes (`/dashboard/messages/[matchId]`); the Matches list reports `chat.available` from the same server rules.
 
 ## 7. Block, Report and visibility controls
 
@@ -191,7 +194,7 @@ Until the actual messaging feature ships, show the mutual-match result and Match
 - Existing R2 signed image links may remain usable until expiry and saved downloads cannot be recalled. Block stops issuing new links; no claim of revoking already delivered bytes.
 - **Report:** reason (harassment, scam, fake profile/listing, inappropriate content, other), optional bounded description, target and optional related Match/listing reference. Verify the referenced relationship; do not allow reporting arbitrary private objects by ID. A report can concern a previously viewed/matched profile that is now unavailable, without restoring its content to the reporter.
 - Offer clearly separated Report and block / Report only choices. A report alone does not silently publish allegations or automatically suspend the target based on unreviewed claims.
-- Store minimal reviewable evidence: reporter/target, timestamps, context references and bounded relevant public-content snapshot where permitted, not full DOB/contact data or staging URLs. Do not scrape private chat history into a report without a separately designed messaging-report policy.
+- Store minimal reviewable evidence: reporter/target, timestamps, context references and bounded relevant public-content snapshot where permitted, not full DOB/contact data or staging URLs. Chat evidence is only what the reporter explicitly selects (at most 10 messages, previewed and confirmed); the server rebuilds each excerpt from stored rows and never accepts client-supplied text. Chat history is never scraped into a report.
 - Reports require an authenticated operator review process before release (intake, triage owner, decision/audit and a documented retention policy). An admin UI/automatic moderation model is not required to build the intake, but collecting reports with no review owner is not an acceptable finished P0.
 - Rate-limit decisions and reports per verified account plus existing IP controls. Avoid a single user discovering/reporting the entire user database by enumeration. Report spam does not disclose private target information.
 
@@ -349,14 +352,16 @@ sequenceDiagram
     A->>UI: Open Matches
     UI->>API: GET caller's accessible mutual Matches
     API->>DB: Read active member matches and current block/account state
-    API-->>UI: Match list, messaging Coming soon until actual chat ships
-    opt Future messaging operation attempts to send/read/subscribe
+    API-->>UI: Match list with Start chat (real Messages route)
+    opt Messaging operation: send, typing, receipt, read history
         UI->>API: Authenticated Match-scoped operation
-        API->>DB: Pair-locked check of membership, active Match, blocks and account eligibility
-        alt Gate denied
-            API-->>UI: Deny, Like alone or Match UUID is insufficient
-        else Gate allowed and messaging feature exists
-            API-->>UI: Authorize the actual messaging operation
+        API->>DB: Membership; sends also pair-lock and check active Match, blocks and account state
+        alt Send, typing or receipt denied after Block, Unmatch or suspension
+            API-->>UI: CONVERSATION_CLOSED, nothing stored; Like alone or Match UUID is insufficient
+        else Read history by an eligible member
+            API-->>UI: Previous messages, read-only when ended
+        else Interactive and allowed
+            API-->>UI: Authorize the operation
         end
     end
     Note over A,Photos: Stage 5 - safety overrides compatibility and published visibility
@@ -364,7 +369,7 @@ sequenceDiagram
         A->>UI: Confirm Block or Unmatch
         UI->>API: Authenticated safety action
         API->>DB: Lock same pair, persist block/end Match, invalidate stale interest
-        API-->>UI: Connection unavailable and chat revoked
+        API-->>UI: Connection unavailable; chat closed for sending, typing and receipts, history stays readable
         Note over API,Photos: Block also prevents direct profile/listing reads and new image links
     end
     opt A reports B or a verified related listing/match

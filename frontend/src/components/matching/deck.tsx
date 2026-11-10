@@ -29,7 +29,7 @@ export function Deck({ cityId }: { cityId: string | null }) {
   const [view, setView] = useState<View>({ k: "loading" });
   const [pending, setPending] = useState(false);
   const [note, setNote] = useState("");
-  const [match, setMatch] = useState<string | null>(null);
+  const [match, setMatch] = useState<{ name: string; id: string | undefined } | null>(null);
   const [dx, setDx] = useState(0);
   const [safety, setSafety] = useState(false);
   const drag = useRef<{ x: number; id: number } | null>(null);
@@ -68,7 +68,7 @@ export function Deck({ cityId }: { cityId: string | null }) {
       const r = await api<ActionRes>(await getToken(), "POST", "/api/discovery/actions", {
         publicId: card.publicId, kind, profileVersion: card.versions.profile, listingVersion: card.versions.listing,
       });
-      if (kind === "LIKE" && r.matched) setMatch(card.displayName ?? "this person");
+      if (kind === "LIKE" && r.matched) setMatch({ name: card.displayName ?? "this person", id: r.matchId });
       else setNote(kind === "LIKE" ? "Interest saved. They only find out if they like you back." : "");
       advance();
     } catch (e) {
@@ -147,10 +147,11 @@ export function Deck({ cityId }: { cityId: string | null }) {
       {match && (
         <section role="alert" className="overflow-hidden rounded-2xl bg-success-pale p-6 text-success sm:p-8 lg:p-5">
           <p className="flex items-center gap-2 text-sm font-bold"><Icon name="heart" className="size-5" />It&apos;s a match</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em]">You and {match} like each other.</h2>
-          <p className="mt-2 opacity-90">Messaging is coming soon. You&apos;ll find them in Matches.</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em]">You and {match.name} like each other.</h2>
+          <p className="mt-2 opacity-90">Say hello now, or find them later in Matches.</p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/dashboard/matches" className="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-ink">See matches</Link>
+            {match.id && <Link href={`/dashboard/messages/${match.id}`} className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-ink">Start chat</Link>}
+            <Link href="/dashboard/matches" className={ghost}>See matches</Link>
             <button type="button" onClick={() => setMatch(null)} className={ghost}>Keep browsing</button>
           </div>
         </section>

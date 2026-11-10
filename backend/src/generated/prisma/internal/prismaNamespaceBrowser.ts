@@ -60,7 +60,9 @@ export const ModelName = {
   DiscoveryAction: 'DiscoveryAction',
   Match: 'Match',
   UserBlock: 'UserBlock',
-  UserReport: 'UserReport'
+  UserReport: 'UserReport',
+  Message: 'Message',
+  ChatMemberState: 'ChatMemberState'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -225,6 +227,8 @@ export const MatchScalarFieldEnum = {
   endedAt: 'endedAt',
   endedById: 'endedById',
   endReason: 'endReason',
+  lastMessageSeq: 'lastMessageSeq',
+  lastMessageAt: 'lastMessageAt',
   createdAt: 'createdAt'
 } as const
 
@@ -257,6 +261,30 @@ export const UserReportScalarFieldEnum = {
 } as const
 
 export type UserReportScalarFieldEnum = (typeof UserReportScalarFieldEnum)[keyof typeof UserReportScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  matchId: 'matchId',
+  senderId: 'senderId',
+  clientMessageId: 'clientMessageId',
+  seq: 'seq',
+  body: 'body',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const ChatMemberStateScalarFieldEnum = {
+  matchId: 'matchId',
+  userId: 'userId',
+  deliveredThroughSeq: 'deliveredThroughSeq',
+  readThroughSeq: 'readThroughSeq',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChatMemberStateScalarFieldEnum = (typeof ChatMemberStateScalarFieldEnum)[keyof typeof ChatMemberStateScalarFieldEnum]
 
 
 export const SortOrder = {

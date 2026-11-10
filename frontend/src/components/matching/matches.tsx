@@ -52,9 +52,9 @@ export function MatchesList({ initial, blocked: initialBlocked }: { initial: Mat
               <Card>
                 <Who c={{ ...m.person, occupation: null }} />
                 <p className="mt-3 text-sm text-muted">{INTENT_LABEL[m.person.intent]} · Matched {new Date(m.matchedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
-                <p className="mt-4 inline-flex items-center gap-2 text-sm text-ink"><Icon name="message" className="size-4" />{m.chat.reason}</p>
                 <div className="mt-4 flex flex-wrap gap-3">
-                  <Link href={`/profiles/${m.person.publicId}`} className={cta}>View profile</Link>
+                  {m.chat.available && <Link href={`/dashboard/messages/${m.id}`} className={`${cta} gap-2`}><Icon name="message" className="size-4" />Start chat</Link>}
+                  <Link href={`/profiles/${m.person.publicId}`} className={ghost}>View profile</Link>
                   {confirm === m.id ? (
                     <>
                       <button type="button" disabled={busy} className={ghost} onClick={() => run(async (t) => { await api(t, "POST", `/api/matches/${m.id}/unmatch`); setItems((x) => x.filter((y) => y.id !== m.id)); setConfirm(null); }, "Unmatched.")}>Confirm unmatch</button>

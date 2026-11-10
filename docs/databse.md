@@ -121,6 +121,18 @@ Likes, matches, chats, listings, reports, roles, subscriptions, and flexible JSO
 - Each of the three housing intents can be saved and changed; unknown values are rejected. Unfinished accounts can have null intent, but completing onboarding without an intent or clearing it afterward is rejected.
 - Deletion removes application data as designed; incomplete or deleted accounts do not appear in discovery.
 
+## Messaging tables (implemented)
+
+Plain-text chat between mutually matched people. Application data only (no Clerk contact duplicates). Migration `20261109170000_messaging`; the Prisma file is the schema source and [messaging.md](./messaging.md) the design.
+
+| Table | Purpose and constraints |
+| --- | --- |
+| `matches` (extended) | `lastMessageSeq` (int, default 0, `>= 0`) and `lastMessageAt`. The Match id is the conversation id; no separate conversation table. |
+| `messages` | `id`, `matchId` FK, `senderId` FK, `clientMessageId` (UUID idempotency key), `seq` (`> 0`, gapless per match), `body` text, server `createdAt`. Unique `(matchId, seq)` and `(matchId, senderId, clientMessageId)`; CHECK `1 <= char_length(body) <= 2000` and `octet_length(body) <= 16384`; index on `senderId`. |
+| `chat_member_states` | Composite key `(matchId, userId)`, `deliveredThroughSeq`, `readThroughSeq`, `updatedAt`. CHECK `0 <= readThroughSeq <= deliveredThroughSeq`. Written only by explicit receipt events; a missing row means both cursors are 0. Index `(userId, matchId)`. |
+
+Cross-row rules (membership of sender/state owner, cursors never decrease or pass `lastMessageSeq`, no insert after the Match ends) are enforced in the pair-locked transaction rather than by triggers. All three tables cascade with their Match; deleting either user deletes the shared conversation. Account deletion also removes the user's listing photos from R2 first, because listing and photo foreign keys are `Restrict` by design (`backend/src/account-deletion.ts`).
+
 ## References and decision status
 
 This is a proposed schema for review, not an applied or approved migration. It expands the user-data direction in the [initialization plan](./initialization-plan.md); that plan's original codebase inventory is historical and predates the current Clerk implementation.

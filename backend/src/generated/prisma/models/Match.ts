@@ -28,10 +28,12 @@ export type AggregateMatch = {
 
 export type MatchAvgAggregateOutputType = {
   scoreAtMatch: number | null
+  lastMessageSeq: number | null
 }
 
 export type MatchSumAggregateOutputType = {
   scoreAtMatch: number | null
+  lastMessageSeq: number | null
 }
 
 export type MatchMinAggregateOutputType = {
@@ -43,6 +45,8 @@ export type MatchMinAggregateOutputType = {
   endedAt: Date | null
   endedById: string | null
   endReason: string | null
+  lastMessageSeq: number | null
+  lastMessageAt: Date | null
   createdAt: Date | null
 }
 
@@ -55,6 +59,8 @@ export type MatchMaxAggregateOutputType = {
   endedAt: Date | null
   endedById: string | null
   endReason: string | null
+  lastMessageSeq: number | null
+  lastMessageAt: Date | null
   createdAt: Date | null
 }
 
@@ -67,6 +73,8 @@ export type MatchCountAggregateOutputType = {
   endedAt: number
   endedById: number
   endReason: number
+  lastMessageSeq: number
+  lastMessageAt: number
   createdAt: number
   _all: number
 }
@@ -74,10 +82,12 @@ export type MatchCountAggregateOutputType = {
 
 export type MatchAvgAggregateInputType = {
   scoreAtMatch?: true
+  lastMessageSeq?: true
 }
 
 export type MatchSumAggregateInputType = {
   scoreAtMatch?: true
+  lastMessageSeq?: true
 }
 
 export type MatchMinAggregateInputType = {
@@ -89,6 +99,8 @@ export type MatchMinAggregateInputType = {
   endedAt?: true
   endedById?: true
   endReason?: true
+  lastMessageSeq?: true
+  lastMessageAt?: true
   createdAt?: true
 }
 
@@ -101,6 +113,8 @@ export type MatchMaxAggregateInputType = {
   endedAt?: true
   endedById?: true
   endReason?: true
+  lastMessageSeq?: true
+  lastMessageAt?: true
   createdAt?: true
 }
 
@@ -113,6 +127,8 @@ export type MatchCountAggregateInputType = {
   endedAt?: true
   endedById?: true
   endReason?: true
+  lastMessageSeq?: true
+  lastMessageAt?: true
   createdAt?: true
   _all?: true
 }
@@ -212,6 +228,8 @@ export type MatchGroupByOutputType = {
   endedAt: Date | null
   endedById: string | null
   endReason: string | null
+  lastMessageSeq: number
+  lastMessageAt: Date | null
   createdAt: Date
   _count: MatchCountAggregateOutputType | null
   _avg: MatchAvgAggregateOutputType | null
@@ -247,10 +265,14 @@ export type MatchWhereInput = {
   endedAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   endedById?: Prisma.UuidNullableFilter<"Match"> | string | null
   endReason?: Prisma.StringNullableFilter<"Match"> | string | null
+  lastMessageSeq?: Prisma.IntFilter<"Match"> | number
+  lastMessageAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Match"> | Date | string
   userLow?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   userHigh?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reports?: Prisma.UserReportListRelationFilter
+  messages?: Prisma.MessageListRelationFilter
+  memberStates?: Prisma.ChatMemberStateListRelationFilter
 }
 
 export type MatchOrderByWithRelationInput = {
@@ -262,10 +284,14 @@ export type MatchOrderByWithRelationInput = {
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   endedById?: Prisma.SortOrderInput | Prisma.SortOrder
   endReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
+  lastMessageAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userLow?: Prisma.UserOrderByWithRelationInput
   userHigh?: Prisma.UserOrderByWithRelationInput
   reports?: Prisma.UserReportOrderByRelationAggregateInput
+  messages?: Prisma.MessageOrderByRelationAggregateInput
+  memberStates?: Prisma.ChatMemberStateOrderByRelationAggregateInput
 }
 
 export type MatchWhereUniqueInput = Prisma.AtLeast<{
@@ -281,10 +307,14 @@ export type MatchWhereUniqueInput = Prisma.AtLeast<{
   endedAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   endedById?: Prisma.UuidNullableFilter<"Match"> | string | null
   endReason?: Prisma.StringNullableFilter<"Match"> | string | null
+  lastMessageSeq?: Prisma.IntFilter<"Match"> | number
+  lastMessageAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Match"> | Date | string
   userLow?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   userHigh?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reports?: Prisma.UserReportListRelationFilter
+  messages?: Prisma.MessageListRelationFilter
+  memberStates?: Prisma.ChatMemberStateListRelationFilter
 }, "id" | "userLowId_userHighId">
 
 export type MatchOrderByWithAggregationInput = {
@@ -296,6 +326,8 @@ export type MatchOrderByWithAggregationInput = {
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   endedById?: Prisma.SortOrderInput | Prisma.SortOrder
   endReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
+  lastMessageAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MatchCountOrderByAggregateInput
   _avg?: Prisma.MatchAvgOrderByAggregateInput
@@ -316,6 +348,8 @@ export type MatchScalarWhereWithAggregatesInput = {
   endedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Match"> | Date | string | null
   endedById?: Prisma.UuidNullableWithAggregatesFilter<"Match"> | string | null
   endReason?: Prisma.StringNullableWithAggregatesFilter<"Match"> | string | null
+  lastMessageSeq?: Prisma.IntWithAggregatesFilter<"Match"> | number
+  lastMessageAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Match"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Match"> | Date | string
 }
 
@@ -326,10 +360,14 @@ export type MatchCreateInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   userLow: Prisma.UserCreateNestedOneWithoutMatchesAsLowInput
   userHigh: Prisma.UserCreateNestedOneWithoutMatchesAsHighInput
   reports?: Prisma.UserReportCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateCreateNestedManyWithoutMatchInput
 }
 
 export type MatchUncheckedCreateInput = {
@@ -341,8 +379,12 @@ export type MatchUncheckedCreateInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   reports?: Prisma.UserReportUncheckedCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateUncheckedCreateNestedManyWithoutMatchInput
 }
 
 export type MatchUpdateInput = {
@@ -352,10 +394,14 @@ export type MatchUpdateInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userLow?: Prisma.UserUpdateOneRequiredWithoutMatchesAsLowNestedInput
   userHigh?: Prisma.UserUpdateOneRequiredWithoutMatchesAsHighNestedInput
   reports?: Prisma.UserReportUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateInput = {
@@ -367,8 +413,12 @@ export type MatchUncheckedUpdateInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reports?: Prisma.UserReportUncheckedUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUncheckedUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchCreateManyInput = {
@@ -380,6 +430,8 @@ export type MatchCreateManyInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -390,6 +442,8 @@ export type MatchUpdateManyMutationInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -402,6 +456,8 @@ export type MatchUncheckedUpdateManyInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -429,11 +485,14 @@ export type MatchCountOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   endedById?: Prisma.SortOrder
   endReason?: Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
+  lastMessageAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MatchAvgOrderByAggregateInput = {
   scoreAtMatch?: Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
 }
 
 export type MatchMaxOrderByAggregateInput = {
@@ -445,6 +504,8 @@ export type MatchMaxOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   endedById?: Prisma.SortOrder
   endReason?: Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
+  lastMessageAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -457,16 +518,24 @@ export type MatchMinOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   endedById?: Prisma.SortOrder
   endReason?: Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
+  lastMessageAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type MatchSumOrderByAggregateInput = {
   scoreAtMatch?: Prisma.SortOrder
+  lastMessageSeq?: Prisma.SortOrder
 }
 
 export type MatchNullableScalarRelationFilter = {
   is?: Prisma.MatchWhereInput | null
   isNot?: Prisma.MatchWhereInput | null
+}
+
+export type MatchScalarRelationFilter = {
+  is?: Prisma.MatchWhereInput
+  isNot?: Prisma.MatchWhereInput
 }
 
 export type MatchCreateNestedManyWithoutUserLowInput = {
@@ -569,6 +638,34 @@ export type MatchUpdateOneWithoutReportsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MatchUpdateToOneWithWhereWithoutReportsInput, Prisma.MatchUpdateWithoutReportsInput>, Prisma.MatchUncheckedUpdateWithoutReportsInput>
 }
 
+export type MatchCreateNestedOneWithoutMessagesInput = {
+  create?: Prisma.XOR<Prisma.MatchCreateWithoutMessagesInput, Prisma.MatchUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.MatchCreateOrConnectWithoutMessagesInput
+  connect?: Prisma.MatchWhereUniqueInput
+}
+
+export type MatchUpdateOneRequiredWithoutMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.MatchCreateWithoutMessagesInput, Prisma.MatchUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.MatchCreateOrConnectWithoutMessagesInput
+  upsert?: Prisma.MatchUpsertWithoutMessagesInput
+  connect?: Prisma.MatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MatchUpdateToOneWithWhereWithoutMessagesInput, Prisma.MatchUpdateWithoutMessagesInput>, Prisma.MatchUncheckedUpdateWithoutMessagesInput>
+}
+
+export type MatchCreateNestedOneWithoutMemberStatesInput = {
+  create?: Prisma.XOR<Prisma.MatchCreateWithoutMemberStatesInput, Prisma.MatchUncheckedCreateWithoutMemberStatesInput>
+  connectOrCreate?: Prisma.MatchCreateOrConnectWithoutMemberStatesInput
+  connect?: Prisma.MatchWhereUniqueInput
+}
+
+export type MatchUpdateOneRequiredWithoutMemberStatesNestedInput = {
+  create?: Prisma.XOR<Prisma.MatchCreateWithoutMemberStatesInput, Prisma.MatchUncheckedCreateWithoutMemberStatesInput>
+  connectOrCreate?: Prisma.MatchCreateOrConnectWithoutMemberStatesInput
+  upsert?: Prisma.MatchUpsertWithoutMemberStatesInput
+  connect?: Prisma.MatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MatchUpdateToOneWithWhereWithoutMemberStatesInput, Prisma.MatchUpdateWithoutMemberStatesInput>, Prisma.MatchUncheckedUpdateWithoutMemberStatesInput>
+}
+
 export type MatchCreateWithoutUserLowInput = {
   id?: string
   scoreAtMatch: number
@@ -576,9 +673,13 @@ export type MatchCreateWithoutUserLowInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   userHigh: Prisma.UserCreateNestedOneWithoutMatchesAsHighInput
   reports?: Prisma.UserReportCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateCreateNestedManyWithoutMatchInput
 }
 
 export type MatchUncheckedCreateWithoutUserLowInput = {
@@ -589,8 +690,12 @@ export type MatchUncheckedCreateWithoutUserLowInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   reports?: Prisma.UserReportUncheckedCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateUncheckedCreateNestedManyWithoutMatchInput
 }
 
 export type MatchCreateOrConnectWithoutUserLowInput = {
@@ -610,9 +715,13 @@ export type MatchCreateWithoutUserHighInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   userLow: Prisma.UserCreateNestedOneWithoutMatchesAsLowInput
   reports?: Prisma.UserReportCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateCreateNestedManyWithoutMatchInput
 }
 
 export type MatchUncheckedCreateWithoutUserHighInput = {
@@ -623,8 +732,12 @@ export type MatchUncheckedCreateWithoutUserHighInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   reports?: Prisma.UserReportUncheckedCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateUncheckedCreateNestedManyWithoutMatchInput
 }
 
 export type MatchCreateOrConnectWithoutUserHighInput = {
@@ -665,6 +778,8 @@ export type MatchScalarWhereInput = {
   endedAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   endedById?: Prisma.UuidNullableFilter<"Match"> | string | null
   endReason?: Prisma.StringNullableFilter<"Match"> | string | null
+  lastMessageSeq?: Prisma.IntFilter<"Match"> | number
+  lastMessageAt?: Prisma.DateTimeNullableFilter<"Match"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Match"> | Date | string
 }
 
@@ -691,9 +806,13 @@ export type MatchCreateWithoutReportsInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
   userLow: Prisma.UserCreateNestedOneWithoutMatchesAsLowInput
   userHigh: Prisma.UserCreateNestedOneWithoutMatchesAsHighInput
+  messages?: Prisma.MessageCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateCreateNestedManyWithoutMatchInput
 }
 
 export type MatchUncheckedCreateWithoutReportsInput = {
@@ -705,7 +824,11 @@ export type MatchUncheckedCreateWithoutReportsInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateUncheckedCreateNestedManyWithoutMatchInput
 }
 
 export type MatchCreateOrConnectWithoutReportsInput = {
@@ -731,9 +854,13 @@ export type MatchUpdateWithoutReportsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userLow?: Prisma.UserUpdateOneRequiredWithoutMatchesAsLowNestedInput
   userHigh?: Prisma.UserUpdateOneRequiredWithoutMatchesAsHighNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateWithoutReportsInput = {
@@ -745,7 +872,171 @@ export type MatchUncheckedUpdateWithoutReportsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUncheckedUpdateManyWithoutMatchNestedInput
+}
+
+export type MatchCreateWithoutMessagesInput = {
+  id?: string
+  scoreAtMatch: number
+  scorePolicy: string
+  endedAt?: Date | string | null
+  endedById?: string | null
+  endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
+  createdAt?: Date | string
+  userLow: Prisma.UserCreateNestedOneWithoutMatchesAsLowInput
+  userHigh: Prisma.UserCreateNestedOneWithoutMatchesAsHighInput
+  reports?: Prisma.UserReportCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateCreateNestedManyWithoutMatchInput
+}
+
+export type MatchUncheckedCreateWithoutMessagesInput = {
+  id?: string
+  userLowId: string
+  userHighId: string
+  scoreAtMatch: number
+  scorePolicy: string
+  endedAt?: Date | string | null
+  endedById?: string | null
+  endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
+  createdAt?: Date | string
+  reports?: Prisma.UserReportUncheckedCreateNestedManyWithoutMatchInput
+  memberStates?: Prisma.ChatMemberStateUncheckedCreateNestedManyWithoutMatchInput
+}
+
+export type MatchCreateOrConnectWithoutMessagesInput = {
+  where: Prisma.MatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.MatchCreateWithoutMessagesInput, Prisma.MatchUncheckedCreateWithoutMessagesInput>
+}
+
+export type MatchUpsertWithoutMessagesInput = {
+  update: Prisma.XOR<Prisma.MatchUpdateWithoutMessagesInput, Prisma.MatchUncheckedUpdateWithoutMessagesInput>
+  create: Prisma.XOR<Prisma.MatchCreateWithoutMessagesInput, Prisma.MatchUncheckedCreateWithoutMessagesInput>
+  where?: Prisma.MatchWhereInput
+}
+
+export type MatchUpdateToOneWithWhereWithoutMessagesInput = {
+  where?: Prisma.MatchWhereInput
+  data: Prisma.XOR<Prisma.MatchUpdateWithoutMessagesInput, Prisma.MatchUncheckedUpdateWithoutMessagesInput>
+}
+
+export type MatchUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  scoreAtMatch?: Prisma.IntFieldUpdateOperationsInput | number
+  scorePolicy?: Prisma.StringFieldUpdateOperationsInput | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userLow?: Prisma.UserUpdateOneRequiredWithoutMatchesAsLowNestedInput
+  userHigh?: Prisma.UserUpdateOneRequiredWithoutMatchesAsHighNestedInput
+  reports?: Prisma.UserReportUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUpdateManyWithoutMatchNestedInput
+}
+
+export type MatchUncheckedUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userLowId?: Prisma.StringFieldUpdateOperationsInput | string
+  userHighId?: Prisma.StringFieldUpdateOperationsInput | string
+  scoreAtMatch?: Prisma.IntFieldUpdateOperationsInput | number
+  scorePolicy?: Prisma.StringFieldUpdateOperationsInput | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reports?: Prisma.UserReportUncheckedUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUncheckedUpdateManyWithoutMatchNestedInput
+}
+
+export type MatchCreateWithoutMemberStatesInput = {
+  id?: string
+  scoreAtMatch: number
+  scorePolicy: string
+  endedAt?: Date | string | null
+  endedById?: string | null
+  endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
+  createdAt?: Date | string
+  userLow: Prisma.UserCreateNestedOneWithoutMatchesAsLowInput
+  userHigh: Prisma.UserCreateNestedOneWithoutMatchesAsHighInput
+  reports?: Prisma.UserReportCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageCreateNestedManyWithoutMatchInput
+}
+
+export type MatchUncheckedCreateWithoutMemberStatesInput = {
+  id?: string
+  userLowId: string
+  userHighId: string
+  scoreAtMatch: number
+  scorePolicy: string
+  endedAt?: Date | string | null
+  endedById?: string | null
+  endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
+  createdAt?: Date | string
+  reports?: Prisma.UserReportUncheckedCreateNestedManyWithoutMatchInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutMatchInput
+}
+
+export type MatchCreateOrConnectWithoutMemberStatesInput = {
+  where: Prisma.MatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.MatchCreateWithoutMemberStatesInput, Prisma.MatchUncheckedCreateWithoutMemberStatesInput>
+}
+
+export type MatchUpsertWithoutMemberStatesInput = {
+  update: Prisma.XOR<Prisma.MatchUpdateWithoutMemberStatesInput, Prisma.MatchUncheckedUpdateWithoutMemberStatesInput>
+  create: Prisma.XOR<Prisma.MatchCreateWithoutMemberStatesInput, Prisma.MatchUncheckedCreateWithoutMemberStatesInput>
+  where?: Prisma.MatchWhereInput
+}
+
+export type MatchUpdateToOneWithWhereWithoutMemberStatesInput = {
+  where?: Prisma.MatchWhereInput
+  data: Prisma.XOR<Prisma.MatchUpdateWithoutMemberStatesInput, Prisma.MatchUncheckedUpdateWithoutMemberStatesInput>
+}
+
+export type MatchUpdateWithoutMemberStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  scoreAtMatch?: Prisma.IntFieldUpdateOperationsInput | number
+  scorePolicy?: Prisma.StringFieldUpdateOperationsInput | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userLow?: Prisma.UserUpdateOneRequiredWithoutMatchesAsLowNestedInput
+  userHigh?: Prisma.UserUpdateOneRequiredWithoutMatchesAsHighNestedInput
+  reports?: Prisma.UserReportUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutMatchNestedInput
+}
+
+export type MatchUncheckedUpdateWithoutMemberStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userLowId?: Prisma.StringFieldUpdateOperationsInput | string
+  userHighId?: Prisma.StringFieldUpdateOperationsInput | string
+  scoreAtMatch?: Prisma.IntFieldUpdateOperationsInput | number
+  scorePolicy?: Prisma.StringFieldUpdateOperationsInput | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reports?: Prisma.UserReportUncheckedUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchCreateManyUserLowInput = {
@@ -756,6 +1047,8 @@ export type MatchCreateManyUserLowInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -767,6 +1060,8 @@ export type MatchCreateManyUserHighInput = {
   endedAt?: Date | string | null
   endedById?: string | null
   endReason?: string | null
+  lastMessageSeq?: number
+  lastMessageAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -777,9 +1072,13 @@ export type MatchUpdateWithoutUserLowInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userHigh?: Prisma.UserUpdateOneRequiredWithoutMatchesAsHighNestedInput
   reports?: Prisma.UserReportUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateWithoutUserLowInput = {
@@ -790,8 +1089,12 @@ export type MatchUncheckedUpdateWithoutUserLowInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reports?: Prisma.UserReportUncheckedUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUncheckedUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateManyWithoutUserLowInput = {
@@ -802,6 +1105,8 @@ export type MatchUncheckedUpdateManyWithoutUserLowInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -812,9 +1117,13 @@ export type MatchUpdateWithoutUserHighInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userLow?: Prisma.UserUpdateOneRequiredWithoutMatchesAsLowNestedInput
   reports?: Prisma.UserReportUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateWithoutUserHighInput = {
@@ -825,8 +1134,12 @@ export type MatchUncheckedUpdateWithoutUserHighInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reports?: Prisma.UserReportUncheckedUpdateManyWithoutMatchNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutMatchNestedInput
+  memberStates?: Prisma.ChatMemberStateUncheckedUpdateManyWithoutMatchNestedInput
 }
 
 export type MatchUncheckedUpdateManyWithoutUserHighInput = {
@@ -837,6 +1150,8 @@ export type MatchUncheckedUpdateManyWithoutUserHighInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   endReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastMessageSeq?: Prisma.IntFieldUpdateOperationsInput | number
+  lastMessageAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -847,10 +1162,14 @@ export type MatchUncheckedUpdateManyWithoutUserHighInput = {
 
 export type MatchCountOutputType = {
   reports: number
+  messages: number
+  memberStates: number
 }
 
 export type MatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reports?: boolean | MatchCountOutputTypeCountReportsArgs
+  messages?: boolean | MatchCountOutputTypeCountMessagesArgs
+  memberStates?: boolean | MatchCountOutputTypeCountMemberStatesArgs
 }
 
 /**
@@ -870,6 +1189,20 @@ export type MatchCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.UserReportWhereInput
 }
 
+/**
+ * MatchCountOutputType without action
+ */
+export type MatchCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
+/**
+ * MatchCountOutputType without action
+ */
+export type MatchCountOutputTypeCountMemberStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatMemberStateWhereInput
+}
+
 
 export type MatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -880,10 +1213,14 @@ export type MatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   endedAt?: boolean
   endedById?: boolean
   endReason?: boolean
+  lastMessageSeq?: boolean
+  lastMessageAt?: boolean
   createdAt?: boolean
   userLow?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   userHigh?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reports?: boolean | Prisma.Match$reportsArgs<ExtArgs>
+  messages?: boolean | Prisma.Match$messagesArgs<ExtArgs>
+  memberStates?: boolean | Prisma.Match$memberStatesArgs<ExtArgs>
   _count?: boolean | Prisma.MatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["match"]>
 
@@ -896,6 +1233,8 @@ export type MatchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   endedAt?: boolean
   endedById?: boolean
   endReason?: boolean
+  lastMessageSeq?: boolean
+  lastMessageAt?: boolean
   createdAt?: boolean
   userLow?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   userHigh?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -910,6 +1249,8 @@ export type MatchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   endedAt?: boolean
   endedById?: boolean
   endReason?: boolean
+  lastMessageSeq?: boolean
+  lastMessageAt?: boolean
   createdAt?: boolean
   userLow?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   userHigh?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -924,14 +1265,18 @@ export type MatchSelectScalar = {
   endedAt?: boolean
   endedById?: boolean
   endReason?: boolean
+  lastMessageSeq?: boolean
+  lastMessageAt?: boolean
   createdAt?: boolean
 }
 
-export type MatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userLowId" | "userHighId" | "scoreAtMatch" | "scorePolicy" | "endedAt" | "endedById" | "endReason" | "createdAt", ExtArgs["result"]["match"]>
+export type MatchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userLowId" | "userHighId" | "scoreAtMatch" | "scorePolicy" | "endedAt" | "endedById" | "endReason" | "lastMessageSeq" | "lastMessageAt" | "createdAt", ExtArgs["result"]["match"]>
 export type MatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userLow?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   userHigh?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reports?: boolean | Prisma.Match$reportsArgs<ExtArgs>
+  messages?: boolean | Prisma.Match$messagesArgs<ExtArgs>
+  memberStates?: boolean | Prisma.Match$memberStatesArgs<ExtArgs>
   _count?: boolean | Prisma.MatchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -949,6 +1294,8 @@ export type $MatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     userLow: Prisma.$UserPayload<ExtArgs>
     userHigh: Prisma.$UserPayload<ExtArgs>
     reports: Prisma.$UserReportPayload<ExtArgs>[]
+    messages: Prisma.$MessagePayload<ExtArgs>[]
+    memberStates: Prisma.$ChatMemberStatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -959,6 +1306,8 @@ export type $MatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     endedAt: Date | null
     endedById: string | null
     endReason: string | null
+    lastMessageSeq: number
+    lastMessageAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["match"]>
   composites: {}
@@ -1357,6 +1706,8 @@ export interface Prisma__MatchClient<T, Null = never, ExtArgs extends runtime.Ty
   userLow<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   userHigh<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reports<T extends Prisma.Match$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Match$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  messages<T extends Prisma.Match$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Match$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberStates<T extends Prisma.Match$memberStatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Match$memberStatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMemberStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1394,6 +1745,8 @@ export interface MatchFieldRefs {
   readonly endedAt: Prisma.FieldRef<"Match", 'DateTime'>
   readonly endedById: Prisma.FieldRef<"Match", 'String'>
   readonly endReason: Prisma.FieldRef<"Match", 'String'>
+  readonly lastMessageSeq: Prisma.FieldRef<"Match", 'Int'>
+  readonly lastMessageAt: Prisma.FieldRef<"Match", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Match", 'DateTime'>
 }
     
@@ -1817,6 +2170,54 @@ export type Match$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.UserReportScalarFieldEnum | Prisma.UserReportScalarFieldEnum[]
+}
+
+/**
+ * Match.messages
+ */
+export type Match$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * Match.memberStates
+ */
+export type Match$memberStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatMemberState
+   */
+  select?: Prisma.ChatMemberStateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatMemberState
+   */
+  omit?: Prisma.ChatMemberStateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatMemberStateInclude<ExtArgs> | null
+  where?: Prisma.ChatMemberStateWhereInput
+  orderBy?: Prisma.ChatMemberStateOrderByWithRelationInput | Prisma.ChatMemberStateOrderByWithRelationInput[]
+  cursor?: Prisma.ChatMemberStateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatMemberStateScalarFieldEnum | Prisma.ChatMemberStateScalarFieldEnum[]
 }
 
 /**

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CITY_IDS, LOCALITY_CITY } from "./cities.js";
 import { DecisionKind, ReportReason, WorkStudySchedule } from "./generated/prisma/client.js";
+import { MAX_REPORT_MESSAGES } from "./chat-rules.js";
 import { dateStr } from "./onboarding-rules.js";
 
 export const POOL_SIZE = 500; // working pool per request: best within the pool, not across all users
@@ -33,9 +34,12 @@ export const actionBody = z.strictObject({
 });
 export const blockBody = z.strictObject({ publicId: uuid });
 export const reportBody = z.strictObject({
-  publicId: uuid, reason: z.enum(ReportReason),
+  // From an ended chat the profile reference is hidden, so the conversation (matchId) identifies the person instead.
+  publicId: uuid.optional(), reason: z.enum(ReportReason),
   details: z.string().trim().max(1000).optional(),
   matchId: uuid.optional(), listingId: uuid.optional(), alsoBlock: z.boolean().optional(),
-});
+  // Up to 10 chat messages as evidence; the server rebuilds the excerpts from stored rows. Requires matchId.
+  messageIds: z.array(uuid).max(MAX_REPORT_MESSAGES).optional(),
+}).refine((b) => b.publicId || b.matchId, { message: "Say who you are reporting", path: ["publicId"] });
 export const idParam = uuid;
 export { CITY_IDS, LOCALITY_CITY };

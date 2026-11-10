@@ -2,14 +2,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useChat } from "@/components/chat/chat-provider";
 import { Icon, type IconName } from "@/components/icons";
 
-export interface NavItem { label: string; href?: string; soon?: boolean; icon: IconName }
+export interface NavItem { label: string; href?: string; soon?: boolean; icon: IconName; badge?: "messages" }
 
 // Only items with an href navigate. "Coming soon" items are plain text: no link, no dead URL.
 // bar = horizontal top navbar (desktop); list = stacked panel (mobile menu).
 export function NavLinks({ items, onNavigate, bar }: { items: NavItem[]; onNavigate?: () => void; bar?: boolean }) {
   const path = usePathname();
+  const { unread } = useChat();
   const base = bar ? "min-h-11 rounded-2xl px-3 py-2" : "min-h-11 rounded-2xl px-4 py-3";
   return (
     <ul className={bar ? "flex items-center gap-1" : "grid gap-1"}>
@@ -21,6 +23,9 @@ export function NavLinks({ items, onNavigate, bar }: { items: NavItem[]; onNavig
               <Link href={i.href} onClick={onNavigate} aria-current={active ? "page" : undefined}
                 className={`${base} flex items-center gap-2 text-sm font-semibold ${active ? "bg-surface-card text-primary" : "text-ink hover:bg-surface-card"}`}>
                 <Icon name={i.icon} className={bar ? "hidden size-[1.125rem] xl:block" : "size-[1.125rem]"} />{i.label}
+                {i.badge === "messages" && unread > 0 && (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold text-white">{unread > 99 ? "99+" : unread}<span className="sr-only"> unread messages</span></span>
+                )}
               </Link>
             ) : (
               <span aria-disabled="true" className={`${base} flex items-center gap-2 text-sm text-muted ${bar ? "" : "justify-between"}`}>

@@ -97,6 +97,8 @@ model User {
   blocksReceived        UserBlock[]          @relation("Blocked")
   reportsMade           UserReport[]         @relation("Reporter")
   reportsReceived       UserReport[]         @relation("ReportTarget")
+  messagesSent          Message[]
+  chatStates            ChatMemberState[]
 
   @@map("users")
 }
@@ -288,18 +290,22 @@ model DiscoveryAction {
 
 // Canonical unordered pair: userLowId < userHighId (CHECK). One row per pair ever; ended pairs never rematch in P0.
 model Match {
-  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userLowId    String       @db.Uuid
-  userLow      User         @relation("MatchLow", fields: [userLowId], references: [id], onDelete: Cascade)
-  userHighId   String       @db.Uuid
-  userHigh     User         @relation("MatchHigh", fields: [userHighId], references: [id], onDelete: Cascade)
-  scoreAtMatch Int
-  scorePolicy  String       @db.VarChar(40)
-  endedAt      DateTime?    @db.Timestamptz(3)
-  endedById    String?      @db.Uuid
-  endReason    String?      @db.VarChar(20)
-  createdAt    DateTime     @default(now()) @db.Timestamptz(3)
-  reports      UserReport[]
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userLowId      String            @db.Uuid
+  userLow        User              @relation("MatchLow", fields: [userLowId], references: [id], onDelete: Cascade)
+  userHighId     String            @db.Uuid
+  userHigh       User              @relation("MatchHigh", fields: [userHighId], references: [id], onDelete: Cascade)
+  scoreAtMatch   Int
+  scorePolicy    String            @db.VarChar(40)
+  endedAt        DateTime?         @db.Timestamptz(3)
+  endedById      String?           @db.Uuid
+  endReason      String?           @db.VarChar(20)
+  lastMessageSeq Int               @default(0)
+  lastMessageAt  DateTime?         @db.Timestamptz(3)
+  createdAt      DateTime          @default(now()) @db.Timestamptz(3)
+  reports        UserReport[]
+  messages       Message[]
+  memberStates   ChatMemberState[]
 
   @@unique([userLowId, userHighId])
   @@index([userHighId])
@@ -341,4 +347,37 @@ model UserReport {
   @@index([status, createdAt])
   @@index([targetId])
   @@map("user_reports")
+}
+
+// Plain-text chat. The Match id is the conversation id. seq is per-match, gapless, assigned under the pair lock.
+model Message {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  matchId         String   @db.Uuid
+  match           Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  senderId        String   @db.Uuid
+  sender          User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  clientMessageId String   @db.Uuid
+  seq             Int
+  body            String
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([matchId, seq])
+  @@unique([matchId, senderId, clientMessageId])
+  @@index([senderId])
+  @@map("messages")
+}
+
+// One row per member and conversation, created only by an explicit receipt write. Missing row = both cursors 0.
+model ChatMemberState {
+  matchId             String   @db.Uuid
+  match               Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  userId              String   @db.Uuid
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveredThroughSeq Int      @default(0)
+  readThroughSeq      Int      @default(0)
+  updatedAt           DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  @@id([matchId, userId])
+  @@index([userId, matchId])
+  @@map("chat_member_states")
 }

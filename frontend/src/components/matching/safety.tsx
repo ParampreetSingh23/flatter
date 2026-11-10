@@ -8,12 +8,16 @@ import { btnBack, btnNext, inputCls } from "../onboarding/fields";
 type Choice = "report_block" | "report" | "block";
 
 // Native <dialog>: focus is trapped, Escape closes, focus returns to the opener.
-export function SafetyDialog({ name, publicId, matchId, onClose, onDone }: {
-  name: string; publicId: string; matchId?: string; onClose: () => void; onDone: (blocked: boolean) => void;
+export interface EvidenceMessage { id: string; mine: boolean; text: string; at: string }
+
+// `messages`: up to 10 chat messages previewed here and sent as evidence. `canBlock: false` (an ended chat) offers report only.
+// publicId may be omitted when the conversation (matchId) identifies the person.
+export function SafetyDialog({ name, publicId, matchId, messages, canBlock = true, onClose, onDone }: {
+  name: string; publicId?: string; matchId?: string; messages?: EvidenceMessage[]; canBlock?: boolean; onClose: () => void; onDone: (blocked: boolean) => void;
 }) {
   const { getToken } = useAuth();
   const ref = useRef<HTMLDialogElement>(null);
-  const [choice, setChoice] = useState<Choice>("report_block");
+  const [choice, setChoice] = useState<Choice>(canBlock ? "report_block" : "report");
   const [reason, setReason] = useState("HARASSMENT");
   const [details, setDetails] = useState("");
   const [busy, setBusy] = useState(false);
@@ -25,7 +29,10 @@ export function SafetyDialog({ name, publicId, matchId, onClose, onDone }: {
     try {
       const t = await getToken();
       if (choice === "block") await api(t, "POST", "/api/blocks", { publicId });
-      else await api(t, "POST", "/api/reports", { publicId, reason, details: details.trim() || undefined, ...(matchId && { matchId }), alsoBlock: choice === "report_block" });
+      else await api(t, "POST", "/api/reports", {
+        reason, details: details.trim() || undefined, ...(publicId && { publicId }), ...(matchId && { matchId }),
+        ...(messages?.length && { messageIds: messages.map((m) => m.id) }), alsoBlock: choice === "report_block" && canBlock,
+      });
       onDone(choice !== "report");
     } catch (e) {
       setErr(e instanceof ApiFail ? e.message : "Something went wrong. Nothing was sent.");
@@ -42,12 +49,25 @@ export function SafetyDialog({ name, publicId, matchId, onClose, onDone }: {
     <dialog ref={ref} onClose={onClose} aria-labelledby="safety-h" className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-[32px] bg-white p-8 text-ink shadow-[0_8px_16px_rgba(0,0,0,.15)] backdrop:bg-black/50">
       <h2 id="safety-h" className="text-[22px] font-semibold leading-[1.25] text-ink">Report or block {name}</h2>
       <p className="mt-2 text-sm text-muted">They won&apos;t be told. Blocking hides you from each other, ends any match and can&apos;t be seen by them.</p>
-      <fieldset className="mt-4 grid gap-3">
-        <legend className="sr-only">What do you want to do?</legend>
-        {opt("report_block", "Report and block", "Send a report to our team and hide each other.")}
-        {opt("report", "Report only", "Send a report to our team. You stay visible to each other.")}
-        {opt("block", "Block only", "Hide each other without sending a report.")}
-      </fieldset>
+      {canBlock ? (
+        <fieldset className="mt-4 grid gap-3">
+          <legend className="sr-only">What do you want to do?</legend>
+          {opt("report_block", "Report and block", "Send a report to our team and hide each other.")}
+          {opt("report", "Report only", "Send a report to our team. You stay visible to each other.")}
+          {opt("block", "Block only", "Hide each other without sending a report.")}
+        </fieldset>
+      ) : <p className="mt-4 text-sm">This conversation has ended, so you can send a report. It won&apos;t be shown to them.</p>}
+      {!!messages?.length && choice !== "block" && (
+        <div className="mt-4">
+          <p className="font-bold">Messages that will be sent with your report ({messages.length})</p>
+          <ul className="mt-2 grid max-h-48 gap-2 overflow-y-auto rounded-2xl bg-surface-card p-3 text-sm" aria-label="Selected messages">
+            {messages.map((m) => (
+              <li key={m.id}><span className="font-semibold">{m.mine ? "You" : name}</span> <span className="text-muted">{new Date(m.at).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</span><br /><span className="whitespace-pre-wrap break-words">{m.text}</span></li>
+            ))}
+          </ul>
+          <p className="mt-1 text-xs text-muted">Only these messages are shared, exactly as they were sent.</p>
+        </div>
+      )}
       {choice !== "block" && (
         <div className="mt-4 grid gap-4">
           <div>

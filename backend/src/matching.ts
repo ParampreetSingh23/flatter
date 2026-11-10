@@ -8,6 +8,8 @@ import { publishedFlat } from "./listings.js";
 import {
   accountOk, blockedBetween, canonical, fullInclude, type Full, pair, pairLock, rotate, toFlat, toPerson,
 } from "./matching-data.js";
+import { reportEvidence } from "./chat-data.js";
+import { chatHub } from "./chat-hub.js";
 import { actionBody, blockBody, filtersQuery, idParam, LOCALITY_CITY, PAGE_SIZE, POOL_SIZE, reportBody } from "./matching-rules.js";
 import { missingFields, POLICY, type Result } from "./matching-score.js";
 import { ageOn, istToday } from "./onboarding-rules.js";
@@ -44,6 +46,8 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
   };
   const byPublicId = async (publicId: string, include: Prisma.UserInclude = fullInclude) =>
     db.user.findFirst({ where: { profile: { is: { publicId } } }, include: include as typeof fullInclude });
+
+  const byPublicIdOf = async (id: string) => db.user.findUnique({ where: { id }, include: fullInclude });
 
   const age = (u: Full) => (u.profile?.birthDate ? ageOn(iso(u.profile.birthDate), istToday()) : null);
 
@@ -190,6 +194,7 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
       }
       return { kind: b.kind, matched: false };
     }, { timeout: 10_000 });
+    if (result.matched) chatHub.inbox([v.id, target.id]); // new or existing match: both inboxes reconcile (idempotent)
     res.json(result);
   });
   discovery.use(apiErrorHandler);
@@ -209,7 +214,7 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
       out.push({
         id: m.id, matchedAt: m.createdAt,
         person: { publicId: o.profile.publicId, displayName: o.profile.displayName, avatarUrl: o.profile.avatarUrl, intent: o.housingIntent, age: o.profile.birthDate ? ageOn(iso(o.profile.birthDate), istToday()) : null },
-        chat: { available: false, reason: "Messaging is coming soon." }, // flip only when a real, gated message route exists
+        chat: { available: true }, // real gated routes exist: /api/messages and the Socket.IO events
       });
     }
     res.json({ matches: out });
@@ -220,11 +225,13 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
     const u = await me(req);
     const m = await db.match.findFirst({ where: { id: id.data, OR: [{ userLowId: u.id }, { userHighId: u.id }] } });
     if (!m) throw new ApiError(404, "NOT_FOUND", "Match not found.");
-    await db.$transaction(async (tx) => {
+    const ended = await db.$transaction(async (tx) => {
       await pairLock(tx, m.userLowId, m.userHighId);
-      await tx.match.updateMany({ where: { id: m.id, endedAt: null }, data: { endedAt: new Date(), endedById: u.id, endReason: "UNMATCH" } });
+      const r = await tx.match.updateMany({ where: { id: m.id, endedAt: null }, data: { endedAt: new Date(), endedById: u.id, endReason: "UNMATCH" } });
       await tx.discoveryAction.updateMany({ where: { OR: [{ actorId: m.userLowId, targetId: m.userHighId }, { actorId: m.userHighId, targetId: m.userLowId }], invalidatedAt: null }, data: { invalidatedAt: new Date() } });
+      return r.count > 0;
     });
+    if (ended) chatHub.closed(m.id, [m.userLowId, m.userHighId]); // after commit; chat becomes read-only for both
     res.json({ ok: true });
   });
   matches.use(apiErrorHandler);
@@ -232,7 +239,7 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
   // ---- /api/blocks ----
   const blocks = base(getUserId);
   async function block(blockerId: string, targetId: string) {
-    await db.$transaction(async (tx) => {
+    const endedMatchId = await db.$transaction(async (tx) => {
       await pairLock(tx, blockerId, targetId);
       await tx.userBlock.upsert({
         where: { blockerId_blockedId: { blockerId, blockedId: targetId } },
@@ -240,9 +247,12 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
       });
       const { low, high } = canonical(blockerId, targetId);
       const now = new Date();
+      const active = await tx.match.findFirst({ where: { userLowId: low, userHighId: high, endedAt: null }, select: { id: true } });
       await tx.match.updateMany({ where: { userLowId: low, userHighId: high, endedAt: null }, data: { endedAt: now, endedById: blockerId, endReason: "BLOCK" } });
       await tx.discoveryAction.updateMany({ where: { OR: [{ actorId: blockerId, targetId }, { actorId: targetId, targetId: blockerId }], invalidatedAt: null }, data: { invalidatedAt: now } });
+      return active?.id ?? null;
     });
+    if (endedMatchId) chatHub.closed(endedMatchId, [blockerId, targetId]);
   }
   blocks.get("/", async (req, res) => {
     const u = await me(req);
@@ -277,17 +287,28 @@ export function matchingRouters(getUserId: (req: Request) => string | null, stor
   reports.post("/", perUser(10), async (req, res) => {
     const b = reportBody.parse(req.body);
     const u = await me(req);
-    const t = await byPublicId(b.publicId);
+    let t = b.publicId ? await byPublicId(b.publicId) : null;
+    if (!b.publicId && b.matchId) {
+      // Reporting from a conversation: the other member is the target, only if the reporter is a member.
+      const mm = await db.match.findFirst({ where: { id: b.matchId, OR: [{ userLowId: u.id }, { userHighId: u.id }] } });
+      t = mm ? await byPublicIdOf(mm.userLowId === u.id ? mm.userHighId : mm.userLowId) : null;
+    }
     // Same acknowledgement whether or not the target exists: no enumeration, no private target state.
     if (t && t.id !== u.id) {
       const { low, high } = canonical(u.id, t.id);
       if (b.matchId && !(await db.match.findFirst({ where: { id: b.matchId, userLowId: low, userHighId: high }, select: { id: true } }))) throw new ApiError(422, "VALIDATION_ERROR", "Please check your report.", { matchId: "Not a match you share" });
       if (b.listingId && t.flatListing?.id !== b.listingId) throw new ApiError(422, "VALIDATION_ERROR", "Please check your report.", { listingId: "Not this person's listing" });
+      let messages: Awaited<ReturnType<typeof reportEvidence>> = null;
+      if (b.messageIds?.length) {
+        if (!b.matchId) throw new ApiError(422, "VALIDATION_ERROR", "Please check your report.", { messageIds: "Choose the conversation first" });
+        messages = await reportEvidence(b.matchId, u.id, b.messageIds);
+        if (!messages) throw new ApiError(422, "VALIDATION_ERROR", "Please check your report.", { messageIds: "Choose messages from this conversation" });
+      }
       await db.userReport.create({
         data: {
           reporterId: u.id, targetId: t.id, reason: b.reason, details: b.details || null, matchId: b.matchId ?? null, listingId: b.listingId ?? null,
           // Bounded public-content snapshot only: no DOB, contact data or photo URLs.
-          snapshot: { displayName: t.profile?.displayName ?? null, bio: t.profile?.bio ?? null, listingTitle: b.listingId ? (t.flatListing?.title ?? null) : null },
+          snapshot: { displayName: t.profile?.displayName ?? null, bio: t.profile?.bio ?? null, listingTitle: b.listingId ? (t.flatListing?.title ?? null) : null, ...(messages && { messages }) },
         },
       });
       if (b.alsoBlock) await block(u.id, t.id);

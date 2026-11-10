@@ -24,7 +24,7 @@ export interface ActionRes { kind: "LIKE" | "PASS"; matched: boolean; matchId?: 
 export interface MatchItem {
   id: string; matchedAt: string;
   person: { publicId: string; displayName: string | null; avatarUrl: string | null; intent: Intent; age: number | null };
-  chat: { available: boolean; reason: string };
+  chat: { available: boolean };
 }
 export const REPORT_REASONS = [
   { value: "HARASSMENT", label: "Harassment" }, { value: "SCAM", label: "Scam" }, { value: "FAKE_PROFILE", label: "Fake profile or listing" },

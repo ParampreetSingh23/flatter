@@ -136,7 +136,7 @@ try {
   const ml = (await call(ids.a, "GET", "/matches")).json.matches;
   assert.equal(ml.length, 1);
   assert.equal(ml[0].person.publicId, pb);
-  assert.equal(ml[0].chat.available, false);
+  assert.equal(ml[0].chat.available, true);
   assert.equal(JSON.stringify(ml).includes("birthDate"), false);
   const row = await db.match.findUniqueOrThrow({ where: { id: mutual.json.matchId } });
   assert.ok(row.userLowId < row.userHighId);

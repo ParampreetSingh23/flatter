@@ -67,3 +67,13 @@ export type UserBlock = Prisma.UserBlockModel
  * 
  */
 export type UserReport = Prisma.UserReportModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel
+/**
+ * Model ChatMemberState
+ * 
+ */
+export type ChatMemberState = Prisma.ChatMemberStateModel

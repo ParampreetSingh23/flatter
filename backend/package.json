@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "tsx src/app.test.ts && tsx src/onboarding.test.ts && tsx src/listings.test.ts && tsx src/profiles.test.ts && tsx src/matching-score.test.ts && tsx src/matching.test.ts"
+    "test": "tsx src/app.test.ts && tsx src/onboarding.test.ts && tsx src/listings.test.ts && tsx src/profiles.test.ts && tsx src/matching-score.test.ts && tsx src/matching.test.ts && tsx src/chat.test.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "helmet": "^8.3.0",
     "pg": "^8.23.1",
     "sharp": "^0.35.5",
+    "socket.io": "^4.8.4",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
     "prisma": "^7.10.1",
+    "socket.io-client": "^4.8.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

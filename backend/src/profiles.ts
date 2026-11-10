@@ -6,6 +6,7 @@ import { Prisma } from "./generated/prisma/client.js";
 import { ApiError, apiErrorHandler } from "./http.js";
 import { cityLabel, iso, localityLabel, missingItems } from "./listing-rules.js";
 import { publishedFlat } from "./listings.js";
+import { unreadTotal } from "./chat-data.js";
 import { blockedBetween, toPerson } from "./matching-data.js";
 import { matchingPatch } from "./matching-rules.js";
 import { missingFields } from "./matching-score.js";
@@ -14,7 +15,7 @@ import type { Storage } from "./storage.js";
 
 // Typed availability, shared by the dashboard response and rendering. Unbuilt features are "unavailable", never zero.
 export const FEATURES = {
-  matches: "available", messages: "unavailable", groups: "unavailable", discovery: "available", roomSearch: "unavailable",
+  matches: "available", messages: "available", groups: "unavailable", discovery: "available", roomSearch: "unavailable",
   listingEditor: "available",
 } as const;
 
@@ -94,6 +95,7 @@ export function profileRouters(getUserId: (req: Request) => string | null, stora
     res.json({
       intent, features: FEATURES, discoveryEnabled: u.discoveryEnabled,
       matching: { enrolled: !!u.matchingEnabledAt, ready: missingFields(toPerson({ ...u, flatListing: null }), istToday()).length === 0 },
+      unreadMessages: await unreadTotal(u.id),
       profile: { displayName: profile.displayName, avatarUrl: profile.avatarUrl, publicId: profile.publicId },
       housing: housingSummary(u.housingPreference), listing, listingError,
     });

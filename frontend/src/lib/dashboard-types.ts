@@ -26,6 +26,7 @@ export interface DashboardData {
   listing: ListingSummary | null;
   listingError: boolean;
   matching: { enrolled: boolean; ready: boolean };
+  unreadMessages?: number;
 }
 export interface MeData {
   version: number; publicId: string; intent: Intent; discoveryEnabled: boolean;
